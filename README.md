@@ -1,6 +1,8 @@
 
 <div align="center">
 
+![Aegis-AI Banner](assets/banner.png)
+
 # 🛰️ Aegis-AI
 ### Otonom Sinyal İstihbaratı ve Elektronik Taarruz Paketi
 
