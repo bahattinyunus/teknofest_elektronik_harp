@@ -86,11 +86,59 @@ Modern ve futuristik EH arayüzü sayesinde tüm spektrum operasyonel olarak tak
 - **Pusula Görünümü:** Yön bulma sonuçlarının görsel gösterimi.
 - **Sistem Durumu:** Aktif karıştırma stratejisi ve güç çıkış takibi.
 
-## � Proje Manifestosu
+## 📑 Proje Manifestosu
 
 > "Görünmeyeni gör, bilinmeyeni etkisiz hale getir."
 
 Aegis-AI, elektromanyetik spektrumun bir savaş alanı değil, bir bilgi alanı olduğuna inanır. Amacımız, en karmaşık sinyal ortamlarında bile operatöre netlik kazandırmak ve otonom sistemlerle savunma kabiliyetini maksimize etmektir. Bu proje, sadece bir kod yığını değil; bir mühendisin spektrum üzerindeki egemenlik iddiasıdır.
+
+## 💻 Sistem Gereksinimleri ve Donanım
+
+### Minimum Gereksinimler
+- **OS:** Ubuntu 22.04 LTS (Önerilen) veya Windows 10/11
+- **CPU:** Intel i5 / AMD Ryzen 5 (4+ Çekirdek)
+- **RAM:** 8 GB DDR4
+- **GPU:** (Opsiyonel) NVIDIA GTX 1050 ve üzeri (Derin öğrenme modelleri için)
+
+### Önerilen SDR Donanımları
+- **RX/TX Birimi:** Ettus USRP B210 / LimeSDR / PlutoSDR
+- **Anten Seti:** 4x Geniş Bantlı Monopole (DF için)
+- **İşlemci:** NVIDIA Jetson Orin Nano (Saha testleri için)
+
+## 📚 Elektronik Harp Sözlüğü (Glossary)
+
+| Terim | Açıklama |
+| :--- | :--- |
+| **ED (Electronic Support)** | Spektrumdaki sinyallerin tespiti, analizi ve yer tespiti süreci. |
+| **ET (Electronic Attack)** | Hedef radar veya telsiz sistemlerini bozma veya aldatma süreci. |
+| **PRI (Pulse Repetition Interval)** | İki ardışık yayın darbesi arasındaki zaman farkı. |
+| **PW (Pulse Width)** | Tek bir yayın darbesinin süresi. |
+| **DoA (Direction of Arrival)** | Sinyalin anten dizisine geliş açısı. |
+| **LPI (Low Probability of Intercept)** | Tespit edilmesi zor, düşük güçte veya değişken parametreli radarlar. |
+
+## 🔬 Teknik Derin Bakış: Gelişmiş Matematik
+
+### Genlik Karşılaştırmalı Yön Bulma (DF)
+Sistem, 4 farklı yöne bakan antenlerden gelen sinyal güçlerini ($A_1, A_2, A_3, A_4$) kullanarak geliş açısını ($\theta$) kestirir:
+$$V_{diff} = A_{North} - A_{South}$$
+$$H_{diff} = A_{East} - A_{West}$$
+$$\theta = \arctan2(H_{diff}, V_{diff})$$
+
+### Ambiguity Function (Belirsizlik Fonksiyonu)
+Aldatma (Spoofing) sinyalleri üretilirken, hedefin radar çözünürlüğü ile uyumlu pulsesler tasarlanır:
+$$|\chi(\tau, f_d)| = \left| \int_{-\infty}^{\infty} s(t) s^*(t-\tau) e^{i 2\pi f_d t} dt \right|$$
+Bu fonksiyon, üretilen sahte hedeflerin radar ekranında ne kadar gerçekçi görüneceğini belirleyen temel metriktir.
+
+## ❓ Sıkça Sorulan Sorular (FAQ)
+
+**S: Sistem gerçek zamanlı çalışabiliyor mu?**
+**C:** Evet, Python'un `multiprocessing` yapısı ve optimize edilmiş NumPy rutinleri ile 1 MSPS (Mega Sample Per Second) seviyesine kadar gerçek zamanlı spektrum analizi yapabilmektedir.
+
+**S: Hangi AI modelleri kullanılıyor?**
+**C:** Mevcut sürümde CNN (Convolutional Neural Network) tabanlı bir modülasyon sınıflandırıcı modeli entegre edilmeye hazırdır. Eğitim seti olarak DeepSig/RadioML veriseti kullanılmaktadır.
+
+**S: Yerli SDR'lar ile uyumlu mu?**
+**C:** Sistem, SoapySDR kütüphanesi üzerinden çalıştığı için piyasadaki neredeyse tüm SDR (Software Defined Radio) cihazları ile uyumludur.
 
 ## 📂 Depo Yapısı
 
