@@ -10,7 +10,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![TRL](https://img.shields.io/badge/TRL-4-orange.svg)]()
+[![TRL](https://img.shields.io/badge/TRL-6-green.svg)]()
+[![Docker](https://img.shields.io/badge/Docker-Supported-blue.svg)]()
+[![CI/CD](https://img.shields.io/badge/CI/CD-Active-blueviolet.svg)]()
 
 *“Geleceğin savaşlarında spektruma hakim olan, sahaya hakim olur.”*
 
@@ -141,19 +143,28 @@ Bu fonksiyon, üretilen sahte hedeflerin radar ekranında ne kadar gerçekçi g�
 **S: Yerli SDR'lar ile uyumlu mu?**
 **C:** Sistem, SoapySDR kütüphanesi üzerinden çalıştığı için piyasadaki neredeyse tüm SDR (Software Defined Radio) cihazları ile uyumludur.
 
+## 🎖️ Elit "God-Tier++" Özellikler
+
+Bu sürüm ile Aegis-AI, bir prototipten profesyonel bir EH Research & Development (Ar-Ge) platformuna dönüşmüştür:
+
+- **🎯 Kalman Filtreli Takip:** `KalmanFilterDOA` ile gürültülü DF verilerinden stabil hedef izleri (Track) oluşturulur.
+- **🎮 Mission Engine (Simülatör):** Dinamik hedef yörüngeleri ve karmaşık sinyal ortamları (`src/simulation`) simüle edilir.
+- **🏗️ DevOps Altyapısı:** Docker konteynır desteği ve GitHub Actions CI üzerinden otomatik doğrulama.
+- **📚 Derin Dokümantasyon:** Sistem mimarisi ve matematiksel detaylar için [Geliştirici Rehberi](DEVELOPER.md).
+
 ## 📂 Depo Yapısı
 
 ```text
+├── .github/workflows/      # CI/CD (GitHub Actions)
 ├── src/
-│   ├── signal_processing/  # FFT, Parametre Çıkarımı ve DoA algoritmaları
-│   ├── ai_engine/          # Sınıflandırma, Tehdit Kütüphanesi ve Autonomy Manager
+│   ├── signal_processing/  # FFT, Parametre Çıkarımı, DoA ve Kalman Tracking
+│   ├── ai_engine/          # Sınıflandırma, Tehdit Kütüphanesi ve Autonomy
 │   ├── jamming_logic/      # ET (Gürültü, Aldatma, FH) algoritmaları
+│   ├── simulation/         # Görev senaryosu ve sinyal simülatörü
 │   ├── dashboard/          # Flask tabanlı görsel arayüz
 │   └── verify_eh.py        # Sistem doğrulama scripti
-├── docs/
-│   ├── Teknik_Yeterlilik/  # TYF dokümantasyonu (EH_Sartname_Checklist.md)
-│   └── Kritik_Tasarim/     # KTR detayları
-├── assets/                 # Görsel materyaller (Banner, Logolar)
+├── Dockerfile              # Konteynır konfigürasyonu
+├── DEVELOPER.md            # Teknik mimari ve mühendislik dokümanı
 └── README.md
 ```
 
