@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOTM - Electronic Warfare Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050a14;
+            --panel-bg: rgba(15, 25, 45, 0.8);
+            --accent-blue: #00f2ff;
+            --accent-red: #ff3c3c;
+            --text-color: #e0e6ed;
+            --glass-border: rgba(0, 242, 255, 0.2);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at 50% 50%, #0a1f3d 0%, #050a14 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 2px solid var(--accent-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            letter-spacing: 4px;
+            color: var(--accent-blue);
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-gap: 20px;
+            padding: 30px;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            border: 1px solid currentColor;
+        }
+
+        .status-operational { color: #00ff88; }
+        .status-alert { color: var(--accent-red); }
+
+        .spectrum-view {
+            height: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 1px dashed var(--glass-border);
+        }
+
+        .threat-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .threat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.3s;
+        }
+
+        .threat-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .threat-name {
+            font-weight: 600;
+            color: var(--accent-red);
+        }
+
+        .scan-animation {
+            width: 100%;
+            height: 2px;
+            background: var(--accent-blue);
+            position: absolute;
+            top: 0;
+            animation: scan 4s linear infinite;
+            box-shadow: 0 0 15px var(--accent-blue);
+        }
+
+        @keyframes scan {
+            from { top: 0; }
+            to { top: 100%; }
+        }
+
+        .direction-finder {
+            width: 200px;
+            height: 200px;
+            border: 2px solid var(--glass-border);
+            border-radius: 50%;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .needle {
+            width: 2px;
+            height: 100px;
+            background: var(--accent-red);
+            position: absolute;
+            left: 99px;
+            top: 0;
+            transform-origin: bottom;
+            box-shadow: 0 0 10px var(--accent-red);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>SOTM // EW SYSTEM</h1>
+        <div class="status-badge status-operational">System Operational</div>
+    </div>
+
+    <div class="container">
+        <div class="main-stats">
+            <div class="panel">
+                <h2 style="font-family: Orbitron; font-size: 1rem;">Real-time Spectrum Analysis</h2>
+                <div class="spectrum-view">
+                    <div class="scan-animation"></div>
+                    <canvas id="spectrumChart" style="width: 100%; height: 100%;"></canvas>
+                </div>
+            </div>
+
+            <div class="panel" style="margin-top: 20px;">
+                <h2 style="font-family: Orbitron; font-size: 1rem;">Active Jamming Response</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 4px;">
+                        <span style="font-size: 0.7rem; opacity: 0.6;">Active Strategy</span><br>
+                        <strong id="strategyLabel" style="color: var(--accent-blue);">BARRAGE NOISE</strong>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 4px;">
+                        <span style="font-size: 0.7rem; opacity: 0.6;">Power Output</span><br>
+                        <strong style="color: var(--accent-red);">120W PEP</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="panel">
+                <h2 style="font-family: Orbitron; font-size: 1rem;">Threat Indicators</h2>
+                <ul class="threat-list">
+                    <li class="threat-item">
+                        <div>
+                            <span class="threat-name">Fire Control Radar</span><br>
+                            <small>Band: X-Band | Conf: 92%</small>
+                        </div>
+                        <span style="color: var(--accent-red);">LOCKED</span>
+                    </li>
+                    <li class="threat-item">
+                        <div>
+                            <span class="threat-name">Comm Link</span><br>
+                            <small>S-Band | Conf: 88%</small>
+                        </div>
+                        <span style="color: grey;">MONITORING</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="panel" style="margin-top: 20px; text-align: center;">
+                <h2 style="font-family: Orbitron; font-size: 1rem;">Direction Findings</h2>
+                <div class="direction-finder">
+                    <div class="needle" style="transform: rotate(45deg);"></div>
+                </div>
+                <small>Bearing: 045° REL</small>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
