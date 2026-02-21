@@ -13,6 +13,7 @@
 [![TRL](https://img.shields.io/badge/TRL-6-green.svg)]()
 [![Docker](https://img.shields.io/badge/Docker-Supported-blue.svg)]()
 [![CI/CD](https://img.shields.io/badge/CI/CD-Active-blueviolet.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-18%20passed-brightgreen.svg)]()
 
 *“Geleceğin savaşlarında spektruma hakim olan, sahaya hakim olur.”*
 
@@ -43,15 +44,25 @@ graph TD
 
 ## 🛡️ Modüller ve Yetenekler
 
-| Modül | Özellik | Açıklama |
-| :--- | :--- | :--- |
-| **🔍 Elektronik Destek (ED)** | **Sinyal Tespiti** | Gürültü tabanını aşan yayınların anlık tespiti. |
-| | **Parametre Çıkarımı** | PRI, PW ve Doluluk Oranı (Duty Cycle) otomatik tespiti. |
-| | **Yön Bulma (DF)** | 4-antenli genlik karşılaştırma yöntemi ile DoA kestirimi. |
-| | **AI Sınıflandırma** | Derin öğrenme tabanlı modülasyon ve tehdit tipi tahmini. |
-| **⚔️ Elektronik Taarruz (ET)** | **Akıllı Karıştırma** | Tehdit aktifken devreye giren "Look-through" jamming. |
-| | **Aldatma (Spoofing)** | Yanıltıcı menzil/hız pulsesi üretimi (False Targets). |
-| | **FH Takip/Karıştırma** | Frekans atlamalı (Hopping) sinyalleri takip ve noktasal karıştırma. |
+### 🕵️ Elektromanyetik Destek (ED) - Gözetleme & Analiz
+
+| Yetenek | Modül | Açıklama |
+|:---|:---|:---|
+| Spektral Analiz | `analyzer.py` | FFT tabanlı geniş bant tarama |
+| Parametre Çıkarımı | `analyzer.py` | PRI, PW ve Duty Cycle kestirimi |
+| Yön Bulma (DoA) | `analyzer.py` | 4 anten genlik karşılaştırma |
+| Kalman Takip | `tracking.py` | Gürültü filtrelemeli hedef izi |
+| **LPI Radar Tespiti** | **`lpi_detector.py`** | **Enerji, SVD ve STFT Chirp tespiti** |
+| AI Sınıflandırma | `ai_engine/classifier.py` | Derin öğrenme tabanlı modülasyon ve tehdit tipi tahmini. |
+
+### ⚔️ Elektronik Taarruz (ET) - Karıştırma & Aldatma
+
+| Yetenek | Modül | Açıklama |
+|:---|:---|:---|
+| Gürültü Karıştırma | `jammers.py` | Barraj ve spot gürültü |
+| Aldatma (Spoofing) | `jammers.py` | Sahte hedef üretimi (RGPO) |
+| FH Takip | `jammers.py` | Frekans atlayan sinyallere kilit |
+| **Dalga Biçimi Üreteci** | **`generator.py`** | **CW, CHIRP, BPSK, QPSK, Pulsed** |
 
 ## 📖 Operasyonel Senaryolar
 
