@@ -43,49 +43,70 @@ graph TD
 | Modül | Özellik | Açıklama |
 | :--- | :--- | :--- |
 | **🔍 Elektronik Destek (ED)** | **Sinyal Tespiti** | Gürültü tabanını aşan yayınların anlık tespiti. |
-| | **AI Sınıflandırma** | Derin öğrenme ile modülasyon ve parametre tahmini. |
-| | **Dinleme** | Analog/Sayısal telsiz demodülasyonu. |
-| | **Kestirim (DF)** | Sinyal kaynağının yönünü belirleme. |
-| **⚔️ Elektronik Taarruz (ET)** | **Akıllı Karıştırma** | Sadece tehdit aktifken devreye giren "Look-through" jamming. |
-| | **Spoofing** | GPS ve iletişim sistemlerini yanıltıcı sinyal üretimi. |
+| | **Parametre Çıkarımı** | PRI, PW ve Doluluk Oranı (Duty Cycle) otomatik tespiti. |
+| | **Yön Bulma (DF)** | 4-antenli genlik karşılaştırma yöntemi ile DoA kestirimi. |
+| | **AI Sınıflandırma** | Derin öğrenme tabanlı modülasyon ve tehdit tipi tahmini. |
+| **⚔️ Elektronik Taarruz (ET)** | **Akıllı Karıştırma** | Tehdit aktifken devreye giren "Look-through" jamming. |
+| | **Aldatma (Spoofing)** | Yanıltıcı menzil/hız pulsesi üretimi (False Targets). |
+| | **FH Takip/Karıştırma** | Frekans atlamalı (Hopping) sinyalleri takip ve noktasal karıştırma. |
+
+## 🧠 AI & Otonom Karar Destek (ADSS)
+
+Aegis-AI, sadece bir sinyal işleyici değil, aynı zamanda otonom bir operatördür.
+- **Tehdit Kütüphanesi:** Radar ve komünikasyon sinyallerine ait karakteristik imzaları içeren veritabanı.
+- **Otonom Strateji Belirleme:** Tespit edilen sinyalin tipine göre (LPI Radar, FC Radar, Link-16 vb.) en etkili EH tekniğini (Gürültü, Aldatma veya Akıllı Karıştırma) milisaniyeler içinde seçer.
+
+## 📊 Dashboard (Gerçek Zamanlı Gösterge Paneli)
+
+Modern ve futuristik EH arayüzü sayesinde tüm spektrum operasyonel olarak takip edilebilir:
+- **Spektrum Analizörü:** Anlık FFT görselleştirme.
+- **Tehdit Göstergesi:** Tespit edilen tehditlerin güven skoru ve tipi.
+- **Pusula Görünümü:** Yön bulma sonuçlarının görsel gösterimi.
+- **Sistem Durumu:** Aktif karıştırma stratejisi ve güç çıkış takibi.
 
 ## 🛠️ Teknik Altyapı
 
-Bir **Solopreneur** (Geliştirici + Mühendis + Araştırmacı) olarak geliştirdiğim sistem, aşağıdaki disiplinleri bir araya getirmektedir:
-
 *   **DSP (Sayısal Sinyal İşleme):** Python (`scipy`, `numpy`) tabanlı düşük gecikmeli sinyal işleme.
-*   **AI & Ajan Sistemleri:** Spektrum yoğunluğuna yetişebilmek için otonom karar destek mekanizmaları.
-*   **GUI Tasarımı:** Operasyonel komuta kontrolü için geliştirilen, kullanıcı dostu EH arayüzü.
+*   **AI & Ajan Sistemleri:** `AutonomyManager` ile spektrum yoğunluğuna yetişebilen otonom karar mekanizmaları.
+*   **Web Dashboard:** Flask + Modern CSS/HTML (Glassmorphism) ile geliştirilen premium komuta arayüzü.
 
 ## 📂 Depo Yapısı
 
 ```text
 ├── src/
-│   ├── signal_processing/  # FFT, Demodülasyon ve Filtreleme algoritmaları
-│   ├── ai_engine/          # Sinyal sınıflandırma için Derin Öğrenme modelleri
-│   ├── jamming_logic/      # ET görevleri için karıştırma/aldatma kodları
-│   └── dashboard/          # Kullanıcı Arayüzü (UI) dosyaları
+│   ├── signal_processing/  # FFT, Parametre Çıkarımı ve DoA algoritmaları
+│   ├── ai_engine/          # Sınıflandırma, Tehdit Kütüphanesi ve Autonomy Manager
+│   ├── jamming_logic/      # ET (Gürültü, Aldatma, FH) algoritmaları
+│   ├── dashboard/          # Flask tabanlı görsel arayüz
+│   └── verify_eh.py        # Sistem doğrulama scripti
 ├── docs/
-│   ├── Teknik_Yeterlilik/  # TYF dokümantasyonu
+│   ├── Teknik_Yeterlilik/  # TYF dokümantasyonu (EH_Sartname_Checklist.md)
 │   └── Kritik_Tasarim/     # KTR detayları
-├── assets/                 # Görsel materyaller
+├── assets/                 # Görsel materyaller (Banner, Logolar)
 └── README.md
 ```
 
 ## 🚀 Hızlı Başlangıç
 
-Demo modülünü çalıştırarak temel DSP yeteneklerini test edebilirsiniz:
+Sistemi test etmek ve arayüzü görmek için aşağıdaki adımları izleyin:
 
 ```bash
-# Gerekli kütüphaneleri yükleyin
+# 1. Gerekli kütüphaneleri yükleyin
 pip install -r requirements.txt
 
-# Demo senaryosunu çalıştırın
-python demo_dsp.py
+# 2. Sistem yeteneklerini doğrulayın (ED/ET/AI)
+python src/verify_eh.py
+
+# 3. Dashboard'u başlatın
+python src/dashboard/app.py
 ```
+*Ardından tarayıcınızdan `http://127.0.0.1:5000` adresine giderek arayüzü inceleyebilirsiniz.*
 
 ## 📅 Yol Haritası (2026 Takvimi)
 
+- [x] **Temel ED/ET Altyapısı:** Tamamlandı
+- [x] **AI Otonomi ve Karar Destek:** Tamamlandı
+- [x] **Görsel EH Dashboard:** Tamamlandı
 - [ ] **Teknik Yeterlilik Formu:** 24.03.2026
 - [ ] **Kritik Tasarım Raporu:** 30.04.2026
 - [ ] **Sistem Tanımlama Videosu:** 14.07.2026
@@ -93,7 +114,7 @@ python demo_dsp.py
 
 ## 👤 Geliştirici Hakkında
 
-Ağustos 2023'te yazılım serüvenine başlamış, disiplinler arası çalışmayı (Software + AI + Electronics) benimsemiş bağımsız bir geliştiriciyim. Aegis-AI, tek kişilik bir Ar-Ge merkezinin ürünüdür.
+Ağustos 2023'te yazılım serüvenine başlamış, disiplinler arası çalışmayı (Software + AI + Electronics) benimsemiş bağımsız bir geliştiriciyim. Aegis-AI, tek kişilik bir Ar-Ge merkezinin (Dev-in-Scrubs) ürünüdür.
 
 ---
 
