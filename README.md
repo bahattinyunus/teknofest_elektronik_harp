@@ -2,6 +2,7 @@
 <div align="center">
 
 ![Aegis-AI Visionary Banner](assets/banner_visionary.png)
+![Aegis-AI Premium Banner](assets/banner_premium.png)
 
 # 🛰️ Aegis-AI
 ### Otonom Sinyal İstihbaratı ve Elektronik Taarruz Paketi
