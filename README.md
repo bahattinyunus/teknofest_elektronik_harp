@@ -50,6 +50,28 @@ graph TD
 | | **Aldatma (Spoofing)** | Yanıltıcı menzil/hız pulsesi üretimi (False Targets). |
 | | **FH Takip/Karıştırma** | Frekans atlamalı (Hopping) sinyalleri takip ve noktasal karıştırma. |
 
+## 📖 Operasyonel Senaryolar
+
+Aegis-AI, farklı harekat ortamlarında otonom çözümler sunar:
+
+### 🚁 Senaryo A: İHA Sürüsü Tespiti
+Geniş bantlı spektrum taraması ile sürünün kullandığı frekans atlamalı (FHSS) haberleşme linklerini saniyeler içinde tespit eder. AI modülü, sinyalleri "Sürü Haberleşmesi" olarak etiketler ve `FrequencyHoppingJammer` modülünü devreye alarak sürü koordinasyonunu bozar.
+
+### ⚓ Senaryo B: Deniz Platformu Öz-Savunma
+Yaklaşan bir füze arayıcı başlığına (Seeker) ait X-Bant radar emisyonlarını tespit eden sistem, anında **RGPO (Range Gate Pull Off)** aldatma algoritmasını (`SpoofingJammer`) tetikleyerek füzeyi hayali bir hedefe yönlendirir.
+
+## 🔬 Teknik Derin Bakış ve Matematiksel Temeller
+
+### 🧮 Spektral Analiz (FFT)
+Sistemin kalbinde yer alan FFT motoru, zaman domainindeki $s(t)$ sinyalini frekans domainine $S(f)$ taşır:
+$$S(f) = \int_{-\infty}^{\infty} s(t) e^{-i 2\pi ft} dt$$
+Burada elde edilen büyüklük spektrumu üzerinden **Gürültü Tabanı (Noise Floor)** kestirimi yapılır ve dinamik eşikleme ile sinyal tespiti gerçekleştirilir.
+
+### 📉 Parametre Kestirimi (PRI & PW)
+Darbe tekrarlama aralığı (PRI), yükselen kenarlar arasındaki zaman farkı ile hesaplanır:
+$$PRI = t_{rise}(n) - t_{rise}(n-1)$$
+AI motoru, bu parametreleri kullanarak radarın çalışma modunu (Tarama, Takip, Kilit) belirler.
+
 ## 🧠 AI & Otonom Karar Destek (ADSS)
 
 Aegis-AI, sadece bir sinyal işleyici değil, aynı zamanda otonom bir operatördür.
@@ -64,11 +86,11 @@ Modern ve futuristik EH arayüzü sayesinde tüm spektrum operasyonel olarak tak
 - **Pusula Görünümü:** Yön bulma sonuçlarının görsel gösterimi.
 - **Sistem Durumu:** Aktif karıştırma stratejisi ve güç çıkış takibi.
 
-## 🛠️ Teknik Altyapı
+## � Proje Manifestosu
 
-*   **DSP (Sayısal Sinyal İşleme):** Python (`scipy`, `numpy`) tabanlı düşük gecikmeli sinyal işleme.
-*   **AI & Ajan Sistemleri:** `AutonomyManager` ile spektrum yoğunluğuna yetişebilen otonom karar mekanizmaları.
-*   **Web Dashboard:** Flask + Modern CSS/HTML (Glassmorphism) ile geliştirilen premium komuta arayüzü.
+> "Görünmeyeni gör, bilinmeyeni etkisiz hale getir."
+
+Aegis-AI, elektromanyetik spektrumun bir savaş alanı değil, bir bilgi alanı olduğuna inanır. Amacımız, en karmaşık sinyal ortamlarında bile operatöre netlik kazandırmak ve otonom sistemlerle savunma kabiliyetini maksimize etmektir. Bu proje, sadece bir kod yığını değil; bir mühendisin spektrum üzerindeki egemenlik iddiasıdır.
 
 ## 📂 Depo Yapısı
 
@@ -114,7 +136,7 @@ python src/dashboard/app.py
 
 ## 👤 Geliştirici Hakkında
 
-Ağustos 2023'te yazılım serüvenine başlamış, disiplinler arası çalışmayı (Software + AI + Electronics) benimsemiş bağımsız bir geliştiriciyim. Aegis-AI, tek kişilik bir Ar-Ge merkezinin (Dev-in-Scrubs) ürünüdür.
+Ağustos 2023'te yazılım serüvenine başlamış, disiplinler arası çalışmayı (Software + AI + Electronics) benimsemiş bağımsız bir geliştiriciyim. Aegis-AI, tek kişilik bir Ar-Ge merkezinin (**Dev-in-Scrubs**) ürünüdür.
 
 ---
 
