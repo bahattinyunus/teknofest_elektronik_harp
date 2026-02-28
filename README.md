@@ -24,6 +24,20 @@
 
 ---
 
+## 🌍 Küresel Elektronik Harp & RF Yarışmaları
+
+Bu proje, dünya çapındaki önde gelen sinyal işleme ve EH yarışmalarından ilham almakta ve bu ekosisteme katkı sağlamayı amaçlamaktadır. İşte benzer alanlardaki global arena ve açık kaynaklı referansları:
+
+| Yarışma / Platform | Odak Noktası | Kaynak Kod / Repo |
+| :--- | :--- | :--- |
+| **DARPA Spectrum Collaboration Challenge (SC2)** | Otonom Spektrum Yönetimi & İşbirliği | [kdevb0x/phase2-hurdle](https://github.com/kdevb0x/phase2-hurdle) |
+| **USAF-MIT AI Accelerator RF Challenge** | Derin Öğrenme ile Sinyal Ayrıştırma | [RFChallenge/SCSS_OFDM](https://github.com/RFChallenge/SCSS_OFDMArchitecture) |
+| **DEF CON RF Hackers Sanctuary (RFHS)** | RF SIGINT & Capture The Flag (CTF) | [rfhackers/rfhs-archive](https://github.com/rfhackers) |
+| **ITU AI for Good - 5G/6G Challenge** | AI Tabanlı RF Kaynak Yönetimi | [ITU-AI-ML-in-5G-Challenge](https://github.com/ITU-AI-ML-in-5G-Challenge) |
+| **GNU Radio Conference (GRCon)** | SDR & Açık Kaynak Sinyal İşleme | [gnuradio/gnuradio](https://github.com/gnuradio/gnuradio) |
+
+---
+
 ## ⚡ Proje Vizyonu
 
 Aegis-AI, günümüzün karmaşık elektromanyetik spektrumunda operatör üzerindeki yükü azaltmak için otonom çalışma yöntemleri sunan yeni nesil bir **Elektronik Harp (EH)** çözümüdür. 

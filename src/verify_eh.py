@@ -2,13 +2,14 @@ import sys
 import os
 import numpy as np
 
-# Add src to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
+# Add root to path so we can import from src
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from signal_processing.analyzer import SpectrumAnalyzer, ParameterExtractor, DirectionFinder
-from jamming_logic.jammers import NoiseJammer, SpoofingJammer, FrequencyHoppingJammer
-from ai_engine.classifier import SignalClassifier
-from ai_engine.autonomy_manager import AutonomyManager
+from src.signal_processing.analyzer import SpectrumAnalyzer, ParameterExtractor, DirectionFinder
+from src.signal_processing.lpi_detector import LPIDetector
+from src.jamming_logic.jammers import NoiseJammer, SpoofingJammer, FrequencyHoppingJammer
+from src.ai_engine.classifier import SignalClassifier
+from src.ai_engine.autonomy_manager import AutonomyManager
 
 def test_eh_system():
     print("--- TEKNOFEST 2026 EH System Verification ---")
@@ -48,11 +49,15 @@ def test_eh_system():
     strategy = autonomy.process_detection(freqs, mags)
     print(f"Autonomy Strategy: {strategy}")
 
-    # 4. Test ET Signal Generation
-    print("\n[4] Testing Spoofing Jammer...")
-    spoof = SpoofingJammer()
-    _, spoof_signal = spoof.generate_jamming_signal(0.001)
-    print(f"Spoofing Signal Min/Max: {np.min(spoof_signal):.2f} / {np.max(spoof_signal):.2f}")
+    # 5. Test LPI Detection
+    print("\n[5] Testing LPI Detector (FMCW Chirp)...")
+    lpi_detector = LPIDetector(sample_rate=1e6)
+    # Generate a chirp signal
+    t_lpi = np.linspace(0, 0.001, 1000)
+    # Linear FMCW chirp
+    chirp_signal = np.cos(2 * np.pi * (100e3 * t_lpi + 50e6 * t_lpi**2))
+    lpi_results = lpi_detector.detect_all(chirp_signal)
+    print(f"LPI Detection Results: {lpi_results['final_verdict']} ({lpi_results['confidence']})")
 
     print("\nVerification Complete.")
 
