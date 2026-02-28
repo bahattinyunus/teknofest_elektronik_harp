@@ -24,17 +24,44 @@
 
 ---
 
-## 🌍 Küresel Elektronik Harp & RF Yarışmaları
 
-Bu proje, dünya çapındaki önde gelen sinyal işleme ve EH yarışmalarından ilham almakta ve bu ekosisteme katkı sağlamayı amaçlamaktadır. İşte benzer alanlardaki global arena ve açık kaynaklı referansları:
+---
 
+## 🌍 Küresel Elektronik Harp & RF Ekosistemi
+
+Aegis-AI, sadece yerel bir çözüm değil, küresel EH ve RF sinyal işleme ekosisteminin bir parçasıdır. Bu bölümde, projenin ilham kaynakları, rakipleri ve hedeflediği endüstriyel standartlar yer almaktadır.
+
+### 🏆 Uluslararası Yarışmalar ve Referans Repolar
 | Yarışma / Platform | Odak Noktası | Kaynak Kod / Repo |
 | :--- | :--- | :--- |
-| **DARPA Spectrum Collaboration Challenge (SC2)** | Otonom Spektrum Yönetimi & İşbirliği | [kdevb0x/phase2-hurdle](https://github.com/kdevb0x/phase2-hurdle) |
-| **USAF-MIT AI Accelerator RF Challenge** | Derin Öğrenme ile Sinyal Ayrıştırma | [RFChallenge/SCSS_OFDM](https://github.com/RFChallenge/SCSS_OFDMArchitecture) |
-| **DEF CON RF Hackers Sanctuary (RFHS)** | RF SIGINT & Capture The Flag (CTF) | [rfhackers/rfhs-archive](https://github.com/rfhackers) |
-| **ITU AI for Good - 5G/6G Challenge** | AI Tabanlı RF Kaynak Yönetimi | [ITU-AI-ML-in-5G-Challenge](https://github.com/ITU-AI-ML-in-5G-Challenge) |
-| **GNU Radio Conference (GRCon)** | SDR & Açık Kaynak Sinyal İşleme | [gnuradio/gnuradio](https://github.com/gnuradio/gnuradio) |
+| **DARPA SC2** | Otonom Spektrum Yönetimi | [kdevb0x/phase2-hurdle](https://github.com/kdevb0x/phase2-hurdle) |
+| **USAF-MIT RF Challenge** | AI ile Sinyal Ayrıştırma | [RFChallenge/SCSS_OFDM](https://github.com/RFChallenge/SCSS_OFDMArchitecture) |
+| **DEF CON RFHS CTF** | RF SIGINT & Hacking | [rfhackers/rfhs-archive](https://github.com/rfhackers) |
+| **ITU AI for Good** | AI Tabanlı RF Yönetimi | [ITU-Challenge](https://github.com/ITU-AI-ML-in-5G-Challenge) |
+| **SigDigger** | Dijital Sinyal Analizörü | [Batch_SigDigger](https://github.com/fventuri/sigdigger) |
+
+### 📊 Karşılaştırmalı Analiz (Açık Kaynak Çerçeveler)
+Aegis-AI, genel amaçlı SDR araçlarından farklı olarak **otonom karar destek** ve **karıştırma stratejilerine** odaklanır.
+
+| Özellik | GNU Radio | REDHAWK SDR | **Aegis-AI** |
+| :--- | :---: | :---: | :---: |
+| **Odak** | Genel Amaçlı DSP | Hükümet/Askeri Standart | **Otonom EH & Karar** |
+| **Kullanım Kolaylığı** | Orta (Flowgraph) | Zor (Component-based) | **Yüksek (Mission-oriented)** |
+| **AI Entegrasyonu** | Eklenti Gerektirir | Kısıtlı | **Native (Dahili Motor)** |
+| **Otonom Karar** | Manuel Konfigürasyon | Manuel | **Tam Otonom (ADSS)** |
+| **Gerçek Zamanlılık** | Çok İyi | Mükemmel | **Optimize Edilmiş Python** |
+
+### 🛡️ Endüstriyel Pazar Liderleri (Hedef Standartlar)
+Aegis-AI'ın fonksiyonel tasarımı, dünya lideri savunma devlerinin sunduğu çözüm mimarileriyle paraleldir:
+- **L3Harris (Falcon Series):** Otonom spektrum farkındalığı referans alınmıştır.
+- **Thales (SYNAPS):** Birlikte çalışabilirlik ve geniş bant yetenekleri hedeflenmiştir.
+- **BAE Systems:** Radyasyon dayanımlı ve görev kritik yazılım standartları vizyonumuzun bir parçasıdır.
+
+### 🔬 Teknik Standartlar ve Veri Formatları
+Sistem, modern EH veritabanı standartlarını benimser:
+- **SigMF (Signal Metadata Format):** Kayıtlı sinyallerin metadata uyumluluğu.
+- **VITA 49 (VRT):** SDR paket transfer protokolleri ile uyumluluk hedefi.
+- **TorchSig:** AI modellerinin eğitimi için kullanılan sentetik sinyal üreteci standartları.
 
 ---
 
