@@ -1,7 +1,7 @@
 
 <div align="center">
 
-![Aegis-AI TEKNOFEST 2026 Banner](assets/banner_teknofest.png)
+![Aegis-AI TEKNOFEST 2026 Banner](assets/banner_teknofest_2026.png)
 
 # 🛰️ Aegis-AI
 ### Otonom Sinyal İstihbaratı ve Elektronik Taarruz Paketi
