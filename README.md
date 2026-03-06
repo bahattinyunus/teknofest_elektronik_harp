@@ -25,41 +25,50 @@
 
 ---
 
-## 🌍 Küresel Elektronik Harp & RF Ekosistemi
+## 🌍 Küresel Elektronik Harp & RF Ekosistemi (Rakip Analizi)
 
-Aegis-AI, sadece yerel bir çözüm değil, küresel EH ve RF sinyal işleme ekosisteminin bir parçasıdır. Bu bölümde, projenin ilham kaynakları, rakipleri ve hedeflediği endüstriyel standartlar yer almaktadır.
+Aegis-AI, yalnızca yerel bir yarışma projesi değil; küresel Elektronik Harp (EH) ve Yazılım Tanımlı Radyo (SDR) ekosisteminin güçlü bir alternatifidir. TEKNOFEST 2026 Elektronik Harp Şartnamesi'nin gereksinimleri (Otonomi, Hızlı Frekans Atlama - FHSS tespiti, LPI Radar analizi ve Karıştırma) doğrultusunda, dünya çapında açık kaynaklı referans kodlar ve rakipler derinlemesine incelenmiştir.
 
-### 🏆 Uluslararası Yarışmalar ve Referans Repolar
-| Yarışma / Platform | Odak Noktası | Kaynak Kod / Repo |
+### 🏆 İlham Kaynakları ve TEKNOFEST Şartnamesine Yakın Açık Kaynak Repolar
+
+Aşağıdaki liste, spektrum analizi, dijital sinyal işleme, bilişsel radyo ve AI tabanlı elektronik harp uygulamaları alanında Aegis-AI'ın "benchmarking" yaptığı en az 10 açık kaynak projeyi içermektedir:
+
+| Proje / Repo Adı | Şartname İlgisi (Odak Noktası) | Kaynak Kod (GitHub) |
 | :--- | :--- | :--- |
-| **DARPA SC2** | Otonom Spektrum Yönetimi | [kdevb0x/phase2-hurdle](https://github.com/kdevb0x/phase2-hurdle) |
-| **USAF-MIT RF Challenge** | AI ile Sinyal Ayrıştırma | [RFChallenge/SCSS_OFDM](https://github.com/RFChallenge/SCSS_OFDMArchitecture) |
-| **DEF CON RFHS CTF** | RF SIGINT & Hacking | [rfhackers/rfhs-archive](https://github.com/rfhackers) |
-| **ITU AI for Good** | AI Tabanlı RF Yönetimi | [ITU-Challenge](https://github.com/ITU-AI-ML-in-5G-Challenge) |
-| **SigDigger** | Dijital Sinyal Analizörü | [Batch_SigDigger](https://github.com/fventuri/sigdigger) |
+| **GNU Radio** | Açık Kaynak SDR Framework. Tüm ED/ET bloklarının temeli. | [gnuradio/gnuradio](https://github.com/gnuradio/gnuradio) |
+| **gr-radar** | FMCW & LPI Radar mimarileri. Radar tespiti ve analizi. | [kit-cel/gr-radar](https://github.com/kit-cel/gr-radar) |
+| **TorchSig** | RF sinyalleri için Derin Öğrenme (AI) model eğitimi (Modülasyon sınıflandırma). | [TorchSig/TorchSig](https://github.com/TorchSig/TorchSig) |
+| **SigDigger** | Spektrum analizi ve otonom sinyal (burst) tespiti. ED alt sistemi için referans. | [fventuri/sigdigger](https://github.com/fventuri/sigdigger) |
+| **DARPA SC2 (Phase2)** | Bilişsel Radyo (Cognitive Radio) ve otonom frekans tahsisi. Otonomi Mimarisini etkiledi. | [kdevb0x/phase2-hurdle](https://github.com/kdevb0x/phase2-hurdle) |
+| **SDRangel** | Çoklu SDR donanım kontrolü, RX/TX arayüzü ve Jamming/Replay katmanı. | [f4exb/sdrangel](https://github.com/f4exb/sdrangel) |
+| **DragonOS** | SDR ve RF odaklı Linux işletim sistemi. Sistem entegrasyonu referansı. | [cemaxecuter/DragonOS](https://github.com/cemaxecuter/DragonOS) |
+| **USAF-MIT RF Challenge** | AI ile I/Q sinyal ayrıştırma ve tehdit tespiti. | [RFChallenge/SCSS_OFDM](https://github.com/RFChallenge/SCSS_OFDMArchitecture) |
+| **DEF CON RFHS CTF** | RF SIGINT, Hacking ve Elektronik Karıştırma (Jamming) pratik/konsept kodları. | [rfhackers/rfhs-archive](https://github.com/rfhackers) |
+| **OpenWifi** | Açık Kaynak Wi-Fi/SDR entegrasyonu. İHA sürüleri (Comm Link) EH kurgusu araştırması. | [open-sdr/openwifi](https://github.com/open-sdr/openwifi) |
+| **UHD (USRP HW Driver)** | C++ tabanlı yüksek hızlı sinyal akışı ve düşük gecikme. Performans kıstası. | [EttusResearch/uhd](https://github.com/EttusResearch/uhd) |
 
-### 📊 Karşılaştırmalı Analiz (Açık Kaynak Çerçeveler)
-Aegis-AI, genel amaçlı SDR araçlarından farklı olarak **otonom karar destek** ve **karıştırma stratejilerine** odaklanır.
+### 📊 Karşılaştırmalı Detaylı Rakip Analizi
+Aegis-AI, açık kaynaklı alternatiflere (GNU Radio, REDHAWK) ve endüstriyel çözümlere kıyasla TEKNOFEST konsepti (Sürü İHA engelleme, hedef tespiti ve otonom karıştırma) için **spesifik olarak optimize edilmiştir.**
 
-| Özellik | GNU Radio | REDHAWK SDR | **Aegis-AI** |
-| :--- | :---: | :---: | :---: |
-| **Odak** | Genel Amaçlı DSP | Hükümet/Askeri Standart | **Otonom EH & Karar** |
-| **Kullanım Kolaylığı** | Orta (Flowgraph) | Zor (Component-based) | **Yüksek (Mission-oriented)** |
-| **AI Entegrasyonu** | Eklenti Gerektirir | Kısıtlı | **Native (Dahili Motor)** |
-| **Otonom Karar** | Manuel Konfigürasyon | Manuel | **Tam Otonom (ADSS)** |
-| **Gerçek Zamanlılık** | Çok İyi | Mükemmel | **Optimize Edilmiş Python** |
+| Özellik / Rakip | GNU Radio | REDHAWK SDR | **Aegis-AI (SOTM)** | Üstünlük Nedeni (Şartnameye Uygunluk) |
+| :--- | :---: | :---: | :---: | :--- |
+| **Ana Hedef** | Akademik/Genel DSP | Hükümet/Analiz | **Otonom EH Operasyonu** | Doğrudan tehdit analizi ve karıştırma kararı verir. Flowgraph tasarımı ile zaman kaybettirmez. |
+| **Sinyal Sınıflandırma** | Harici Eklenti (OOT) | Sınırlı | **Dahili AI Motoru** | `TorchSig` benzeri, modülasyon ve parametreleri (PRI/PW) saniyeler içinde tespit eder. |
+| **LPI Radar Tespiti** | Sınırlı (Manuel) | Mevcut | **WVD & STFT Algoritmaları** | Wigner-Ville Distribution ile FMCW ve düşük enerjili EH tehditlerini hızlıca bulur. |
+| **Gerçek Zamanlı Karar** | Yok | Kısmen | **ADSS (Otonomi)** | Tespit edilen sinyalin türüne göre Gürültü (Barrage) veya Aldatma (Spoofing) stratejisini anında uygular. |
+| **Kullanıcı Arayüzü** | QT GUI (Teknik) | Eclipse (Karmaşık) | **Taktik Dashboard (Web)** | Operatöre savaş alanı farkındalığını, hedefin yönünü (DoA) anlık olarak 3D pusulada gösterir. |
 
 ### 🛡️ Endüstriyel Pazar Liderleri (Hedef Standartlar)
 Aegis-AI'ın fonksiyonel tasarımı, dünya lideri savunma devlerinin sunduğu çözüm mimarileriyle paraleldir:
 - **L3Harris (Falcon Series):** Otonom spektrum farkındalığı referans alınmıştır.
-- **Thales (SYNAPS):** Birlikte çalışabilirlik ve geniş bant yetenekleri hedeflenmiştir.
-- **BAE Systems:** Radyasyon dayanımlı ve görev kritik yazılım standartları vizyonumuzun bir parçasıdır.
+- **Thales (SYNAPS):** Birlikte çalışabilirlik ve dinamik frekans atlama (FHSS) jammer algoritmaları entegre edilmiştir.
+- **BAE Systems:** Görev kritik yazılım standartları (Minimum gecikme, C++ / Python entegrasyonu) tasarımın temelini oluşturur.
 
-### 🔬 Teknik Standartlar ve Veri Formatları
+### 🔬 Teknik Veri Formatları
 Sistem, modern EH veritabanı standartlarını benimser:
-- **SigMF (Signal Metadata Format):** Kayıtlı sinyallerin metadata uyumluluğu.
-- **VITA 49 (VRT):** SDR paket transfer protokolleri ile uyumluluk hedefi.
-- **TorchSig:** AI modellerinin eğitimi için kullanılan sentetik sinyal üreteci standartları.
+- **SigMF (Signal Metadata Format):** Gelişmiş veri kaydı.
+- **VITA 49 (VRT):** SDR veri iletimi standartları (Hedeflenen entegrasyon).
+- **HDF5:** Derin öğrenme verisetlerinin `ai_engine` modülü tarafından işlenmesi.
 
 ---
 
