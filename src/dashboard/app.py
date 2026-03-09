@@ -2,7 +2,7 @@ import sys
 import os
 import random
 import numpy as np
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 
 # Setup path integration to access src modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -13,7 +13,7 @@ from src.signal_processing.analyzer import SpectrumAnalyzer, ParameterExtractor
 from src.ai_engine.classifier import SignalClassifier
 from src.ai_engine.autonomy_manager import AutonomyManager
 from src.signal_processing.lpi_detector import LPIDetector
-from src.jamming_logic.jammers import FrequencyHoppingJammer
+from src.jamming_logic.jammers import FrequencyHoppingJammer, JammerCoordinator
 
 app = Flask(__name__)
 mission_engine  = MissionEngine()
@@ -24,10 +24,12 @@ classifier      = SignalClassifier()
 lpi_detector    = LPIDetector(sample_rate=1e6)
 autonomy        = AutonomyManager(classifier, lpi_detector, {})
 fhss_jammer     = FrequencyHoppingJammer(sample_rate=1e6)
+jammer_coord    = JammerCoordinator(sample_rate=1e6)
 
 # Available scenarios to cycle through
-SCENARIOS  = ["Clear Sky", "Long Range Search", "Tracking Radar", "LPI Stealth Radar"]
+SCENARIOS  = ["Clear Sky", "Long Range Search", "Tracking Radar", "LPI Stealth Radar", "Fire Control Radar", "FHSS Comms"]
 _tick       = [0]
+_spectrum_history = []  # Rolling buffer of last 20 spectrum snapshots
 
 @app.route('/')
 def index():
@@ -94,6 +96,34 @@ def get_threats():
 def get_risk():
     """Returns the current threat environment risk assessment."""
     return jsonify(autonomy.risk_assessment())
+
+@app.route('/api/mission')
+def get_mission():
+    """Returns mission engine summary: active emitters, elapsed time, complexity."""
+    return jsonify(mission_engine.get_mission_summary())
+
+@app.route('/api/spectrum_history')
+def get_spectrum_history():
+    """Returns last 20 spectrum snapshots for trend analysis."""
+    return jsonify({"history": _spectrum_history, "count": len(_spectrum_history)})
+
+@app.route('/api/jammer', methods=['POST'])
+def control_jammer():
+    """
+    Assigns a jammer via JammerCoordinator.
+    JSON body: {"threat_id": "T1", "threat_type": "LPI_Radar", "risk": 9}
+    """
+    data = request.get_json(force=True)
+    threat_id   = data.get("threat_id", "T0")
+    threat_type = data.get("threat_type", "Unknown")
+    risk        = int(data.get("risk", 5))
+    jammer_coord.assign_jammer(threat_id, threat_type, risk)
+    return jsonify({
+        "status": "assigned",
+        "threat_id": threat_id,
+        "threat_type": threat_type,
+        "active_assignments": list(jammer_coord.active_assignments.keys())
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -55,6 +55,8 @@ class ScenarioManager:
     def get_scenario_signal(self, scenario_name, duration=0.01):
         """
         Returns a signal based on predefined scenarios.
+        Supported: Long Range Search, Tracking Radar, FHSS Comms,
+                   LPI Stealth Radar, Fire Control Radar, Clear Sky.
         """
         if scenario_name == "Long Range Search":
             # 150kHz frequency, 2ms PRI, 100us PW
@@ -67,6 +69,19 @@ class ScenarioManager:
             hop_freqs = [100e3, 160e3, 220e3, 310e3, 380e3]
             n_hops    = max(1, int(duration / 0.002))
             return self.generate_fhss_signal(hop_freqs, dwell_time=0.002, n_hops=n_hops)
+        elif scenario_name == "LPI Stealth Radar":
+            # FMCW Chirp — Low Probability of Intercept
+            n = int(self.sample_rate * duration)
+            t = np.linspace(0, duration, n)
+            f_start, f_end = 50e3, 400e3
+            # Linear chirp: instantaneous freq increases from f_start to f_end
+            chirp = np.cos(2 * np.pi * (f_start * t + ((f_end - f_start) / (2 * duration)) * t**2))
+            # Add Gaussian noise to make interception harder
+            chirp += np.random.normal(0, 0.15, n)
+            return t, chirp
+        elif scenario_name == "Fire Control Radar":
+            # X-band equivalent: 480kHz (scaled), very short PRI (0.15ms), narrow PW (2us)
+            return self.generate_pulse_stream(480e3, 0.15e-3, 2e-6, duration, amplitude=0.95)
         else:
             # Random noise (Clear Sky)
             t = np.linspace(0, duration, int(self.sample_rate * duration))

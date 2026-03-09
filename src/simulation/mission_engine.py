@@ -8,10 +8,23 @@ class MissionEngine:
     """
     def __init__(self):
         self.emitters = [
-            {"id": "E1", "type": "Radar_L", "base_freq": 1.3e9, "pos": [100, 100], "velocity": [5, -2]},
-            {"id": "E2", "type": "Comm_Link", "base_freq": 2.4e9, "pos": [-50, 200], "velocity": [-3, 10]}
+            {"id": "E1", "type": "Radar_L",   "base_freq": 1.3e9,  "pos": [100, 100],  "velocity": [5,  -2]},
+            {"id": "E2", "type": "Comm_Link", "base_freq": 2.4e9,  "pos": [-50, 200],  "velocity": [-3, 10]},
+            {"id": "E3", "type": "LPI_Radar", "base_freq": 9.5e9,  "pos": [300, -100], "velocity": [-8,  3]},
+            {"id": "E4", "type": "Radar_FC",  "base_freq": 15.5e9, "pos": [200, 50],   "velocity": [10, -5]},
         ]
         self.start_time = time.time()
+
+    def add_emitter(self, emitter_id, emitter_type, freq, pos, velocity):
+        """Dynamically add a new emitter to the simulation."""
+        self.emitters.append({
+            "id": emitter_id, "type": emitter_type,
+            "base_freq": freq, "pos": pos, "velocity": velocity
+        })
+
+    def remove_emitter(self, emitter_id):
+        """Remove an emitter from the simulation by ID."""
+        self.emitters = [e for e in self.emitters if e["id"] != emitter_id]
 
     def update_environment(self):
         """
@@ -46,7 +59,8 @@ class MissionEngine:
         return {
             "active_emitters": len(self.emitters),
             "mission_time": time.time() - self.start_time,
-            "complexity": "High"
+            "emitter_types": list(set(e["type"] for e in self.emitters)),
+            "complexity": "High" if len(self.emitters) >= 4 else "Medium"
         }
 
 if __name__ == "__main__":
