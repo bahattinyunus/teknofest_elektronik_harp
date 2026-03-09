@@ -218,15 +218,26 @@ Bu sürüm ile Aegis-AI, bir prototipten profesyonel bir EH Research & Developme
 
 ```text
 ├── .github/workflows/      # CI/CD (GitHub Actions)
+├── assets/                 # Proje görselleri (banner, diyagramlar)
+├── docs/
+│   ├── Teknik_Yeterlilik/  # TY Formu ve ekleri
+│   └── Kritik_Tasarim/     # KTR belgesi
+├── scripts/
+│   ├── banners/            # Banner oluşturma script'leri
+│   └── demo_dsp.py         # DSP özellik demonstrasyonu
 ├── src/
 │   ├── signal_processing/  # FFT, Parametre Çıkarımı, DoA ve Kalman Tracking
 │   ├── ai_engine/          # Sınıflandırma, Tehdit Kütüphanesi ve Autonomy
-│   ├── jamming_logic/      # ET (Gürültü, Aldatma, FH) algoritmaları
-│   ├── simulation/         # Görev senaryosu (ScenarioManager) ve sinyal simülatörü
+│   ├── jamming_logic/      # ET (Gürültü, Aldatma, FH, Adaptif, Koordinatör)
+│   ├── simulation/         # Görev senaryosu ve sinyal/emitter simülatörü
 │   ├── dashboard/          # Flask tabanlı görsel arayüz
-│   └── verify_eh.py        # Sistem doğrulama scripti
-├── Dockerfile              # Konteynır konfigürasyonu
-├── DEVELOPER.md            # Teknik mimari ve mühendislik dokümanı
+│   └── verify_eh.py        # Sistem doğrulama scripti (renkli çıktı)
+├── tests/
+│   ├── test_aegis.py       # Ana test paketi (28 test)
+│   └── test_comprehensive.py # Gelişmiş özellik testleri (3 test)
+├── Dockerfile
+├── CHANGELOG.md
+├── DEVELOPER.md
 └── README.md
 ```
 
