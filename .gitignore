@@ -36,7 +36,9 @@ Thumbs.db
 # Project Specific
 *.png
 *.jpg
-!assets/
-!docs/
+!assets/*.png
+!assets/*.jpg
+!docs/**/*.png
+!docs/**/*.jpg
 *.pdf
 .pytest_cache/
