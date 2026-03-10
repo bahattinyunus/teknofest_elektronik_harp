@@ -183,6 +183,64 @@ class FrequencyHoppingJammer(JammerBase):
         return t, np.zeros_like(t)
 
 
+class GNSSJammer(JammerBase):
+    """
+    Implements GNSS (GPS L1) Deception / Spoofing.
+    Simulates false positioning by emitting fake satellite signals.
+    """
+    def __init__(self, sample_rate=1e6):
+        super().__init__(sample_rate)
+        self.gps_l1_freq = 150e3  # Scaled for simulation (Real is 1575.42 MHz)
+
+    def generate_jamming_signal(self, duration, target_lat=39.9, target_lon=32.8):
+        """
+        Generates a spoofing signal that deceives the receiver into a false location.
+        In this simulation, we modulate the time-of-flight phase.
+        """
+        t = np.linspace(0, duration, int(self.sample_rate * duration), endpoint=False)
+        amplitude = self._get_amplitude()
+        
+        # Simulate 4 "satellites" with slightly different phases to represent a position
+        # Position is encoded in the relative phases (phi = 2*pi*f*d/c)
+        combined_gps = np.zeros_like(t)
+        for i in range(4):
+            # Deterministic fake phase based on target coordinates
+            fake_phase = (target_lat * 0.1 + target_lon * 0.05 + i * 0.25) * np.pi
+            combined_gps += np.sin(2 * np.pi * self.gps_l1_freq * t + fake_phase)
+            
+        return t, (amplitude * combined_gps / 4.0)
+
+
+class AnalogVoiceJammer(JammerBase):
+    """
+    Implements Analog Telsiz Aldatma (Spoofing).
+    Modulates a carrier with fake voice/noise patterns.
+    """
+    def __init__(self, sample_rate=1e6):
+        super().__init__(sample_rate)
+        self.carrier_freq = 120e3 # FM/AM base frequency for sim
+
+    def generate_jamming_signal(self, duration, mode="FM", message_freq=1e3):
+        """
+        Generates AM/FM modulated deception signals.
+        """
+        t = np.linspace(0, duration, int(self.sample_rate * duration), endpoint=False)
+        amplitude = self._get_amplitude()
+        
+        # Fake "voice" signal (1kHz tone + noise)
+        message = np.sin(2 * np.pi * message_freq * t) + 0.2 * np.random.normal(0, 1, len(t))
+        
+        if mode == "AM":
+            # standard AM: (1 + m*cos(wm*t)) * cos(wc*t)
+            signal = (1 + 0.8 * message) * np.cos(2 * np.pi * self.carrier_freq * t)
+        else: # FM
+            # standard FM: cos(wc*t + beta*sin(wm*t))
+            integral_msg = -np.cos(2 * np.pi * message_freq * t) / (2 * np.pi * message_freq)
+            signal = np.cos(2 * np.pi * self.carrier_freq * t + 5.0 * message)
+            
+        return t, amplitude * signal
+
+
 class JammerCoordinator:
     """
     Orchestrates multiple jamming assets to handle multi-threat environments.
@@ -193,7 +251,9 @@ class JammerCoordinator:
             "noise": NoiseJammer(sample_rate),
             "adaptive": AdaptiveNoiseJammer(sample_rate),
             "spoofing": SpoofingJammer(sample_rate),
-            "fhss": FrequencyHoppingJammer(sample_rate)
+            "fhss": FrequencyHoppingJammer(sample_rate),
+            "gnss": GNSSJammer(sample_rate),
+            "analog": AnalogVoiceJammer(sample_rate)
         }
         self.active_assignments = {}
 
@@ -205,6 +265,10 @@ class JammerCoordinator:
             self.active_assignments[threat_id] = ("spoofing", risk_score)
         elif threat_type == "FHSS":
             self.active_assignments[threat_id] = ("fhss", risk_score)
+        elif threat_type == "GNSS":
+            self.active_assignments[threat_id] = ("gnss", risk_score)
+        elif threat_type == "Analog_Telsiz":
+            self.active_assignments[threat_id] = ("analog", risk_score)
         else:
             self.active_assignments[threat_id] = ("noise", risk_score)
 

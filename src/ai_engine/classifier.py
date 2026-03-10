@@ -15,7 +15,7 @@ class SignalClassifier:
     Currently uses heuristic rule engine, designed for deep learning model plug-in.
     """
     def __init__(self, use_dl=False):
-        self.labels = ["Noise", "CW", "BPSK", "QPSK", "Pulsed_Radar", "FHSS", "LPI_Radar"]
+        self.labels = ["Noise", "CW", "BPSK", "QPSK", "Pulsed_Radar", "FHSS", "LPI_Radar", "GNSS", "Analog_Telsiz"]
         
         self.use_dl = use_dl and TORCH_AVAILABLE
         self.dl_model = None
@@ -101,4 +101,23 @@ class SignalClassifier:
         elif bw < 100e3:
             return "QPSK", 0.70
 
+        # GNSS detection (constant high-bandwidth noise-like but structured)
+        if bw > 250e3 and sf < 0.4:
+            return "GNSS", 0.75
+
+        # Analog Telsiz (Voice AM/FM)
+        if pulse_params and pulse_params.get("SignalType") == "Analog":
+            protocol = self.identify_protocol(features["peak_freq"], bw)
+            return f"Analog_Telsiz ({protocol})", 0.85
+
         return "Unknown", 0.50
+
+    def identify_protocol(self, freq, bw):
+        """
+        Map frequency/bandwidth to common protocols (PMR, Marine, etc.)
+        """
+        # Very simplified mapping for the simulation
+        if 446e3 <= freq <= 446.2e3: return "PMR446"
+        if 156e3 <= freq <= 162e3: return "Marine_VHF"
+        if 868e3 <= freq <= 870e3: return "LoRa_EU868"
+        return "Generic"

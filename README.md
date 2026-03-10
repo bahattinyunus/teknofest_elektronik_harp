@@ -16,7 +16,7 @@
 
 *“Geleceğin savaşlarında spektruma hakim olan, sahaya hakim olur.”*
 
-[Belgeler](docs/) | [Yol Haritası](#-yol-haritası-2026-takvimi) | [İletişim](#-geliştirici-hakkında)
+[Belgeler](docs/) | [Şartname Özeti](YARISMA_SARTNAMESI_DETAYLARI.md) | [Yol Haritası](#-yol-haritası-2026-takvimi) | [İletişim](#-geliştirici-hakkında)
 
 </div>
 
@@ -97,22 +97,25 @@ graph TD
 
 | Yetenek | Modül | Açıklama |
 |:---|:---|:---|
-| Spektral Analiz | `analyzer.py` | FFT tabanlı geniş bant tarama |
-| Parametre Çıkarımı | `analyzer.py` | Merkez Frekans, PRI, PW ve Duty Cycle kestirimi |
-| Yön Bulma (DoA) | `analyzer.py` | Genlik Karşılaştırma ve Faz İnterferometrisi |
-| Kalman Takip | `tracking.py` | Gürültü filtrelemeli hedef izi |
+| **Sinyal Tespiti** (Spektral Analiz) | `analyzer.py` | FFT tabanlı geniş bant tarama ile hedef/aktivite algılama |
+| **Parametre Çıkarımı** | `analyzer.py` | Merkez Frekans, BW, PRI, PW ve Duty Cycle kestirimi |
+| **Sinyal İzleme/Dinleme** | `ai_engine/classifier.py` | Modülasyon tahmini ve analog telsiz demodülasyonu/izleme |
+| **Yön Bulma (DoA)** | `analyzer.py` | Genlik Karşılaştırma ve Faz İnterferometrisi ile yön tespiti |
+| **Konum Belirleme** | `tracking.py` | Çoklu yön/TDOA verileriyle hedefin coğrafi koordinatı |
+| Kalman İz Takibi | `tracking.py` | Gürültü filtrelemeli hedef izi (Track) oluşturma |
 | **LPI Radar Tespiti** | **`lpi_detector.py`** | **Enerji, SVD ve STFT Chirp tespiti** |
-| AI Sınıflandırma | `ai_engine/classifier.py` | Derin öğrenme tabanlı modülasyon tahmini. |
-| Emitter Tanılama | `ai_engine/threat_library.py` | Parametre eşleştirme ile otonom tehdit kimliklendirme. |
+| Emitter Tanılama | `ai_engine/threat_library.py` | Parametre eşleştirme ile otonom tehdit kimliklendirme |
 
 ### ⚔️ Elektronik Taarruz (ET) - Karıştırma & Aldatma
 
 | Yetenek | Modül | Açıklama |
 |:---|:---|:---|
-| Gürültü Karıştırma | `jammers.py` | Barraj ve spot gürültü |
-| Aldatma (Spoofing) | `jammers.py` | Sahte hedef üretimi (RGPO) |
-| FH Takip | `jammers.py` | Frekans atlayan sinyallere kilit |
-| **Dalga Biçimi Üreteci** | **`generator.py`** | **CW, CHIRP, BPSK, QPSK, Pulsed** |
+| **Sürekli Karıştırma** | `jammers.py` | Barraj ve Spot Gürültü ile kesintisiz RF bastırma |
+| **Arabakışlı Karıştırma** | `jammers.py` | Frekans Atlamalı (FH) sinyallere duyarlı sıçramalı/zamanlı jamming |
+| **Analog Telsiz Aldatma** | `jammers.py` | Analog haberleşme arasına sızma veya sahte yayın basma |
+| **GNSS Aldatma** | `jammers.py` | Konum/zaman bilgisini manipüle eden GPS/GNSS Spoofing |
+| Radar Aldatma (RGPO) | `jammers.py` | Menzil kapısı kaydırma ile füze vb. tehditleri yanıltma |
+| **Dalga Biçimi Üreteci** | **`generator.py`** | **CW, CHIRP, BPSK, QPSK, Pulsed sinyal üretimi** |
 
 ## 📖 Operasyonel Senaryolar
 
@@ -262,6 +265,7 @@ python src/dashboard/app.py
 - [x] **Temel ED/ET Altyapısı:** Tamamlandı
 - [x] **AI Otonomi ve Karar Destek:** Tamamlandı
 - [x] **Görsel EH Dashboard:** Tamamlandı
+- [ ] **Yarışma Başvurusu:** 10.03.2026
 - [ ] **Teknik Yeterlilik Formu:** 24.03.2026
 - [ ] **Kritik Tasarım Raporu:** 30.04.2026
 - [ ] **Sistem Tanımlama Videosu:** 14.07.2026

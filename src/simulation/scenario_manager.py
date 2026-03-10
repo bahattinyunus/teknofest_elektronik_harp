@@ -82,6 +82,21 @@ class ScenarioManager:
         elif scenario_name == "Fire Control Radar":
             # X-band equivalent: 480kHz (scaled), very short PRI (0.15ms), narrow PW (2us)
             return self.generate_pulse_stream(480e3, 0.15e-3, 2e-6, duration, amplitude=0.95)
+        elif scenario_name == "GNSS Satellite":
+            # GPS L1-like signal (Wide bandwidth, high carrier)
+            t = np.linspace(0, duration, int(self.sample_rate * duration))
+            carrier = np.cos(2 * np.pi * 150e3 * t)
+            # PRN code modulation (simulated by random bits)
+            prn_code = np.repeat(np.random.choice([-1, 1], int(duration * 1.023e6)), 
+                                 max(1, int(self.sample_rate / 1.023e6)))
+            prn_code = prn_code[:len(t)]
+            return t, carrier * prn_code + np.random.normal(0, 0.05, len(t))
+        elif scenario_name == "Analog Telsiz":
+            # FM Voice signal
+            t = np.linspace(0, duration, int(self.sample_rate * duration))
+            voice = np.sin(2 * np.pi * 1e3 * t) # 1kHz tone simulation
+            fm_signal = np.cos(2 * np.pi * 120e3 * t + 5.0 * np.cumsum(voice) / self.sample_rate)
+            return t, fm_signal + np.random.normal(0, 0.05, len(t))
         else:
             # Random noise (Clear Sky)
             t = np.linspace(0, duration, int(self.sample_rate * duration))

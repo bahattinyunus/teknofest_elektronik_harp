@@ -36,6 +36,16 @@ def test_eh_system():
     params = extractor.estimate_parameters(signal)
     check("PRI extracted", params["PRI"] is not None)
     check("PW extracted",  params["PW"] is not None)
+    check("Power_RMS calculated",  "Power_RMS" in params)
+    check("SignalType detected (Analog/Digital)", "SignalType" in params)
+
+    # 1.b Advanced Parameter Extraction (Tercihen)
+    print("\n[1b] Multiplexing & ECCM Detection")
+    # Simulate an OFDM-like flat spectrum
+    ofdm_signal = np.random.normal(0, 0.5, 1000)
+    ofdm_params = extractor.estimate_parameters(ofdm_signal)
+    check(f"Multiplexing detected: {ofdm_params['Multiplexing']}", ofdm_params["Multiplexing"] != "None")
+    check(f"ECCM detected: {ofdm_params['ECCM']}", ofdm_params["ECCM"] != "None")
 
     # 2. Direction Finding
     print("\n[2] Direction Finding")
@@ -45,6 +55,16 @@ def test_eh_system():
     angle_phase = df.estimate_doa_phase(np.pi / 4, wavelength=1.0)
     check("Phase DoA angle valid", -90 <= angle_phase <= 90)
 
+    # 2b. Geolocation (New)
+    print("\n[2b] 2D Geolocation (Triangulation)")
+    from src.signal_processing.tracking import Geolocator
+    geo = Geolocator(reference_lat=39.9, reference_lon=32.8)
+    # 2 sensors at different positions with beams crossing at (39.91, 32.81) approximately
+    sensors = [(39.9, 32.8), (39.9, 32.82)]
+    bearings = [45, 315] 
+    est_pos = geo.triangulate(sensors, bearings)
+    check(f"Geolocation estimated: {est_pos}", est_pos is not None)
+
     # 3. LPI Detection
     print("\n[3] LPI Detection (FMCW Chirp)")
     lpi = LPIDetector(sample_rate=1e6)
@@ -52,6 +72,14 @@ def test_eh_system():
     result = lpi.detect_all(lpi_sig)
     check("LPI chirp detected", result["final_verdict"] == "DETECTED")
     check("Confidence is float",  isinstance(result["confidence"], float))
+
+    # 3b. Sinyal İzleme/Dinleme (Analog Demodulation)
+    print("\n[3b] Sinyal Dinleme (Analog Demodulation)")
+    from src.signal_processing.analyzer import AnalogDemodulator
+    demod = AnalogDemodulator(sample_rate=1e6)
+    _, analog_sig = sm.get_scenario_signal("Analog Telsiz", duration=0.005)
+    demodulated = demod.demodulate(analog_sig, mode="FM")
+    check("Analog FM signal demodulated (volume > 0)", np.mean(demodulated) > 0)
 
     # 4. Autonomy Manager
     print("\n[4] Autonomy & Threat Prioritization")
@@ -69,6 +97,15 @@ def test_eh_system():
     nj = NoiseJammer(1e6)
     _, sig = nj.generate_jamming_signal(0.001)
     check("NoiseJammer generates signal", len(sig) > 0)
+
+    from src.jamming_logic.jammers import GNSSJammer, AnalogVoiceJammer
+    gnss_j = GNSSJammer(1e6)
+    _, gnss_sig = gnss_j.generate_jamming_signal(0.001, target_lat=40.0, target_lon=33.0)
+    check("GNSSJammer (Spoofing) generates signal", len(gnss_sig) > 0)
+
+    analog_j = AnalogVoiceJammer(1e6)
+    _, fm_sig = analog_j.generate_jamming_signal(0.001, mode="FM")
+    check("AnalogVoiceJammer (FM Spoofing) generates signal", len(fm_sig) > 0)
 
     adj = AdaptiveNoiseJammer(1e6)
     adj.set_power(20)

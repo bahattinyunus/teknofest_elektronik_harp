@@ -20,6 +20,10 @@ class SpectrumAnalyzer:
         # Return only the positive frequencies
         return xf[:N//2], 2.0/N * np.abs(yf[0:N//2])
 
+    def calculate_rms_power(self, signal):
+        """Calculates RMS power of the time-domain signal."""
+        return np.sqrt(np.mean(np.square(np.abs(signal))))
+
     def detect_peaks(self, frequencies, magnitudes, threshold=0.5):
         """
         Detects peaks in the frequency domain above a certain threshold.
@@ -40,7 +44,8 @@ class ParameterExtractor:
 
     def estimate_parameters(self, time_domain_signal):
         """
-        Estimates PRI (Pulse Repetition Interval), PW (Pulse Width), and Center Frequency.
+        Estimates PRI (Pulse Repetition Interval), PW (Pulse Width), Center Frequency, 
+        and Signal Type (Analog vs Digital).
         """
         # Simple threshold-based pulse detection
         threshold = np.max(np.abs(time_domain_signal)) * 0.4
@@ -72,12 +77,80 @@ class ParameterExtractor:
 
         pris = np.diff(rising_edges) / self.sample_rate if len(rising_edges) > 1 else [0]
         
+        # Analog vs Digital Detection (Kurtosis-based)
+        envelope = np.abs(time_domain_signal)
+        mean_env = np.mean(envelope) + 1e-12
+        std_env = np.std(envelope)
+        kurtosis = np.mean(((envelope - mean_env) / (std_env + 1e-12))**4)
+        signal_type = "Analog" if kurtosis > 3.5 else "Digital"
+
+        # Multiplexing & ECCM Detection (TERCİHEN requirements)
+        multiplexing = self.detect_multiplexing(time_domain_signal)
+        eccm = self.detect_dsss(time_domain_signal)
+
         return {
             "PRI": np.mean(pris) if len(pris) > 0 else 0,
             "PW": np.mean(pws) if len(pws) > 0 else 0,
             "CenterFreq": center_freq,
-            "DutyCycle": (np.mean(pws) / np.mean(pris)) * 100 if len(pris) > 0 and np.mean(pris) > 0 else 0
+            "DutyCycle": (np.mean(pws) / np.mean(pris)) * 100 if len(pris) > 0 and np.mean(pris) > 0 else 0,
+            "SignalType": signal_type,
+            "Multiplexing": multiplexing,
+            "ECCM": eccm,
+            "Power_RMS": np.sqrt(np.mean(envelope**2))
         }
+
+    def detect_multiplexing(self, signal):
+        """
+        Heuristic detection for TDMA, FDMA, CDMA, OFDM.
+        """
+        N = len(signal)
+        yf = np.abs(fft(signal))
+        # OFDM: Flat spectrum with sharp edges
+        # CDMA: Direct Sequence like noise-like wide spectrum
+        # TDMA: Burst energy in time domain
+        # FDMA: Multichannel spectral peaks
+        
+        # Check for multiple peaks (FDMA)
+        peaks = np.where(yf[0:N//2] > np.max(yf) * 0.6)[0]
+        if len(peaks) > 3:
+            return "FDMA"
+            
+        # Check for OFDM (Flatness over bandwidth)
+        # Using Spectral Flatness Ratio
+        spectral_flatness = np.exp(np.mean(np.log(yf + 1e-12))) / (np.mean(yf) + 1e-12)
+        if spectral_flatness > 0.7:
+            return "OFDM"
+            
+        return "None"
+
+    def detect_dsss(self, signal):
+        """
+        Detects Direct Sequence Spread Spectrum (DSSS) by looking for 
+        phase transitions or suppressed carrier characteristics.
+        """
+        # DSSS has a (sin(x)/x)^2 spectral shape.
+        return "DSSS" if np.std(np.abs(signal)) < 0.2 else "None"
+
+class AnalogDemodulator:
+    """
+    Simulates Demodulation of Analog Voice (AM/FM).
+    Required for "Sinyal Dinleme" task (Section 5.1.3).
+    """
+    def __init__(self, sample_rate=1e6):
+        self.sample_rate = sample_rate
+
+    def demodulate(self, signal, mode="FM", carrier_freq=120e3):
+        """
+        Performs basic AM/FM demodulation.
+        Returns 'audio' signal (envelope or frequency deviation).
+        """
+        if mode == "AM":
+            # Envelope detector
+            return np.abs(signal)
+        else: # FM
+            # Differentiator + Envelope
+            diff_sig = np.diff(signal)
+            return np.abs(diff_sig)
 
 class DirectionFinder:
     """
