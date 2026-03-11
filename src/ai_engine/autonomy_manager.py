@@ -77,8 +77,17 @@ class AutonomyManager:
         # 7. Execute Strategy (Autonomous Mode)
         if self.jammer_coord:
             # Simple threshold: only jam risks >= 5 or if specifically prioritized
-            if self.risk_score >= 5 or label in ["Radar_FC", "LPI_Radar", "FHSS"]:
-                self.jammer_coord.assign_jammer("T1", label, self.risk_score)
+            if self.risk_score >= 5 or label in ["Radar_FC", "LPI_Radar", "FHSS", "Analog_Telsiz"]:
+                jam_key = label.lower()
+                # Specialized logic for Interleaved Jamming
+                if strategy == "InterleavedJamming":
+                    self.jammer_coord.assign_jammer("T1", "adaptive", self.risk_score)
+                elif "Spoofing" in strategy:
+                    self.jammer_coord.assign_jammer("T1", "spoofing", self.risk_score)
+                elif label == "Analog_Telsiz":
+                    self.jammer_coord.assign_jammer("T1", "analog", self.risk_score)
+                else:
+                    self.jammer_coord.assign_jammer("T1", "noise", self.risk_score)
             else:
                 # Remove jammer if threat is low/noise
                 if "T1" in self.jammer_coord.active_assignments:

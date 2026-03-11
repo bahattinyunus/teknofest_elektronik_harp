@@ -1,0 +1,16 @@
+{
+    "global": {
+        "core:datatype": "cf32_le",
+        "core:sample_rate": 1000000.0,
+        "core:version": "0.1.0",
+        "core:description": "Aegis-AI Tactical Capture"
+    },
+    "captures": [
+        {
+            "core:sample_start": 0,
+            "core:frequency": 150000.0,
+            "core:datetime": "2026-03-11T13:27:26Z"
+        }
+    ],
+    "annotations": []
+}

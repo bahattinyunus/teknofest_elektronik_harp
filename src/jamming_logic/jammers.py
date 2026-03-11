@@ -23,13 +23,35 @@ class JammerBase(ABC):
 
 class NoiseJammer(JammerBase):
     """
-    Implements Barrage or Spot Noise Jamming.
-    Effective against all radar types but easily detectable.
+    Implements Spot Noise Jamming (targeted bandwidth).
     """
     def generate_jamming_signal(self, duration, noise_level=1.0):
         t = np.linspace(0, duration, int(self.sample_rate * duration), endpoint=False)
         amplitude = self._get_amplitude() * noise_level
         return t, np.random.normal(0, amplitude, len(t))
+
+class BarrageJammer(JammerBase):
+    """
+    Implements wideband Barrage Jamming.
+    Covers a wide range of frequencies simultaneously. (Section 3.1)
+    """
+    def generate_jamming_signal(self, duration, bandwidth_mhz=10.0):
+        t = np.linspace(0, duration, int(self.sample_rate * duration), endpoint=False)
+        amplitude = self._get_amplitude()
+        # White noise across full sampling bandwidth
+        return t, np.random.normal(0, amplitude, len(t))
+
+class MultiToneJammer(JammerBase):
+    """
+    Emits multiple discrete CW tones to jam specific frequencies efficiently.
+    """
+    def generate_jamming_signal(self, duration, tones_hz=[100e3, 200e3, 300e3]):
+        t = np.linspace(0, duration, int(self.sample_rate * duration), endpoint=False)
+        amplitude = self._get_amplitude() / len(tones_hz)
+        signal = np.zeros_like(t)
+        for f in tones_hz:
+            signal += np.sin(2 * np.pi * f * t)
+        return t, amplitude * signal
 
 class AdaptiveNoiseJammer(NoiseJammer):
     """
@@ -253,7 +275,9 @@ class JammerCoordinator:
             "spoofing": SpoofingJammer(sample_rate),
             "fhss": FrequencyHoppingJammer(sample_rate),
             "gnss": GNSSJammer(sample_rate),
-            "analog": AnalogVoiceJammer(sample_rate)
+            "analog": AnalogVoiceJammer(sample_rate),
+            "barrage": BarrageJammer(sample_rate),
+            "multitone": MultiToneJammer(sample_rate)
         }
         self.active_assignments = {}
 

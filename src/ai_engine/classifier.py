@@ -117,7 +117,12 @@ class SignalClassifier:
         Map frequency/bandwidth to common protocols (PMR, Marine, etc.)
         """
         # Very simplified mapping for the simulation
-        if 446e3 <= freq <= 446.2e3: return "PMR446"
-        if 156e3 <= freq <= 162e3: return "Marine_VHF"
-        if 868e3 <= freq <= 870e3: return "LoRa_EU868"
+        # Tactical Band Mapping
+        if 446e3 <= freq <= 446.2e3: return "PMR446 (Telsiz)"
+        if 156e3 <= freq <= 162e3: return "Marine VHF (Deniz)"
+        if 868e3 <= freq <= 870e3: return "LoRa EU868 (Industrial)"
+        if 2400e3 <= freq <= 2483e3: return "ISM 2.4GHz (Wi-Fi/BT)"
+        if 1575e3 <= freq <= 1576e3: return "GPS L1 (GNSS)"
+        if 136e3 <= freq <= 174e3: return "VHF High Band"
+        if 400e3 <= freq <= 470e3: return "UHF Band"
         return "Generic"

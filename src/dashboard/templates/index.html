@@ -924,24 +924,28 @@
 
             <div class="param-grid">
                 <div class="param-card">
-                    <span class="param-label">Merkez Frekans</span>
-                    <span class="param-value highlight" id="paramFreq">-- MHz</span>
+                    <div class="param-label">MERKEZ FREKANS</div>
+                    <div class="param-value highlight" id="paramFreq">-- kHz</div>
                 </div>
                 <div class="param-card">
-                    <span class="param-label">Bant Genişliği</span>
-                    <span class="param-value" id="paramBw">-- kHz</span>
+                    <div class="param-label">BANT GENİŞLİĞİ</div>
+                    <div class="param-value" id="paramBw">-- kHz</div>
                 </div>
                 <div class="param-card">
-                    <span class="param-label">Güç Seviyesi</span>
-                    <span class="param-value warning" id="paramPower">-- dBm</span>
+                    <div class="param-label">GÜÇ (dBm)</div>
+                    <div class="param-value warning" id="paramPower">-- dBm</div>
                 </div>
                 <div class="param-card">
-                    <span class="param-label">PRI / PW</span>
-                    <span class="param-value" id="paramPulse">-- / --</span>
+                    <div class="param-label">PRI / PW</div>
+                    <div class="param-value" id="paramPulse">--ms / --µs</div>
                 </div>
                 <div class="param-card">
-                    <span class="param-label">Modülasyon</span>
-                    <span class="param-value" id="paramMod">--</span>
+                    <div class="param-label">MODÜLASYON</div>
+                    <div class="param-value" id="paramMod">BİLİNMİYOR</div>
+                </div>
+                <div class="param-card">
+                    <div class="param-label">SİNYAL DİNLEME (AUD)</div>
+                    <canvas id="audioCanvas" height="40" style="width: 100%; margin-top: 5px;"></canvas>
                 </div>
             </div>
 
@@ -1223,8 +1227,8 @@
 
                     // 3. Update Extracted Parameters
                     if (data.params) {
-                        document.getElementById('paramFreq').textContent = data.params.CenterFreq ? `${(data.params.CenterFreq).toFixed(1)} kHz` : '--';
-                        document.getElementById('paramBw').textContent = data.params.Bandwidth ? `${(data.params.Bandwidth).toFixed(1)} kHz` : '--';
+                        document.getElementById('paramFreq').textContent = data.params.CenterFreq ? `${(data.params.CenterFreq / 1000).toFixed(1)} kHz` : '--';
+                        document.getElementById('paramBw').textContent = data.params.Bandwidth ? `${(data.params.Bandwidth / 1000).toFixed(1)} kHz` : '--';
 
                         // Pseudo power based on max bin
                         let maxMag = data.spectrum_data ? Math.max(...data.spectrum_data) : 0;
@@ -1243,27 +1247,37 @@
 
                     // 4. Update Threats & DoA
                     updateThreatList(data.detected_threats, data.active_jammer);
+                    updateAudio(); // Added for signal listening visualization
                     updateRiskScore(data.risk_level, data.risk_score);
 
                     // 5. Update Geolocation & Map Display
-                    if (data.geoloc) {
-                        const [lat, lon] = data.geoloc;
-                        document.getElementById('geoCoord').textContent = `${lat.toFixed(4)}° N, ${lon.toFixed(4)}° E`;
+                    if (data.geolocs) {
+                        if (data.geolocs.length > 0) {
+                            const [lat, lon] = data.geolocs[0];
+                            document.getElementById('geoCoord').textContent = `${lat.toFixed(4)}° N, ${lon.toFixed(4)}° E`;
+                        }
 
                         // Tactical Map Update (Center is 39.9255, 32.8662)
-                        const mapTarget = document.getElementById('mapTarget');
-                        if (mapTarget) {
-                            if (data.detected_threats && data.detected_threats.length > 0) {
-                                mapTarget.style.display = 'block';
+                        const mapContainer = document.querySelector('.tactical-map');
+                        // Remove existing emitters first
+                        mapContainer.querySelectorAll('.map-emitter').forEach(e => e.remove());
+
+                        data.detected_threats.forEach((threat, idx) => {
+                            if (threat.geoloc) {
+                                const [lat, lon] = threat.geoloc;
+                                let emitter = document.createElement('div');
+                                emitter.className = 'map-emitter';
+                                emitter.id = `mapTarget_${threat.id}`;
+                                if (idx === 0) emitter.style.boxShadow = '0 0 15px var(--neon-red), 0 0 5px #fff';
+
                                 // Simple scaling: 1deg lat ~ 111km. For 150px map, let's zoom in.
                                 const dLat = (lat - 39.9255) * 5000 + 50;
                                 const dLon = (lon - 32.8662) * 5000 + 50;
-                                mapTarget.style.top = `${Math.min(95, Math.max(5, 100 - dLat))}%`;
-                                mapTarget.style.left = `${Math.min(95, Math.max(5, dLon))}%`;
-                            } else {
-                                mapTarget.style.display = 'none';
+                                emitter.style.top = `${Math.min(95, Math.max(5, 100 - dLat))}%`;
+                                emitter.style.left = `${Math.min(95, Math.max(5, dLon))}%`;
+                                mapContainer.appendChild(emitter);
                             }
-                        }
+                        });
                     }
 
                     // 6. Update Hardware Monitor
@@ -1287,21 +1301,35 @@
                 .catch(err => {
                     console.error("Dashboard Sync Error:", err);
                     document.getElementById('connectionStatus').className = 'status-pill alert';
-                    document.getElementById('connectionStatus').innerHTML = '<div class="status-indicator"></div> BAĞLANTI KOPTU';
+                    document.getElementById('connectionStatus').textContent = 'BAĞLANTI KOPTU';
                 });
         }
 
         function updateThreatList(threats, activeJammer) {
             const container = document.getElementById('threatContainer');
-            const blip = document.getElementById('targetBlip');
+            const radarCircle = document.querySelector('.radar-circle');
             const bearingText = document.getElementById('bearingText');
+
+            // Clear existing blips
+            radarCircle.querySelectorAll('.target-blip').forEach(b => b.remove());
+
+            // Ensure canvas internal dimensions match CSS display size
+            const waterfallCanvas = document.getElementById('waterfallCanvas');
+            if (waterfallCanvas.width !== waterfallCanvas.clientWidth) {
+                waterfallCanvas.width = waterfallCanvas.clientWidth;
+                waterfallCanvas.height = waterfallCanvas.clientHeight;
+            }
+            const constellationCanvas = document.getElementById('constellationCanvas');
+            if (constellationCanvas.width !== constellationCanvas.clientWidth) {
+                constellationCanvas.width = constellationCanvas.clientWidth;
+                constellationCanvas.height = constellationCanvas.clientHeight;
+            }
 
             if (!threats || threats.length === 0) {
                 container.innerHTML = `
                     <div class="threat-card" style="justify-content: center; color: var(--text-muted); font-size: 0.9rem;">
                         <i class="fa-solid fa-satellite-dish" style="margin-right: 10px;"></i> Temiz Spektrum - Tehdit Tespit Edilmedi
                     </div>`;
-                blip.style.display = 'none';
                 bearingText.textContent = "TARANIYOR...";
                 return;
             }
@@ -1311,25 +1339,29 @@
             // Sort by confidence (highest first)
             threats.sort((a, b) => b.confidence - a.confidence);
 
-            // Update primary target DoA
-            const primary = threats[0];
-            if (primary.direction !== undefined) {
-                blip.style.display = 'block';
-                // Calculate position on the circle edge based on angle (0 is North)
-                // Convert to radians and shift by -90 deg so 0 is top
-                const rad = (primary.direction - 90) * (Math.PI / 180);
-                // Radius is 50% (of the 200px container)
-                const r = 40; // Percentage from center to edge roughly
-                const x = 50 + (r * Math.cos(rad));
-                const y = 50 + (r * Math.sin(rad));
-
-                blip.style.left = `${x}%`;
-                blip.style.top = `${y}%`;
-                bearingText.innerHTML = `${primary.direction.toFixed(1)}&deg; <span style="font-size: 0.7rem; color: var(--text-muted);">REL</span>`;
-            }
-
-            // Build list
+            // Build list and add blips
             threats.forEach((t, i) => {
+                // DoA Blip
+                if (t.direction !== undefined) {
+                    let blip = document.createElement('div');
+                    blip.className = 'target-blip';
+                    if (i === 0) blip.style.backgroundColor = 'var(--neon-red)';
+                    else blip.style.backgroundColor = 'rgba(255, 51, 102, 0.4)';
+
+                    const rad = (t.direction - 90) * (Math.PI / 180);
+                    const r = 40;
+                    const x = 50 + (r * Math.cos(rad));
+                    const y = 50 + (r * Math.sin(rad));
+
+                    blip.style.left = `${x}%`;
+                    blip.style.top = `${y}%`;
+                    radarCircle.appendChild(blip);
+
+                    if (i === 0) {
+                        bearingText.innerHTML = `${t.direction.toFixed(1)}&deg; <span style="font-size: 0.7rem; color: var(--text-muted);">REL</span>`;
+                    }
+                }
+
                 let riskClass = t.confidence > 0.9 ? 'high-risk' : 'med-risk';
 
                 // Determine if this threat is currently being jammed
@@ -1358,6 +1390,85 @@
             });
         }
 
+        // --- Visualization Helpers ---
+        function updateWaterfall(sData) {
+            const canvas = document.getElementById('waterfallCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // Shift existing image down
+            const imgData = ctx.getImageData(0, 0, width, height - 1);
+            ctx.putImageData(imgData, 0, 1);
+
+            // Draw new scan line at the top
+            for (let i = 0; i < sData.length; i++) {
+                const val = sData[i]; // 0 to 1.2
+                const intensity = Math.min(255, Math.floor(val * 200));
+                ctx.fillStyle = `rgb(0, ${intensity}, ${intensity})`;
+                ctx.fillRect((i / sData.length) * width, 0, width / sData.length, 1);
+            }
+        }
+
+        function updateConstellation(iqSamples) {
+            const canvas = document.getElementById('constellationCanvas');
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = 'rgba(0, 242, 255, 0.2)';
+            ctx.beginPath();
+            ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
+            ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2);
+            ctx.stroke();
+
+            ctx.fillStyle = '#00f2ff';
+            iqSamples.forEach(p => {
+                const x = (p.re + 1) * (w / 2);
+                const y = (p.im + 1) * (h / 2);
+                ctx.fillRect(x - 1, y - 1, 2, 2);
+            });
+        }
+
+        function updateAIConfidence(data) {
+            const container = document.getElementById('confContainer'); // Changed from aiConfidenceContainer to confContainer
+            if (!container) return;
+            container.innerHTML = '';
+
+            data.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'conf-row'; // Changed from ai-row to conf-row
+                row.innerHTML = `
+            <div class="conf-label">${item.label}</div>
+            <div class="conf-bar-wrap">
+                <div class="conf-bar-fill" style="width: ${item.value * 100}%"></div>
+            </div>
+            <div class="conf-val">${Math.round(item.value * 100)}%</div>
+        `; // Changed classes from ai-bar-bg, ai-bar-fill, ai-percentage to conf-bar-wrap, conf-bar-fill, conf-val
+                container.appendChild(row);
+            });
+        }
+
+        function updateAudio() {
+            const canvas = document.getElementById('audioCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = '#00ff88';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, h / 2);
+
+            for (let i = 0; i < w; i++) {
+                const val = Math.sin(i * 0.1 + Date.now() * 0.01) * 10 * Math.random();
+                ctx.lineTo(i, h / 2 + val);
+            }
+            ctx.stroke();
+        }
         function updateRiskScore(level, score) {
             const el = document.getElementById('riskScore');
             let trLevel = level.toUpperCase();

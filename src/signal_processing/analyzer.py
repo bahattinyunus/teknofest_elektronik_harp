@@ -91,6 +91,7 @@ class ParameterExtractor:
         return {
             "PRI": np.mean(pris) if len(pris) > 0 else 0,
             "PW": np.mean(pws) if len(pws) > 0 else 0,
+            "Bandwidth": 1.0 / np.mean(pws) if len(pws) > 0 and np.mean(pws) > 0 else 0,
             "CenterFreq": center_freq,
             "DutyCycle": (np.mean(pws) / np.mean(pris)) * 100 if len(pris) > 0 and np.mean(pris) > 0 else 0,
             "SignalType": signal_type,

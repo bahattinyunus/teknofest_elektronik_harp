@@ -11,7 +11,7 @@ from src.simulation.mission_engine import MissionEngine
 from src.simulation.scenario_manager import ScenarioManager
 from src.jamming_logic.jammers import FrequencyHoppingJammer, JammerCoordinator
 from src.signal_processing.analyzer import SpectrumAnalyzer, ParameterExtractor, SigMFExporter
-from src.signal_processing.tracking import Geolocator, KalmanFilterDOA
+from src.signal_processing.tracking import Geolocator, MultiTargetTrackerManager
 from src.ai_engine.classifier import SignalClassifier
 from src.ai_engine.autonomy_manager import AutonomyManager
 from src.signal_processing.lpi_detector import LPIDetector
@@ -28,7 +28,7 @@ autonomy        = AutonomyManager(classifier, lpi_detector, jammer_coord)
 fhss_jammer     = FrequencyHoppingJammer(sample_rate=1e6)
 sigmf_exporter  = SigMFExporter(sample_rate=1e6)
 geolocator      = Geolocator()
-df_tracker      = KalmanFilterDOA()
+tracker_mgr     = MultiTargetTrackerManager()
 
 # Available scenarios to cycle through
 SCENARIOS  = ["Clear Sky", "Long Range Search", "Tracking Radar", "LPI Stealth Radar", "Fire Control Radar", "FHSS Comms"]
@@ -72,11 +72,14 @@ def get_status():
     detected_threats = []
     sensor_positions = [(39.9250, 32.8660), (39.9260, 32.8670)] # Simulated sensor positions
     
+    # Update all trackers (prediction step)
+    tracker_mgr.predict_all()
+    active_ids = [obs["id"] for obs in observations]
+
     for obs in observations:
-        # Update DF Tracker
-        df_tracker.predict()
-        df_tracker.update(obs["bearing"])
-        state = df_tracker.get_state()
+        # Update Multi-Target Tracker
+        tracker_mgr.update_emitter(obs["id"], obs["bearing"])
+        state = tracker_mgr.trackers[obs["id"]].get_state()
 
         # Triangulate Geolocation (Simulated use)
         # Using two bearings (real bearing + a slightly shifted one) for triangulation demo
@@ -91,6 +94,12 @@ def get_status():
             "signal_strength": round(obs["signal_strength"], 3),
             "geoloc": est_pos
         })
+    
+    # Cleanup lost tracks
+    tracker_mgr.remove_dead_tracks(active_ids)
+
+    # LPI Detection Analysis
+    lpi_results = lpi_detector.detect_all(signal)
 
     return jsonify({
         "system_status": "Operational",
@@ -99,6 +108,7 @@ def get_status():
         "risk_level": risk_info["threat_level"],
         "risk_score": risk_info["risk_score"],
         "detected_threats": detected_threats,
+        "lpi_status": lpi_results["final_verdict"],
         "spectrum_data": mags[:100].tolist() if len(mags) >= 100 else mags.tolist(),
         "params": {k: round(v * 1000, 3) if isinstance(v, float) else v
                    for k, v in params.items()},
@@ -107,7 +117,7 @@ def get_status():
             "last_hop_freq_khz": round(hop_freq / 1e3, 1) if detected else None,
             "predicted_next_hop_khz": round(next_hop / 1e3, 1) if next_hop else None
         },
-        "geoloc": detected_threats[0]["geoloc"] if detected_threats else [39.9255, 32.8662],
+        "geolocs": [t["geoloc"] for t in detected_threats],
         "hardware": {
             "gpu_load": f"{_hardware['gpu_load'] + random.randint(-2, 2)}%",
             "gpu_temp": f"{_hardware['gpu_temp'] + random.random():.1f}°C",
@@ -116,7 +126,9 @@ def get_status():
             "recording": _hardware['is_recording']
         },
         "tuning": _tuning,
-        "iq_samples": (np.cos(np.linspace(0, 10, 64)) + 1j*np.sin(np.linspace(0, 10, 64)) + np.random.normal(0, 0.1, 64)).tolist() if _tick[0] % 2 == 0 else (np.random.normal(0, 0.5, 64) + 1j*np.random.normal(0, 0.5, 64)).tolist(),
+        "iq_samples": ([{"re": float(c.real), "im": float(c.imag)} for c in (np.cos(np.linspace(0, 10, 64)) + 1j*np.sin(np.linspace(0, 10, 64)) + np.random.normal(0, 0.1, 64))] 
+                       if _tick[0] % 2 == 0 else 
+                       [{"re": float(c.real), "im": float(c.imag)} for c in (np.random.normal(0, 0.5, 64) + 1j*np.random.normal(0, 0.5, 64))]),
         "ai_confidence": [
             {"label": "BPSK", "value": 0.82 if _tick[0] % 3 == 0 else 0.1},
             {"label": "QPSK", "value": 0.15 if _tick[0] % 3 == 0 else 0.75},
