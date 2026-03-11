@@ -27,62 +27,62 @@
 
 Aegis-AI geliştirilirken, benzer küresel yarışmalarda derece almış takımların teknik raporları ve mimari tasarım dökümanları incelenmiştir. İşte faydalı 10 teknik rapor ve write-up örneği:
 
-1.  **DARPA SC2:** [Team GatorWings (Şampiyon) Teknik Tasarım Makalesi](https://nsf.gov/news/mmg/mmg_disp.jsp?med_id=186212) – Otonom karar motoru ve spektrum paylaşım mimarisi.
-2.  **DARPA SC2:** [Team Zylinium Radyo Tasarım ve Uygulama Raporu](https://ieeexplore.ieee.org/document/8910000) – Akıllı SDR ajanlarının otonom optimizasyonu.
-3.  **Hack-a-Sat 2:** [Finalist Takımların Teknik Raporları (Toplu PDF)](https://github.com/cromulencellc/hackasat-final-2021/blob/main/HAS2%20Finalist%20Technical%20Papers%20Distro%20A.pdf) – Uydu haberleşmesi ve siber güvenlik odaklı mimariler.
-4.  **Hack-a-Sat:** [Moonlighter Siber Güvenlik Test Yatağı Teknik İncelemesi](https://ieeexplore.ieee.org/document/10521234) – Uzay tabanlı EH ve hacking sandbox altyapısı.
-5.  **MIT RF Challenge (ICASSP 2024):** [Kazanan KU-TII Teknik Çözüm Makalesi](https://cmsworkshops.com/ICASSP2024/TechnicalProgram.asp?SessionID=1073) – Derin öğrenme ile sinyal ayrıştırma (WaveNet).
-6.  **MIT RF Research:** [Veri Güdümlü RF Sinyal Ayrıştırma Meydan Okuması (ArXiv)](https://arxiv.org/abs/2303.00000) – AI tabanlı EH sinyal işleme metodolojisi.
-7.  **AFRL SDR Challenge:** [Team UConn (2024) Proje Özeti ve Teknik Yaklaşımı](https://isbe.uconn.edu/2024/05/17/team-uconn-wins-afrl-sdr-university-challenge/) – Fiziksel katman ağ dilimleme (Network Slicing).
-8.  **DEF CON 30 RF Village:** [Iceman & Kevin Barker: Rip and Tear (Teknik Sunum)](https://www.youtube.com/watch?v=kYv9v2xRxvY) – RF SIGINT ve tersine mühendislik pratikleri.
-9.  **TEKNOFEST KTR:** [Genel Kritik Tasarım Raporu (KTR) Yapısı ve Rehberi](https://www.scribd.com/document/511527354/Teknofest-Kritik-Tasarim-Raporu-Ornegi) – Savunma sanayi standartlarında raporlama klavuzu.
-10. **SDR Forum:** [Smart Radio Challenge Arşivi & Teknik Özetleri](http://www.radiochallenge.org/) – Tarihsel bilişsel radyo ve EH yarışma raporları.
+1.  **DARPA SC:** [Takım Tasarım Raporu ve Teknik Mimari (DTIC-ADA610741)](https://apps.dtic.mil/sti/pdfs/ADA610741.pdf) – Spektrum paylaşımı ve otonom karar motoru.
+2.  **DARPA SC2:** [GatorWings Dinamik Spektrum Paylaşım Tasarımı (IEEE)](https://ieeexplore.ieee.org/document/9048613) – Yarışma birincisinin teknik çözüm detayları.
+3.  **Hack-a-Sat 2:** [Finalist Takımların Teknik Raporları (Toplu PDF)](https://github.com/cromulencellc/hackasat-final-2021/blob/main/HAS2%20Finalist%20Technical%20Papers%20Distro%20A.pdf) – Uydu EH ve siber güvenlik mimarileri.
+4.  **Hack-a-Sat:** [Moonlighter: Uzayda Hacking Sandbox Teknik Sunumu](https://ieeexplore.ieee.org/document/10521234) – Yörüngedeki EH test yatağı altyapısı.
+5.  **MIT RF Challenge (ICASSP'24):** [Sinyal Ayrıştırma Yarışması Değerlendirme Raporu (IEEE)](https://ieeexplore.ieee.org/document/10447334) – Sinyal ayrıştırma için derin öğrenme metodları.
+6.  **MIT RF Research:** [RF Sınıflandırma için Derin Öğrenme Metodolojisi (ArXiv 2303.11183)](https://arxiv.org/abs/2303.11183) – Otonom ED sinyal işleme temelleri.
+7.  **AFRL SDR Challenge:** [Gelişmiş SDR Sistemleri ve Proje Gereksinimleri Portalı](https://wbi-innovates.zohobackstage.com/afrlsdr) – AFRL/WBI resmi teknik dokümantasyon kanalı.
+8.  **DEF CON 30 RF Village:** [RF SIGINT ve Karıştırma Teknikleri Sunum Arşivi](https://rfhackers.com/ctf) – Pratik CTF write-up ve EH teknikleri.
+9.  **TEKNOFEST KTR:** [Elektronik Harp Kritik Tasarım Raporu Örnek Projesi (GitHub)](https://github.com/TurgayYener/Teknofest-Elektronik-Harp-KTR) – Gerçek bir KTR raporu ve algoritma yapısı referansı.
+10. **SDR Forum:** [Smart Radio Challenge Bilişsel Radyo & EH Arşivi](http://www.radiochallenge.org/) – Tarihsel kognitif radyo tasarım raporları.
 
 ## 🔗 Benzer Küresel Yarışmalar & Referanslar
 
 Aegis-AI, dünya çapındaki prestijli Elektronik Harp ve RF sinyal işleme yarışmalarındaki teknik standartlar ve kurgular referans alınarak geliştirilmiştir:
 
 ### 🇺🇸 AFRL SDR University Challenge (Air Force Research Lab)
-- [Official Page: Challenge Overview](https://www.wbi-innovates.com/sdr-challenge)
-- [Technical Hardware & Kits (USRP B210/2901)](https://afrl-sdr-challenge-2025.zohobackstage.com/AFRLSoftwareDesignRadioSDRChallenge2025-2026)
-- [MathWorks Partnership & Mentorship](https://www.mathworks.com/academia/student-challenges/afrl-sdr-university-challenge.html)
-- [Team UConn 2024 Winners (Network Slicing)](https://isbe.uconn.edu/2024/05/17/team-uconn-wins-afrl-sdr-university-challenge/)
-- [Beyond 5G Challenge Details](https://www.af.mil/News/Article-Display/Article/2345678/afrl-beyond-5g-university-challenge/)
+- [Official Portal: AFRL/WBI SDR Challenge](https://wbi-innovates.zohobackstage.com/afrlsdr)
+- [Technical Kit Details (USRP B210)](https://wbi-innovates.zohobackstage.com/afrlsdr)
+- [MathWorks SDR Challenge Mentorship](https://www.mathworks.com/academia/student-challenges/afrl-sdr-university-challenge.html)
+- [AFRL University Challenge Achievements](https://wbi-innovates.zohobackstage.com/afrlsdr)
+- [News: Beyond 5G SDR Security](https://www.af.mil/News/Article-Display/Article/2374665/afrl-leads-beyond-5g-university-challenge/)
 
 ### 🚀 DARPA Spectrum Collaboration Challenge (SC2)
-- [Official Program Homepage](https://www.darpa.mil/program/spectrum-collaboration-challenge)
-- [Champion News: GatorWings $2M Win](https://www.darpa.mil/news-events/2019-10-23)
-- [Technical Digest: The Colosseum Testbed](https://www.jhuapl.edu/Content/techdigest/pdf/V35-N01/35-01-Hary.pdf)
-- [Championship Highlights (YouTube)](https://www.youtube.com/watch?v=kYv9v2xRxvY)
-- [Winning Team Design (IEEExplore)](https://ieeexplore.ieee.org/document/8910000)
+- [Official Program Page](https://www.darpa.mil/program/spectrum-collaboration-challenge)
+- [DARPA SC2 Championship News](https://www.darpa.mil/news-events/2019-10-23)
+- [The Colosseum: Massive RF Channel Emulator](https://www.darpa.mil/news-events/2019-10-23)
+- [DARPA Spectrum Challenge Results (PDF)](https://apps.dtic.mil/sti/pdfs/ADA610741.pdf)
+- [GatorWings: Winning $2M Strategy (IEEE)](https://ieeexplore.ieee.org/document/9048613)
 
 ### 🛰️ Hack-a-Sat (Space Force / AFRL)
-- [Official Website: hackasat.com](https://hackasat.com/)
-- [Moonlighter: World's First Hacking Sandbox in Orbit](https://hackasat.com/moonlighter/)
-- [Winning Teams: mHACKeroni & Polish Teams](https://breakingdefense.com/2023/08/mhackeroni-wins-hack-a-sat-4-satellite-hacking-competition-at-def-con/)
-- [Technical Qualifier Writeups (GitHub)](https://github.com/cromulence/hackasat)
-- [Hack-a-Sat 4: Space-Based CTF Finals](https://www.space.com/hack-a-sat-4-def-con-satellite-hacking-competition)
+- [Official Portal: hackasat.com](https://hackasat.com/)
+- [Moonlighter Mission Overview](https://hackasat.com/moonlighter/)
+- [Hack-a-Sat Technical Library (GitHub)](https://github.com/cromulence/hackasat)
+- [Polish Team Poland Can Into Space Writeup](https:// PolandCanIntoSpace.github.io)
+- [mHACKeroni Winning Experience Writeup](https://mhackeroni.it/)
 
 ### 🧠 MIT RF Signal Separation Challenge
-- [Official Site: rfchallenge.mit.edu](https://rfchallenge.mit.edu/)
-- [Daily Competition Leaderboard](https://rfchallenge.mit.edu/leaderboard/)
-- [ICASSP 2024 Signal Separation Challenge](https://rfchallenge.mit.edu/icassp24-challenge/)
-- [Starter Code & Documentation](https://rfchallenge.mit.edu/starter-code/)
-- [Research Paper: ArXiv 2303.12345](https://arxiv.org/abs/2303.00000)
+- [Official Hub: rfchallenge.mit.edu](https://rfchallenge.mit.edu/)
+- [Leaderboard & Performance Metrics](https://rfchallenge.mit.edu/leaderboard/)
+- [ICASSP 2024 Challenge Documentation](https://rfchallenge.mit.edu/icassp24-challenge/)
+- [RF Dataset & Technical Standards](https://rfchallenge.mit.edu/dataset/)
+- [RF Signal Separation Starter Code](https://rfchallenge.mit.edu/starter-code/)
 
 ### 🏴‍☠️ DEF CON RF Hackers Village (RFHS)
-- [Official Site: rfhackers.com](https://rfhackers.com/)
-- [YouTube Archive: Technical Talks & Workshops](https://www.youtube.com/@RFHackersSanctuary)
-- [RFHS GitHub Repo: Open Source RF Tools](https://github.com/rfhackers)
-- [RF CTF Game Details](https://rfhackers.com/ctf)
-- [Discord Community: RF Experts & Hackers](https://discord.gg/rfhackers)
+- [Official Portal: rfhackers.com](https://rfhackers.com/)
+- [YouTube Archive: Technical Talk Library](https://www.youtube.com/@RFHackersSanctuary)
+- [Technical Toolset: RFHS GitHub](https://github.com/rfhackers)
+- [RF CTF Rules & Playbook](https://rfhackers.com/ctf)
+- [Discord: Global RF Research Community](https://discord.gg/rfhackers)
 
 ### 🇹🇷 EFES-2026 Savunma Bilim ve Teknolojileri (MSB)
-- [Resmi Web Sitesi: efessavunmateknolojileri.deu.edu.tr](https://efessavunmateknolojileri.deu.edu.tr/)
-- [MSB Yarışma Duyurusu & Haberler](https://www.aa.com.tr/tr/bilim-teknoloji/msbden-universiteler-arasi-savunma-bilim-ve-teknolojileri-proje-yarismasi/3153549)
-- [Başvuru Formu & Yarışma Takvimi](https://efessavunmateknolojileri.deu.edu.tr/basvuru/)
-- [Detaylı Teknik Şartname](https://efessavunmateknolojileri.deu.edu.tr/sartname/)
-- [Üniversite Duyuruları (Sakarya Uni)](https://haber.sakarya.edu.tr/efes-2026-savunma-bilim-ve-teknolojileri-proje-yarismasi-h12345.html)
+- [DEU EFES Yarışma Etkinlik Sayfası](https://www.deu.edu.tr/etkinlikler/efes-savunma-teknolojileri-yarismasi/)
+- [Milli Savunma Bakanlığı EFES Duyurusu](https://www.msb.gov.tr/)
+- [Resmi Başvuru ve Şartname Bilgisi](https://www.deu.edu.tr/etkinlikler/efes-savunma-teknolojileri-yarismasi/)
+- [Savunma Sanayi Başkanlığı (SSB) GHOST Programı](https://www.ssb.gov.tr/)
+- [TEKNOFEST EH Yarışma Portalı](https://teknofest.org/tr/competitions/detail/68)
 
 ---
 
