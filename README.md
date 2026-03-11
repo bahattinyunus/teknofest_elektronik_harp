@@ -22,6 +22,16 @@
 
 ---
 
+## 🔗 Benzer Küresel Yarışmalar & Referanslar
+
+Aegis-AI, dünya çapındaki prestijli Elektronik Harp ve RF sinyal işleme yarışmalarındaki teknik standartlar ve kurgular referans alınarak geliştirilmiştir:
+
+- **[AFRL SDR University Challenge](https://www.wbi-innovates.com/sdr-challenge):** ABD Hava Kuvvetleri Araştırma Laboratuvarı tarafından düzenlenen, SDR tabanlı otonom haberleşme ve EH görevleri yarışması.
+- **[DARPA Spectrum Challenges](https://www.darpa.mil/news-events/2013-09-11):** Bilişsel Radyo (Cognitive Radio) ve otonom spektrum yönetimi üzerine odaklanan küresel otorite yarışmalar.
+- **[Hack-a-Sat](https://hackasat.com/):** Uydu haberleşmesi ve uzay sistemleri siber güvenliği üzerine odaklanan, RF ve protokol analizinin kritik olduğu en büyük CTF'lerden biri.
+- **[MIT RF Signal Separation Challenge](https://rfchallenge.mit.edu/):** Derin öğrenme ve yapay zeka ile karmaşık RF sinyallerinin otonom ayrıştırılmasına odaklanan akademik meydan okuma.
+- **[DEF CON RF Hackers Village](https://rfhackers.com/):** Dünyanın en büyük hacker konferansında düzenlenen RF SIGINT ve Elektronik Karıştırma yarışmaları.
+- **[EFES-2026 Savunma Bilim ve Teknolojileri](https://www.msb.gov.tr/):** Milli Savunma Bakanlığı tarafından düzenlenen, üniversite düzeyinde savunma ve EH projelerinin sergilendiği ulusal platform.
 
 ---
 
