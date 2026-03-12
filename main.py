@@ -1,5 +1,10 @@
 import time
 import numpy as np
+import logging
+
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(levelname)s - %(message)s', datefmt='%H:%M:%S')
+logger = logging.getLogger("Aegis-AI")
+
 from src.signal_processing.generator import SignalGenerator
 from src.signal_processing.analyzer import SpectrumAnalyzer, ParameterExtractor
 from src.ai_engine.classifier import SignalClassifier
@@ -9,7 +14,7 @@ from src.jamming_logic.jammers import SmartJammer
 from src.simulation.scenario_manager import ScenarioManager
 
 def run_autonomous_loop():
-    print("Aegis-AI Otonom EH Döngüsü Başlatılıyor [V2.0]...\n")
+    logger.info("Aegis-AI Otonom EH Döngüsü Başlatılıyor [V2.1]...")
     
     sample_rate = 1e6
     duration = 0.01 # 10ms window
