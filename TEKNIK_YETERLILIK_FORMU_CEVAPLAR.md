@@ -4,7 +4,7 @@
 - [x] Elektronik Destek ve Elektronik Taarruz
 
 **2. Yarışmaya katılacak olan EH Sistemi kaç adet Sistem’den oluşmaktadır?**
-Sistem, toplamda **4 adet sistemden** oluşmaktadır. Elektronik Destek (ED) görevlerinde, özellikle TDOA (Time Difference of Arrival) ve AOA tabanlı konum belirleme işlemi için coğrafi olarak dağıtık 3 adet ED dinleme/kestirim sistemi, Elektronik Taarruz (ET) görevleri için ise 1 adet gelişmiş Karıştırma/Aldatma (ET) sistemi şeklinde planlanmıştır.
+Sistem, coğrafi olarak dağıtık **2 ana üniteden** oluşmaktadır: Bir adet **Ana ED/ET Ünitesi** ve bir adet **Yavru ED/ET Ünitesi**. Bu yapı, hem Elektronik Destek (konum belirleme vb.) hem de Elektronik Taarruz görevlerinin iki farklı noktadan koordineli yürütülmesini sağlar. Toplam sistem ağırlığı 20 kg'ın altında tutulacak şekilde optimize edilmiştir.
 
 **3. Yarışmaya katılacak olan EH Sistemi hangi işlevleri yerine getirmektedir?**
 **Elektronik Destek:**
@@ -24,7 +24,7 @@ Sistem, toplamda **4 adet sistemden** oluşmaktadır. Elektronik Destek (ED) gö
 Sistemimiz; modüler, yapay zeka destekli ve Software Defined Radio (SDR) tabanlı entegre bir Elektronik Harp çözümüdür. Altyapı olarak Ettus USRP serisi ve/veya HackRF gibi SDR platformları kullanılacaktır. Hazır kullanıcı arayüzleri kesinlikle kullanılmayacak olup; C++/Python ve GNU Radio tabanlı DSP blokları entegrasyonuyla kendi geliştirdiğimiz özgün komuta kontrol yazılımı üzerinden yönetilecektir. Sistem, spektrumu akıllı otonom algoritmalarla analiz edip hedefe dinamik reaksiyon (karıştırma/aldatma) verebilen kapalı çevrim bir yapıya sahiptir.
 
 **5. Sistem mimarinizi açıklayınız.**
-Detaylı Sistem Blok Şeması daha sonra KYS sistemine görsel olarak eklenecektir. (Not: Sistem, SDR'dan gelen I/Q verilerini TCP/ZMQ üzerinden merkezi bir işleme ve Karar-Destek (AI) modülüne ileten ve karar sonucuna göre SDR Transmitter modülünü tetikleyen çevrim içi bir mimariden oluşmaktadır.)
+Sistem mimarimiz, **Ana Ünite** ve **Yavru Ünite** olmak üzere iki temel ayaktan oluşur. Ana ünite, 20x30 cm boyutlarında dairesel dizilmiş 8 adet Vivaldi antenden oluşan bir ED dizisine ve hemen üzerinde 1 metre yüksekliğinde Log-Periyodik ET antenine sahiptir. Yavru ünite ise 90 derece yerleşimli Vivaldi anten dizisi ve benzer bir ET birimi barındırır. Her iki ünite de 120 cm boyundaki tripodlar üzerine konumlandırılmıştır. I/Q verileri bu iki ünite arasında senkronize edilerek merkezi işleme birimine aktarılır.
 
 **6. Sistemin entegre olacağı platformu açıklayınız.**
 - [x] Karada, Taşınabilir (kullanım sırasında sabit)
@@ -35,9 +35,9 @@ Sistem, operasyon bölgesine tekerlekli veya askeri taşıma çantalarıyla inti
 70 MHz - 6000 MHz
 
 **8. Elektronik Destek Sistemi kaç kanaldan oluşacaktır? Almaç anlık bant genişliği için ne öngörülmektedir?**
-- DF için Kanal Sayısı: 4 kanal (Faz uyumlu)
-- DF için Almaç Anlık Bant Genişliği: 160 MHz
-- Monitör/İzleme için Kanal Sayısı: 1 kanal
+- DF için Kanal Sayısı: 8 kanal (Ana ünite dairesel dizilim için)
+- DF için Almaç Anlık Bant Genişliği: 160 MHz (Donanım limitlerine bağlı olarak optimize edilecektir)
+- Monitör/İzleme için Kanal Sayısı: 2 kanal (Ana ve Yavru üniteler için)
 - Monitör/İzleme için Anlık Bant Genişliği: 160 MHz
 
 **9. Elektronik Destek Sistemi’nde “Sinyal Tespiti” görevinin nasıl yapılacağı hakkında bilgi veriniz.**
@@ -50,10 +50,10 @@ Tespit edilen sinyalin I/Q örnekleri üzerinden Digital Down Conversion (DDC) u
 Hedef sinyale uygulanan DDC işleminin ardından, saptanan modülasyon tipine (AM, FM veya sayısal modülasyonlar) uygun demodülatör bloklarımız (Costas loop, PLL vb. ile kilitlenerek) devreye girecektir. Analog ses içerikli telsiz sinyalleri demodüle edilerek doğrudan operatörün ses arayüzüne veya kayıt ortamına (WAV) aktarılacaktır. Sayısal sinyaller ise bit katmanına kadar çıkarılarak binary (HAM) data şeklinde izlenecebilecek ve analiz için veritabanına kaydedilebilecektir.
 
 **12. Elektronik Destek Sistemi’nde “Yön Bulma” görevinin nasıl yapılacağı hakkında bilgi veriniz.**
-4 kanallı, faz uyumlu (phase-coherent) SDR altyapısı ve dairesel veya doğrusal dizilimli ölçüm antenleri kullanılarak MUSIC (Multiple Signal Classification) ve Correlative Interferometry algoritmaları koşturulacaktır. Antenlere gelen sinyallerin uzamsal faz ve genlik farkları işlenerek yüksek çözünürlüklü yön tayini yapılacak, hedeflenen çalışma bandında RMS < 3-5 derece civarında bir yön bulma kesinliği hedeflenmektedir.
+Ana ünitede bulunan 20x30 cm boyutlarındaki dairesel dizilimli **8 adet Vivaldi anten** üzerinden MUSIC ve Correlative Interferometry algoritmaları koşturulacaktır. Antenlere gelen sinyallerin uzamsal faz farkları ve genlik oranları işlenerek yüksek çözünürlüklü yön (AOA) kestirimi yapılacaktır. Vivaldi antenlerin geniş bant ve yüksek kazanç karakteristiği sayesinde RMS yön doğruluğu hedefimiz < 3 derecedir.
 
 **13. Elektronik Destek Sistemi’nde “Konum Bulma” görevinin nasıl yapılacağı hakkında bilgi veriniz.**
-Konum bulma, coğrafi olarak yayılmış 3 farklı ED donanım birimi üzerinden gerçekleştirilecektir. Sistemin her bir düğümü, hedef sinyali mikro-saniye hassasiyetli GPS zaman damgaları (PPS) ile etiketleyecektir. Ana merkeze aktarılan I/Q verileri çapraz korelasyona (Cross-Correlation) sokularak TDOA (Varış Zamanı Farkı) kestirimi yapılacak, eş zamanlı üretilen AOA (Yön) vektörleriyle birleştirilip Genişletilmiş Kalman Filtreleri (EKF) yardımıyla yüksek hassasiyetli X,Y lokasyon tahmini yapılacaktır.
+Konum bulma, coğrafi olarak ayrılmış **Ana ve Yavru sistem (2 istasyon)** üzerinden gerçekleştirilecektir. Her iki ünite de hedef sinyali GPS/PPS zaman damgalarıyla etiketleyecektir. İki noktadan alınan veriler üzerinden hem Varış Zamanı Farkı (TDOA) hem de AOA (Yön) verileri füzyonlanarak hedefin koordinatları kestirilecektir. Tripodlar arası mesafe ve GPS hassasiyeti konum doğruluğunu belirleyen temel unsurlar olacaktır.
 
 **14. Elektronik Destek Sistemi’nde Yapay Zekâ kullanım hakkında bilgi veriniz.**
 Sistemimizde, sinyal yoğunluğunun yüksek ve gürültü karakteristiğinin dinamik olduğu harp sahası koşullarını yönetmek için çok katmanlı bir Yapay Zeka mimarisi kullanılacaktır:
@@ -63,18 +63,16 @@ Sistemimizde, sinyal yoğunluğunun yüksek ve gürültü karakteristiğinin din
 Modellerimiz ONNX formatına dönüştürülerek uç cihazlarda (Edge AI) TensorRT optimizasyonu ile gerçek zamanlı (latency <10ms) koşturulacaktır.
 
 **15. Yarışmaya katılacak olan Elektronik Destek Alt Sistemi’nin SwaP (Size, Weight and Power) bilgilerini belirtiniz.**
-- Boyutlar (En x Boy x Yükseklik): 450 x 350 x 200 mm (SDR, işlemci üniteleri ve RF katı dahil muhafaza kutusu ölçüleridir, anten yayıcı birimler hariçtir.)
-- Sistem Ağırlığı: ~8 kg (Birim başına)
-- Çekilen Güç: 100 W (DC / 12-24V ile çalışacak şekilde optimize edilecektir.)
+- **Boyutlar:** Ana ED ünitesi 20x30 cm dairesel dizeye sahiptir. Yerden yükseklik tripod dahil 120 cm'dir.
+- **Ağırlık:** Ünite başına < 10 kg, toplam sistem (ED+ET+Destek) < 20 kg.
+- **Güç:** Sistemin toplam güç tüketimi (ET dahil, laptop hariç) < 150 Watt olarak öngörülmektedir.
 
 **16. Elektronik Taarruz Sisteminin Çalışma Frekans Bandı nedir?**
 70 MHz - 6000 MHz
 
 **17. Elektronik Taarruz Sistemi kaç Alt Banttan oluşacaktır? Bant başına RF çıkışı gücü için ne öngörülmektedir?**
-- Karıştırma için Alt Bant Sayısı: 2
-- Karıştırma için Bant Başına RF Çıkış Gücü: Yüksek verimli Solid State Güç Yükselteçleri (SSPA) kullanılarak bant başına 20 W RF çıkış gücü hedeflenmektedir. Göreve özgü, yönlü antenler (yaklaşık 8-12 dBi kazançlı Log-Periyodik veya Horn yapılı) tasarlanacak/kullanılacaktır. Eşyönlü (Omni) anten seçeneği de taktik duruma göre aktif edilebilecektir. 
-- Aldatma için Alt Bant Sayısı: 2
-- Aldatma için Bant Başına RF Çıkış Gücü: Aldatma konsepti gereği hedef almacı hassas olarak manipüle edeceğinden, 10 W çıkış güçlü bir yükselteç kullanılacaktır. Yönlü anten tercih edilecek (yaklaşık 10 dBi kazanç), böylece sızma (injection) etkinliği maksimize edilecektir.
+- Karıştırma/Aldatma için Alt Bant Sayısı: **4 farklı bant** (Dinamik olarak seçilebilir).
+- Bant Başına RF Çıkış Gücü: Her iki ünitede (Ana ve Yavru) yer alan 100 cm yüksekliğindeki **Log-Periyodik antenler** kullanılacaktır. Toplamda 4 adet güç yükseltici (PA) üzerinden beslenen sistemde, antenlere aktarılan güç ve donanım beslemeleri dahil toplam tüketim 150W altında kalacak şekilde tasarım yapılmıştır. PA birimleri metal kafes ve aktif fan soğutmalı bölmelerde muhafaza edilmektedir.
 
 **18. Elektronik Taarruz Sistemi’nde “Sürekli Karıştırma” görevinin nasıl yapılacağı hakkında bilgi veriniz.**
 Sürekli karıştırma modunda sistem, DRFM (Digital Radio Frequency Memory) ve DDS (Direct Digital Synthesizer) mantıklarını yazılımsal olarak simüle ederek çalışacaktır. Hedefe Spot (dar bant, yüksek yoğunluklu ses tonu ya da gürültü), Sweep (belirli bir frekans aralığını dinamik süpürerek 5-10 hedefe kadar çoklu etki) ve Baraj Karıştırma (örneğin 20 MHz genişliğinde bant örtücü AWGN veya Comb karıştırma) uygulanacabilecektir. 
@@ -96,6 +94,7 @@ Elektronik Taarruz (ET) alt sistemimiz, konvansiyonel karıştırma yerine 'Bili
 Bu yaklaşım, kısıtlı RF gücü ile maksimum spektral etkinlik (Smart Jamming) sağlayacaktır.
 
 **23. Yarışmaya katılacak olan Elektronik Taarruz Alt Sistemi’nin SwaP bilgilerini belirtiniz.**
-- Boyutlar: 550 x 450 x 250 mm (Çoklu SDR ve Güç Yükselteç (PA) Soğutma blokajlı muhafaza.)
-- Sistem Ağırlığı: ~15 kg (Isı alıcı bileşenlerle birlikte)
-- Çekilen Güç: 300 W (Kullanılacak PA'ların durumuna göre AC 220V destekli yüksek kapasiteli PSU veya doğrudan DC 24-48V sistemler üzerinden besleme sağlanacaktır.)
+- **Boyutlar:** ET anten yüksekliği 100 cm'dir. Sistem toplam yüksekliği 220 cm'yi (120 cm tripod + 100 cm ET) aşmamaktadır.
+- **Ağırlık:** Ünite bazlı ağırlık < 10 kg'dır. Tüm bileşenler dahil toplam sistem ağırlığı < 20 kg'dır.
+- **Güç:** 4 adet PA ve soğutma fanları dahil toplam güç tüketimi < 150 Watt öngörülmektedir.
+- **Koruma:** TA antenleri ve PA birimleri aktif fanlı metal kafes haznede muhafaza edilmektedir.
