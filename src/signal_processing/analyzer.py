@@ -24,6 +24,15 @@ class SpectrumAnalyzer:
         """Calculates RMS power of the time-domain signal."""
         return np.sqrt(np.mean(np.square(np.abs(signal))))
 
+    def compute_stft(self, signal, nperseg=256, noverlap=128):
+        """
+        Computes Short-Time Fourier Transform (STFT).
+        Useful for LPI (FMCW) detection where frequency changes over time.
+        """
+        from scipy.signal import stft
+        f, t, Zxx = stft(signal, fs=self.sample_rate, nperseg=nperseg, noverlap=noverlap)
+        return f, t, np.abs(Zxx)
+
     def detect_peaks(self, frequencies, magnitudes, threshold=0.5):
         """
         Detects peaks in the frequency domain above a certain threshold.
@@ -202,26 +211,46 @@ class SigMFExporter:
 
 class DirectionFinder:
     """
-    Simulates Direction of Arrival (DoA) estimation.
+    Simulates Direction of Arrival (DoA) estimation for a 12-antenna circular array.
     """
-    def __init__(self, num_antennas=4, antenna_spacing=0.5):
+    def __init__(self, num_antennas=12, radius=0.15):
         self.num_antennas = num_antennas
-        self.antenna_spacing = antenna_spacing # in meters, e.g., lambda/2
+        self.radius = radius # Array radius in meters
+        # Approximate spacing between adjacent elements for phase calcs
+        self.antenna_spacing = 2 * radius * np.sin(np.pi / num_antennas)
+        # Define antenna positions in degrees (360 / 12 = 30 degree increments)
+        self.antenna_angles = np.linspace(0, 360, num_antennas, endpoint=False)
 
     def estimate_doa_amplitude(self, signal_strengths):
         """
-        Estimates the angle of arrival based on relative signal strengths (Amplitude Comparison).
-        signal_strengths: list/array of magnitudes from 4 antennas (N, E, S, W)
+        Estimates the angle of arrival based on relative signal strengths from 12 Vivaldi antennas.
+        Uses a centroid/weighted average approach across the 3 strongest adjacent antennas.
         """
-        if len(signal_strengths) != 4:
+        if len(signal_strengths) != self.num_antennas:
             return 0.0
             
-        # Simplified ratio-based DOA
-        v_diff = signal_strengths[0] - signal_strengths[2] # North - South
-        h_diff = signal_strengths[1] - signal_strengths[3] # East - West
+        # Find the peak antenna
+        peak_idx = np.argmax(signal_strengths)
         
-        angle = np.degrees(np.arctan2(h_diff, v_diff))
-        return (angle + 360) % 360
+        # Consider the peak and its neighbors for interpolation
+        idx_minus = (peak_idx - 1) % self.num_antennas
+        idx_plus  = (peak_idx + 1) % self.num_antennas
+        
+        weights = np.array([signal_strengths[idx_minus], signal_strengths[peak_idx], signal_strengths[idx_plus]])
+        angles  = np.array([self.antenna_angles[idx_minus], self.antenna_angles[peak_idx], self.antenna_angles[idx_plus]])
+        
+        # Handle 350-10 degree wrap-around
+        if angles[0] > angles[2]: # Wrap around case
+            if angles[1] < 180: # Peak is near 0
+                angles[0] -= 360
+            else: # Peak is near 360
+                angles[2] += 360
+        
+        # Weighted average AoA
+        norm_weights = weights / (np.sum(weights) + 1e-12)
+        aoa = np.sum(angles * norm_weights)
+        
+        return (aoa + 360) % 360
 
     def estimate_doa_phase(self, phase_differences, wavelength):
         """

@@ -24,7 +24,7 @@ Sistem, coğrafi olarak dağıtık **2 ana üniteden** oluşmaktadır: Bir adet 
 Sistemimiz; modüler, yapay zeka destekli ve Software Defined Radio (SDR) tabanlı entegre bir Elektronik Harp çözümüdür. Altyapı olarak Ettus USRP serisi ve/veya HackRF gibi SDR platformları kullanılacaktır. Hazır kullanıcı arayüzleri kesinlikle kullanılmayacak olup; C++/Python ve GNU Radio tabanlı DSP blokları entegrasyonuyla kendi geliştirdiğimiz özgün komuta kontrol yazılımı üzerinden yönetilecektir. Sistem, spektrumu akıllı otonom algoritmalarla analiz edip hedefe dinamik reaksiyon (karıştırma/aldatma) verebilen kapalı çevrim bir yapıya sahiptir.
 
 **5. Sistem mimarinizi açıklayınız.**
-Sistem mimarimiz, **Ana Ünite** ve **Yavru Ünite** olmak üzere iki temel ayaktan oluşur. Ana ünite, 20x30 cm boyutlarında dairesel dizilmiş 8 adet Vivaldi antenden oluşan bir ED dizisine ve hemen üzerinde 1 metre yüksekliğinde Log-Periyodik ET antenine sahiptir. Yavru ünite ise 90 derece yerleşimli Vivaldi anten dizisi ve benzer bir ET birimi barındırır. Her iki ünite de 120 cm boyundaki tripodlar üzerine konumlandırılmıştır. I/Q verileri bu iki ünite arasında senkronize edilerek merkezi işleme birimine aktarılır.
+Sistem mimarimiz, **Ana Ünite** ve **Yavru Ünite** olmak üzere iki temel ayaktan oluşur. Ana ünite, dairesel dizilmiş **12 adet Vivaldi antenden** oluşan bir ED dizisine ve hemen üzerinde dikey polarizasyonlu bir **Log-Periyodik ET antenine** sahiptir. Yavru ünite ise operasyonel senaryoya göre benzer bir dairesel dize veya çapraz yerleşimli Vivaldi dizisi barındırır. Her iki ünite de 120 cm boyundaki tripodlar üzerine konumlandırılmış, birincil kontrol birimi olarak **Raspberry Pi 5** ve yüksek bant genişlikli SDR platformları ile donatılmıştır. I/Q verileri bu iki ünite arasında senkronize edilerek merkezi işleme birimine aktarılır.
 
 **6. Sistemin entegre olacağı platformu açıklayınız.**
 - [x] Karada, Taşınabilir (kullanım sırasında sabit)
@@ -35,7 +35,7 @@ Sistem, operasyon bölgesine tekerlekli veya askeri taşıma çantalarıyla inti
 70 MHz - 6000 MHz
 
 **8. Elektronik Destek Sistemi kaç kanaldan oluşacaktır? Almaç anlık bant genişliği için ne öngörülmektedir?**
-- DF için Kanal Sayısı: 8 kanal (Ana ünite dairesel dizilim için)
+- DF için Kanal Sayısı: 12 kanal (Ana ünite 360° dairesel dizilim için)
 - DF için Almaç Anlık Bant Genişliği: 160 MHz (Donanım limitlerine bağlı olarak optimize edilecektir)
 - Monitör/İzleme için Kanal Sayısı: 2 kanal (Ana ve Yavru üniteler için)
 - Monitör/İzleme için Anlık Bant Genişliği: 160 MHz
@@ -50,7 +50,7 @@ Tespit edilen sinyalin I/Q örnekleri üzerinden Digital Down Conversion (DDC) u
 Hedef sinyale uygulanan DDC işleminin ardından, saptanan modülasyon tipine (AM, FM veya sayısal modülasyonlar) uygun demodülatör bloklarımız (Costas loop, PLL vb. ile kilitlenerek) devreye girecektir. Analog ses içerikli telsiz sinyalleri demodüle edilerek doğrudan operatörün ses arayüzüne veya kayıt ortamına (WAV) aktarılacaktır. Sayısal sinyaller ise bit katmanına kadar çıkarılarak binary (HAM) data şeklinde izlenecebilecek ve analiz için veritabanına kaydedilebilecektir.
 
 **12. Elektronik Destek Sistemi’nde “Yön Bulma” görevinin nasıl yapılacağı hakkında bilgi veriniz.**
-Ana ünitede bulunan 20x30 cm boyutlarındaki dairesel dizilimli **8 adet Vivaldi anten** üzerinden MUSIC ve Correlative Interferometry algoritmaları koşturulacaktır. Antenlere gelen sinyallerin uzamsal faz farkları ve genlik oranları işlenerek yüksek çözünürlüklü yön (AOA) kestirimi yapılacaktır. Vivaldi antenlerin geniş bant ve yüksek kazanç karakteristiği sayesinde RMS yön doğruluğu hedefimiz < 3 derecedir.
+Ana ünitede bulunan dairesel dizilimli **12 adet Vivaldi anten** üzerinden MUSIC ve Correlative Interferometry algoritmaları koşturulacaktır. Antenlere gelen sinyallerin uzamsal faz farkları ve genlik oranları işlenerek yüksek çözünürlüklü yön (AOA) kestirimi yapılacaktır. Vivaldi antenlerin geniş bant ve yüksek kazanç karakteristiği sayesinde RMS yön doğruluğu hedefimiz < 3 derecedir.
 
 **13. Elektronik Destek Sistemi’nde “Konum Bulma” görevinin nasıl yapılacağı hakkında bilgi veriniz.**
 Konum bulma, coğrafi olarak ayrılmış **Ana ve Yavru sistem (2 istasyon)** üzerinden gerçekleştirilecektir. Her iki ünite de hedef sinyali GPS/PPS zaman damgalarıyla etiketleyecektir. İki noktadan alınan veriler üzerinden hem Varış Zamanı Farkı (TDOA) hem de AOA (Yön) verileri füzyonlanarak hedefin koordinatları kestirilecektir. Tripodlar arası mesafe ve GPS hassasiyeti konum doğruluğunu belirleyen temel unsurlar olacaktır.
@@ -63,7 +63,7 @@ Sistemimizde, sinyal yoğunluğunun yüksek ve gürültü karakteristiğinin din
 Modellerimiz ONNX formatına dönüştürülerek uç cihazlarda (Edge AI) TensorRT optimizasyonu ile gerçek zamanlı (latency <10ms) koşturulacaktır.
 
 **15. Yarışmaya katılacak olan Elektronik Destek Alt Sistemi’nin SwaP (Size, Weight and Power) bilgilerini belirtiniz.**
-- **Boyutlar:** Ana ED ünitesi 20x30 cm dairesel dizeye sahiptir. Yerden yükseklik tripod dahil 120 cm'dir.
+- **Boyutlar:** Ana ED ünitesi 12'li Vivaldi dairesel dizesine sahiptir. Yerden yükseklik tripod dahil 120 cm'dir.
 - **Ağırlık:** Ünite başına < 10 kg, toplam sistem (ED+ET+Destek) < 20 kg.
 - **Güç:** Sistemin toplam güç tüketimi (ET dahil, laptop hariç) < 150 Watt olarak öngörülmektedir.
 

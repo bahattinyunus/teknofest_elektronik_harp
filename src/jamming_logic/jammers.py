@@ -10,7 +10,7 @@ class JammerBase(ABC):
         self.power_dbm = 20.0  # Default output power in dBm
 
     @abstractmethod
-    def generate_jamming_signal(self, duration):
+    def generate_jamming_signal(self, duration, **kwargs):
         pass
 
     def set_power(self, dbm):
@@ -296,28 +296,38 @@ class JammerCoordinator:
         else:
             self.active_assignments[threat_id] = ("noise", risk_score)
 
-    def generate_combined_signal(self, duration):
-        """Combines signals from all assigned jammers."""
+    def generate_combined_signal(self, duration, look_through_active=True):
+        """
+        Combines signals from all assigned jammers.
+        Implements 'Look-Through' gaps where all TX is cut for RX listening.
+        """
+        N = int(self.jammers["noise"].sample_rate * duration)
+        combined_signal = np.zeros(N)
+        time_axis = np.linspace(0, duration, N, endpoint=False)
+        
         if not self.active_assignments:
-            return np.linspace(0, duration, int(1e6 * duration), endpoint=False), np.zeros(int(1e6 * duration))
+            return time_axis, combined_signal
         
-        combined_signal = None
-        time_axis = None
+        # Define a 10% look-through window at the end of the frame
+        look_start_idx = int(N * 0.9) if look_through_active else N
         
-        for jammer_key, risk in self.active_assignments.values():
+        for threat_id, (jammer_key, risk) in self.active_assignments.items():
             jammer = self.jammers[jammer_key]
-            # Handle different method signatures
-            if jammer_key == "adaptive":
-                t, s = jammer.generate_jamming_signal(duration, threat_risk=risk)
-            else:
-                t, s = jammer.generate_jamming_signal(duration)
             
-            if combined_signal is None:
-                combined_signal = s
-                time_axis = t
-                combined_signal = combined_signal
+            # Generate signal
+            if jammer_key == "adaptive":
+                _, s = jammer.generate_jamming_signal(duration, threat_risk=risk)
+            elif jammer_key == "fhss":
+                # For FHSS, we might need a target freq, using 150kHz as baseline sim
+                _, s = jammer.generate_jamming_signal(duration, target_freq=150e3)
             else:
-                combined_signal += s
+                _, s = jammer.generate_jamming_signal(duration)
+            
+            # Add to combined signal
+            combined_signal += s
+            
+        # Apply Global Look-Through Gap
+        if look_through_active:
+            combined_signal[look_start_idx:] = 0.0
                 
         return time_axis, combined_signal
-

@@ -40,9 +40,9 @@ Modelin sahada (noise, multipath, doppler) çökmemesi için eğitim setinde şu
 
 ## 3. Donanım Optimizasyonu (Edge AI)
 
-TEKNOFEST sahasında sistemin **NVIDIA Jetson Orin** üzerinde gecikmesiz çalışması için:
-*   **TensorRT:** Modelin FP16 veya INT8 hassasiyetine indirilerek (quantization) GPU çekirdeklerinde 10-20 kat hızlandırılması.
-*   **Zero-Copy Memory:** I/Q verilerinin SDR'dan GPU belleğine CPU müdahalesi olmadan taşınması.
+TEKNOFEST sahasında sistemin **Raspberry Pi 5** veya **NVIDIA Jetson** üzerinde gecikmesiz çalışması için:
+*   **RPi Interfacing:** USRP/HackRF verilerinin USB 3.0 üzerinden yüksek hızda çekilmesi ve C++ DSP bloklarıyla işlenmesi.
+*   **TensorRT (Jetson):** Modelin FP16 veya INT8 hassasiyetine indirilerek (quantization) GPU çekirdeklerinde hızlandırılması.
 
 ## 4. Taktik Arayüz (UI/UX) Vizyonu
 

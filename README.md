@@ -1,7 +1,7 @@
 
 <div align="center">
 
-![Aegis-AI TEKNOFEST 2026 Banner](assets/11.png)
+![Aegis-AI TEKNOFEST 2026 Banner](assets/aegis_ai_final.png)
 
 # 🛰️ Aegis-AI
 ### Otonom Sinyal İstihbaratı ve Elektronik Taarruz Paketi
@@ -143,13 +143,17 @@ Bu proje, Türkiye'nin savunma sanayindeki yerli teknoloji hamlesine katkı sunm
 
 ```mermaid
 graph TD
-    A[Anten & SDR] -->|I/Q Verisi| B(Sinyal İşleme Birimi)
-    B -->|FFT & Filtreleme| C{AI Karar Motoru}
-    C -->|Tespit: Dost| D[Kayıt Tut]
-    C -->|Tespit: Tehdit| E[Karıştırma Modülü]
-    E -->|Jamm Sinyali| A
-    C -->|Bilinmeyen| F[Derin Analiz & Sınıflandırma]
+    subgraph "Aegis-AI Unit (Tactical Node)"
+        A[12x Vivaldi Antenna Array] -->|I/Q Data| B(SDR & Raspberry Pi 5)
+        LogP[Log-Periodic Antenna] --- B
+    end
+    B -->|FFT & Analysis| C{AI Decision Engine}
+    C -->|Detect: Friendly| D[Log Activity]
+    C -->|Detect: Threat| E[Jamming Module]
+    E -->|Jamming Signal| B
+    C -->|Unknown| F[Deep Analysis]
     F --> C
+    B -.->|Network| L[Operator Dashboard]
 ```
 
 ## 🛡️ Modüller ve Yetenekler
@@ -232,9 +236,9 @@ Aegis-AI, elektromanyetik spektrumun bir savaş alanı değil, bir bilgi alanı 
 - **GPU:** (Opsiyonel) NVIDIA GTX 1050 ve üzeri (Derin öğrenme modelleri için)
 
 ### Önerilen SDR Donanımları
-- **RX/TX Birimi:** Ettus USRP B210 / LimeSDR / PlutoSDR
-- **Anten Seti:** 4x Geniş Bantlı Monopole (DF için)
-- **İşlemci:** NVIDIA Jetson Orin Nano (Saha testleri için)
+- **RX/TX Birimi:** Ettus USRP B210 / HackRF One / PlutoSDR
+- **Anten Seti:** 12x Vivaldi (360° DF) + 1x Log-Periyodik (ET)
+- **İşlemci:** Raspberry Pi 5 (8GB) or NVIDIA Jetson Orin Nano
 
 ## 📚 Elektronik Harp Sözlüğü (Glossary)
 

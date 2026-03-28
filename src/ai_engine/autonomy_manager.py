@@ -1,3 +1,4 @@
+import time
 from .threat_library import ThreatLibrary
 
 # Risk score mapping for threat types
@@ -7,9 +8,35 @@ RISK_SCORES = {
     "Radar_L":   6,
     "FHSS":      7,
     "Comm_Link": 4,
+    "Analog_Telsiz": 5,
     "Unknown":   3,
     "Noise":     0,
 }
+
+class TacticalCOP:
+    """
+    Tactical Common Operating Picture.
+    Tracks multiple emitters over time to maintain situational awareness.
+    """
+    def __init__(self):
+        self.active_emitters = {} # emitter_id -> status_dict
+
+    def update_emitter(self, label, params, aoa):
+        emitter_id = f"{label}_{params.get('CenterFreq', 0):.0f}"
+        if emitter_id not in self.active_emitters:
+            self.active_emitters[emitter_id] = {
+                "first_seen": time.time(),
+                "hits": 0,
+                "label": label
+            }
+        
+        entry = self.active_emitters[emitter_id]
+        entry["last_seen"] = time.time()
+        entry["hits"] += 1
+        entry["aoa"] = aoa
+        entry["params"] = params
+        
+        return emitter_id
 
 class AutonomyManager:
     """
@@ -22,6 +49,7 @@ class AutonomyManager:
         self.jammer_coord = jammer_coordinator
         self.active_strategy = None
         self.threat_log = []       # Running log of detections
+        self.tcop = TacticalCOP()
         self.risk_score = 0
 
     def process_detection(self, freqs, magnitudes, raw_signal=None, params=None):
@@ -59,7 +87,9 @@ class AutonomyManager:
             strategy = ThreatLibrary.get_countermeasure(label)
             threat_name = label
 
-        # 6. Risk Assessment
+        # 6.5 Update Tactical COP
+        emitter_id = self.tcop.update_emitter(label, params or {}, params.get('AoA', 0) if params else 0)
+
         self.risk_score = RISK_SCORES.get(label, 3)
         
         # Log the detection event
@@ -72,7 +102,7 @@ class AutonomyManager:
             self.threat_log.pop(0)
 
         self.active_strategy = strategy
-        risk_str = "🔴 HIGH" if self.risk_score >= 8 else ("🟡 MED" if self.risk_score >= 5 else "🟢 LOW")
+        risk_str = "HIGH" if self.risk_score >= 8 else ("MED" if self.risk_score >= 5 else "LOW")
         
         # 7. Execute Strategy (Autonomous Mode)
         if self.jammer_coord:
@@ -106,7 +136,7 @@ class AutonomyManager:
         
         recent = self.threat_log[-5:]  # Last 5 detections
         max_risk = max(e["risk"] for e in recent)
-        avg_confidence = sum(e["confidence"] for e in recent) / len(recent)
+        avg_confidence = float(sum(e["confidence"] for e in recent) / len(recent))
         
         level = "CRITICAL" if max_risk >= 9 else ("HIGH" if max_risk >= 7 else ("MEDIUM" if max_risk >= 4 else "LOW"))
         

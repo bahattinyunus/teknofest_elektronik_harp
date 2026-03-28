@@ -5,9 +5,10 @@ TEKNOFEST 2026 Elektronik Harp yarışması için belirlenen "Otonomi", "Hızlı
 ## 1. Ana Kontrol ve İşleme Birimi (C&C)
 Sistem, gerçek zamanlı sinyal işleme ve yapay zeka çıkarımı için yüksek performanslı ve düşük güç tüketimli bir birime ihtiyaç duyar.
 
-*   **Öneri:** **NVIDIA Jetson Orin Nano / Orin NX**
-    *   **Neden:** CUDA çekirdekleri sayesinde FFT ve CNN (Sinyal Sınıflandırma) işlemlerini "Real-Time" yapabilir.
-    *   **Alternatif:** Kompakt bir Intel NUC (i7 + Iris Xe) yüksek bant genişliğinde veri iletimi (USB 3.0/Thunderbolt) için tercih edilebilir.
+*   **Birincil Kontrol Birimi:** **Raspberry Pi 5 (8GB)**
+    *   **Neden:** Yeni nesil Broadcom BCM2712 işlemcisi ve geliştirilmiş I/O hızı ile mobil EH görevleri için ideal SwaP dengesi sunar.
+    *   **Üst Segment Alternatif:** **NVIDIA Jetson Orin Nano / NX**
+    *   **Neden:** CUDA çekirdekleri sayesinde karmaşık CNN (Sinyal Sınıflandırma) ve gerçek zamanlı spektrum analizini (TensorRT) daha düşük gecikmeyle yapabilir.
 
 ## 2. Yazılım Tanımlı Radyo (SDR) Birimi
 Yarışma hem ED (Dinleme) hem de ET (Müdahale) gerektirdiği için Full-Duplex bir SDR kritiktir.
@@ -23,9 +24,9 @@ Yarışma hem ED (Dinleme) hem de ET (Müdahale) gerektirdiği için Full-Duplex
 ## 3. Anten Sistemi
 Geniş spektrumlu tarama ve odaklanmış karıştırma için hibrit bir yapı önerilir.
 
-*   **Tarama (ED):** Wideband Discone veya Log-Periyodik Anten (100 MHz - 6 GHz).
-*   **Yön Bulma (DF):** 4'lü Monopol Anten Dizisi (Pseudo-Doppler veya Genlik Karşılaştırma için).
-*   **Karıştırma (ET):** Hedef frekans bandına odaklı (Örn: 2.4/5.8 GHz veya GNSS L1) yüksek kazançlı Yagi veya Patch anten.
+*   **Tarama ve Yön Bulma (ED):** 12'li Vivaldi Anten Dizisi (360° Radyal Yerleşim).
+    *   **Yön Bulma (DF):** MUSIC veya Genlik Karşılaştırma algoritmaları için optimize edilmiş 12 kanallı pasif dağıtıcı/switch sistemi.
+    *   **Karıştırma (ET):** 70 MHz - 6 GHz geniş bant kapsama alanına sahip Log-Periyodik Anten (Tripod üstü dikey yerleşim).
 
 ## 4. Güç ve Enerji Yönetimi
 Saha görevleri için otonom batarya sistemi.
@@ -36,12 +37,17 @@ Saha görevleri için otonom batarya sistemi.
 ## 5. Donanım-Yazılım Entegrasyon Şeması
 
 ```mermaid
-graph LR
-    Anten[Anten Dizisi] --> LNA[Filtre & LNA]
-    LNA --> SDR[USRP B210]
-    SDR -->|USB 3.0 / SigMF| Jetson[Jetson Orin Nano]
-    Jetson -->|Web API| Dashboard[Görsel Arayüz]
-    Jetson -->|GPIO / SPI| Trigger[Tetleyici / E-Stop]
+graph TD
+    subgraph "Saha Birimi (Tripod)"
+        Anten[12x Vivaldi Dairesel Dizi] --> LNA[Filtre & LNA Blokları]
+        LNA --> SDR[SDR Birimi - USRP/HackRF]
+        SDR -->|USB 3.0| RPi[Raspberry Pi 5]
+        LogP[Log-Periyodik Anten] --- PA[Güç Yükseltici]
+        PA --- SDR
+    end
+    
+    RPi -->|WiFi/Ethernet| Laptop[Operatör Laptop]
+    Laptop -->|Görselleştirme| UI[Aegis-UI Dashboard]
 ```
 
 ## 6. Donanım Uyumlu Kod Yapısı

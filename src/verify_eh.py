@@ -12,8 +12,8 @@ from src.ai_engine.classifier import SignalClassifier
 from src.ai_engine.autonomy_manager import AutonomyManager
 from src.simulation.scenario_manager import ScenarioManager
 
-PASS = "\033[92m✔\033[0m"
-FAIL = "\033[91m✘\033[0m"
+PASS = "[PASS]"
+FAIL = "[FAIL]"
 
 def check(label, passed):
     print(f"  {PASS if passed else FAIL}  {label}")
@@ -47,11 +47,14 @@ def test_eh_system():
     check(f"Multiplexing detected: {ofdm_params['Multiplexing']}", ofdm_params["Multiplexing"] != "None")
     check(f"ECCM detected: {ofdm_params['ECCM']}", ofdm_params["ECCM"] != "None")
 
-    # 2. Direction Finding
-    print("\n[2] Direction Finding")
-    df = DirectionFinder()
-    angle = df.estimate_doa_amplitude([0.9, 0.7, 0.1, 0.2])
-    check("DoA angle in range [0, 360]", 0 <= angle <= 360)
+    # 2. Direction Finding (12-Antenna Vivaldi Array)
+    print("\n[2] Direction Finding (12x Vivaldi)")
+    df = DirectionFinder(num_antennas=12)
+    # Simulate signal peak at 90 degrees (index 3: 0, 30, 60, 90)
+    strengths = [0.0]*12
+    strengths[2] = 0.5; strengths[3] = 1.0; strengths[4] = 0.5
+    angle = df.estimate_doa_amplitude(strengths)
+    check(f"DoA angle estimated at 90°: {angle:.1f}°", 85 <= angle <= 95)
     angle_phase = df.estimate_doa_phase(np.pi / 4, wavelength=1.0)
     check("Phase DoA angle valid", -90 <= angle_phase <= 90)
 
@@ -117,8 +120,9 @@ def test_eh_system():
     coord = JammerCoordinator(1e6)
     coord.assign_jammer("T1", "LPI_Radar", 9)
     coord.assign_jammer("T2", "Radar_FC",  10)
-    _, combined = coord.generate_combined_signal(0.001)
-    check("JammerCoordinator combines signals", len(combined) > 0)
+    _, combined = coord.generate_combined_signal(0.001, look_through_active=True)
+    check("JammerCoordinator combines signals with Look-Through", len(combined) > 0)
+    check("Look-Through gap applied (last 10% is zero)", np.all(combined[-100:] == 0))
 
     # 6. New Scenarios
     print("\n[6] New Scenario Signals")

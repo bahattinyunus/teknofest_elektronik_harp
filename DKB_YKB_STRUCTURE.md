@@ -7,8 +7,8 @@ TEKNOFEST 2026 Elektronik Harp Şartnamesi (Bölüm 6.1.2) gereğince, sistemin 
 | DKB Kodu | Birim Adı | Fonksiyonel Açıklama |
 | :--- | :--- | :--- |
 | **DKB-01** | **SDR Alıcı/Verici Ünitesi** | Geniş bantlı RF sinyallerini I/Q verisine dönüştüren ve karıştırma sinyallerini yayan ana RF katmanı (Ettus USRP / PlutoSDR). |
-| **DKB-02** | **İşleme Birimi (SBC)** | Algoritmaların koştuğu, GPU destekli yüksek performanslı işlemci ünitesi (NVIDIA Jetson / x86 PC). |
-| **DKB-03** | **Anten Dizisi** | Yön Bulma (DF) ve Karıştırma (Jamming) için kullanılan 4x Monopol ve 1x Yönlü anten seti. |
+| **DKB-02** | **İşleme Birimi (SBC)** | Algoritmaların koştuğu, yüksek performanslı işlemci ünitesi (Raspberry Pi 5 / NVIDIA Jetson). |
+| **DKB-03** | **Anten Dizisi** | Yön Bulma (DF) ve Karıştırma (Jamming) için kullanılan 12x Vivaldi dairesel dize ve 1x Log-Periyodik anten seti. |
 | **DKB-04** | **Güç ve Enerji Yönetimi** | Sistemin saha operasyonları için ihtiyaç duyduğu DC/AC dönüşümü ve batarya bloğu. |
 
 ## 2. Yazılım Konfigürasyon Birimleri (YKB)
