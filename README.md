@@ -141,6 +141,8 @@ Bu proje, Türkiye'nin savunma sanayindeki yerli teknoloji hamlesine katkı sunm
 
 ## 🏗️ Sistem Mimarisi
 
+![Sistem Mimarisi Blok Diyagramı](assets/sistem_mimari.png)
+
 ```mermaid
 graph TD
     subgraph "Aegis-AI Unit (Tactical Node)"
@@ -183,6 +185,8 @@ graph TD
 | **Dalga Biçimi Üreteci** | **`generator.py`** | **CW, CHIRP, BPSK, QPSK, Pulsed sinyal üretimi** |
 
 ## 📖 Operasyonel Senaryolar
+
+![Saha Konumlandırma Konsepti](assets/saha_konumlandirma.png)
 
 Aegis-AI, farklı harekat ortamlarında otonom çözümler sunar:
 
@@ -228,6 +232,8 @@ Modern ve futuristik EH arayüzü sayesinde tüm spektrum operasyonel olarak tak
 Aegis-AI, elektromanyetik spektrumun bir savaş alanı değil, bir bilgi alanı olduğuna inanır. Amacımız, en karmaşık sinyal ortamlarında bile operatöre netlik kazandırmak ve otonom sistemlerle savunma kabiliyetini maksimize etmektir. Bu proje, sadece bir kod yığını değil; bir mühendisin spektrum üzerindeki egemenlik iddiasıdır.
 
 ## 💻 Sistem Gereksinimleri ve Donanım
+
+![Donanım Yakın Çekim Konsepti](assets/donanim_yakin_cekimi.png)
 
 ### Minimum Gereksinimler
 - **OS:** Ubuntu 22.04 LTS (Önerilen) veya Windows 10/11
