@@ -141,7 +141,7 @@ Bu proje, Türkiye'nin savunma sanayindeki yerli teknoloji hamlesine katkı sunm
 
 ## 🏗️ Sistem Mimarisi
 
-![Sistem Mimarisi Blok Diyagramı](assets/sistem_mimari.png)
+![Sistem Mimarisi Blok Diyagramı](2.png)
 
 ```mermaid
 graph TD
@@ -186,7 +186,7 @@ graph TD
 
 ## 📖 Operasyonel Senaryolar
 
-![Saha Konumlandırma Konsepti](assets/saha_konumlandirma.png)
+![Saha Konumlandırma Konsepti](1.png)
 
 Aegis-AI, farklı harekat ortamlarında otonom çözümler sunar:
 
@@ -233,7 +233,7 @@ Aegis-AI, elektromanyetik spektrumun bir savaş alanı değil, bir bilgi alanı 
 
 ## 💻 Sistem Gereksinimleri ve Donanım
 
-![Donanım Yakın Çekim Konsepti](assets/donanim_yakin_cekimi.png)
+![Donanım Yakın Çekim Konsepti](3.png)
 
 ### Minimum Gereksinimler
 - **OS:** Ubuntu 22.04 LTS (Önerilen) veya Windows 10/11
