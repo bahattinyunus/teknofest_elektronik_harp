@@ -52,6 +52,24 @@ class ScenarioManager:
 
         return t, signal
 
+    def generate_swarm_signal(self, n_emitters, duration, base_freq=200e3):
+        """
+        Simulates multiple Drone (UAV) emitters communicating in a cluster.
+        Adds multi-path and slightly offset frequencies.
+        """
+        n_samples = int(self.sample_rate * duration)
+        t = np.linspace(0, duration, n_samples)
+        total_signal = np.zeros(n_samples)
+        
+        for i in range(n_emitters):
+            # Each node has its own freq offset and phase
+            freq = base_freq + (i * 2.5e3) 
+            env = 0.5 + 0.5 * np.sin(2 * np.pi * 50 * t + i) # Rapid fading
+            node_signal = env * np.cos(2 * np.pi * freq * t + (i * np.pi/4))
+            total_signal += node_signal
+            
+        return t, total_signal / n_emitters
+
     def get_scenario_signal(self, scenario_name, duration=0.01):
         """
         Returns a signal based on predefined scenarios.
@@ -97,10 +115,25 @@ class ScenarioManager:
             voice = np.sin(2 * np.pi * 1e3 * t) # 1kHz tone simulation
             fm_signal = np.cos(2 * np.pi * 120e3 * t + 5.0 * np.cumsum(voice) / self.sample_rate)
             return t, fm_signal + np.random.normal(0, 0.05, len(t))
+        elif scenario_name == "Drone Swarm":
+            # 8 Nodes communicating at ~350kHz
+            return self.generate_swarm_signal(8, duration, base_freq=350e3)
+        elif scenario_name == "Cognitive Radar":
+            # Radar that shifts freq in response to detection (simulated as rapid random agility)
+            n = int(self.sample_rate * duration)
+            t = np.linspace(0, duration, n)
+            # Freq agility: 50 frequency steps per frame
+            freqs = np.random.uniform(100e3, 400e3, 50)
+            samples_per_step = n // 50
+            signal = np.zeros(n)
+            for i in range(50):
+                s, e = i * samples_per_step, (i+1) * samples_per_step
+                signal[s:e] = np.cos(2 * np.pi * freqs[i] * t[s:e])
+            return t, signal
         else:
             # Random noise (Clear Sky)
             t = np.linspace(0, duration, int(self.sample_rate * duration))
-            return t, np.random.normal(0, 0.1, len(t))
+            return t, np.random.normal(0, 0.1, int(self.sample_rate * duration))
 
     def export_dataset(self, scenario_name, num_samples, filename_prefix="dataset"):
         """

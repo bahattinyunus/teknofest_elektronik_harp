@@ -8,6 +8,7 @@ RISK_SCORES = {
     "Radar_L":   6,
     "FHSS":      7,
     "Comm_Link": 4,
+    "Swarm_Node": 8,    # NEW: Swarm detection
     "Analog_Telsiz": 5,
     "Unknown":   3,
     "Noise":     0,
@@ -37,6 +38,25 @@ class TacticalCOP:
         entry["params"] = params
         
         return emitter_id
+
+    def correlate_emitters(self):
+        """
+        Groups active emitters into clusters (e.g., Swarms).
+        Returns a list of identified 'emitter groups'.
+        """
+        if not self.active_emitters:
+            return []
+            
+        # Simplistic correlation based on proximity and timing
+        groups = []
+        # Logic: If 3 or more emitters have similar AOA (within 10 deg), label as Swarm
+        emitters_list = list(self.active_emitters.values())
+        if len(emitters_list) >= 3:
+            aoas = [e.get('aoa', 0) for e in emitters_list if time.time() - e.get('last_seen', 0) < 2.0]
+            if len(aoas) >= 3 and (max(aoas) - min(aoas)) < 15.0:
+                groups.append({"type": "Swarm", "count": len(aoas), "avg_aoa": sum(aoas)/len(aoas)})
+                
+        return groups
 
 class AutonomyManager:
     """
@@ -106,14 +126,22 @@ class AutonomyManager:
         
         # 7. Execute Strategy (Autonomous Mode)
         if self.jammer_coord:
+            # Swarm Suppression Check
+            clusters = self.tcop.correlate_emitters()
+            if any(c['type'] == 'Swarm' for c in clusters):
+                self.jammer_coord.enable_swarm_suppression(True)
+                label = "Swarm_Node"
+                self.risk_score = 8
+            
             # Simple threshold: only jam risks >= 5 or if specifically prioritized
-            if self.risk_score >= 5 or label in ["Radar_FC", "LPI_Radar", "FHSS", "Analog_Telsiz"]:
+            if self.risk_score >= 5 or label in ["Radar_FC", "LPI_Radar", "FHSS", "Analog_Telsiz", "Swarm_Node"]:
                 jam_key = label.lower()
                 # Specialized logic for Interleaved Jamming
                 if strategy == "InterleavedJamming":
                     self.jammer_coord.assign_jammer("T1", "adaptive", self.risk_score)
-                elif "Spoofing" in strategy:
-                    self.jammer_coord.assign_jammer("T1", "spoofing", self.risk_score)
+                elif "Spoofing" in strategy or label == "Radar_FC":
+                    # Radar_FC now triggers OMEGA DRFM deception
+                    self.jammer_coord.assign_jammer("T1", "drfm", self.risk_score)
                 elif label == "Analog_Telsiz":
                     self.jammer_coord.assign_jammer("T1", "analog", self.risk_score)
                 else:
@@ -140,8 +168,13 @@ class AutonomyManager:
         
         level = "CRITICAL" if max_risk >= 9 else ("HIGH" if max_risk >= 7 else ("MEDIUM" if max_risk >= 4 else "LOW"))
         
+        # OMEGA: Weighted Bayesian Risk
+        # (Prioritizes high-confidence threats)
+        weighted_risk = sum(e["risk"] * e["confidence"] for e in recent) / (sum(e["confidence"] for e in recent) + 1e-9)
+
         return {
-            "risk_score": max_risk,
+            "risk_score": round(weighted_risk, 2),
+            "max_base_risk": max_risk,
             "threat_level": level,
             "avg_confidence": round(avg_confidence, 2),
             "threat_count": len(self.threat_log),

@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.fft import fft, fftfreq
 from scipy.signal import spectrogram, hilbert
+from scipy.stats import entropy
 
 class LPIDetector:
     """
@@ -131,22 +132,51 @@ class LPIDetector:
             "detected": detected
         }
 
+    # ---------------------------------------------------------------
+    # Method 5: Spectral Entropy Detection
+    # ---------------------------------------------------------------
+    def entropy_detection(self, signal, entropy_threshold=0.85):
+        """
+        Calculates the normalized spectral entropy of the signal.
+        LPI signals (like FMCW) often have structured (lower entropy) 
+        distribution compared to pure white noise.
+        """
+        f, Pxx = np.abs(fft(signal)), np.abs(fft(signal))**2
+        psd_norm = Pxx / np.sum(Pxx)
+        
+        # Shannon entropy
+        S = entropy(psd_norm) / np.log(len(signal))
+        
+        # For LPI, we look for 'ordered' signals (lower entropy) 
+        # but structured. Actually, most jamming is high entropy.
+        # Radar signals are low entropy compared to noise.
+        detected = S < entropy_threshold
+        
+        return {
+            "method": "spectral_entropy",
+            "entropy": round(float(S), 3),
+            "threshold": entropy_threshold,
+            "detected": detected
+        }
+
     def detect_all(self, signal):
         """
-        Runs all four detection methods and returns a combined verdict.
+        Runs all five detection methods and returns a combined verdict.
         """
         e = self.energy_detection(signal)
         s = self.svd_detection(signal)
         c = self.stft_chirp_detection(signal)
         w = self.wvd_detection(signal)
+        en = self.entropy_detection(signal)
 
-        votes = sum([e["detected"], s["detected"], c["detected"], w["detected"]])
+        votes = sum([e["detected"], s["detected"], c["detected"], w["detected"], en["detected"]])
         return {
             "energy": e,
             "svd": s,
             "stft_chirp": c,
             "wvd": w,
-            "final_verdict": "DETECTED" if votes >= 2 else "CLEAR",
-            "confidence": votes / 4.0,
-            "confidence_text": f"{votes}/4 methods triggered"
+            "entropy": en,
+            "final_verdict": "DETECTED" if votes >= 3 else "CLEAR",
+            "confidence": votes / 5.0,
+            "confidence_text": f"{votes}/5 methods triggered"
         }

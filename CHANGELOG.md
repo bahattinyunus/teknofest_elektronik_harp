@@ -2,6 +2,18 @@
 
 All notable changes to the Aegis-AI (TEKNOFEST 2026 Electronic Warfare) project will be documented here.
 
+## [3.0.0-OMEGA] - 2026-04-14
+### Added
+- **DRFM Deception Kernel**: Implemented `DRFMKernel` for high-fidelity signal capture and coherent re-radiation.
+- **Advanced Deception Jamming**: Integrated `DRFMJammer` into the jamming suite (RGPO, VGPO, Combined).
+- **Swarm Intelligence Mode**: Added `correlate_emitters` to `TacticalCOP` for autonomously identifying and suppressing multi-node UAV swarms.
+- **LPI De-masking Upgrade**: Added Spectral Entropy detection to `LPIDetector` to complement existing WVD/SVD/STFT methods (now 5-method voting).
+- **Mission Engine OMEGA**: Added dynamic `Drone Swarm` and `Cognitive Radar` scenarios to the simulation suite.
+- **Bayesian Risk Assessment**: Upgraded `AutonomyManager` with weighted risk indexing based on detection confidence.
+- **Project MANIFESTO**: Established the core Electronic Warfare doctrine for the Aegis-AI platform.
+- **Premium Documentation Overhaul**: Massive README update with high-density technical depth and OMEGA-tier aesthetics.
+- **OMEGA Visuals**: Generated and integrated high-fidelity mission banners.
+
 ## [2.0.0] - 2026-03-11
 ### Added
 - **Full Spec Compliance**: Completed all TEKNOFEST 2026 requirements including ED, ET, and AI.
