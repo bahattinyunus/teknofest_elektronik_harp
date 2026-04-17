@@ -74,52 +74,43 @@ class Geolocator:
         self.ref_lat = reference_lat
         self.ref_lon = reference_lon
 
-    def triangulate(self, sensor_positions, bearings):
+    def triangulate(self, sensor_positions, bearings, weights=None):
         """
         Estimates goal position (intersection) from 2+ sensors with bearings.
+        Uses Weighted Least Squares for better accuracy.
         sensor_positions: List of (lat, lon)
         bearings: List of angles in degrees
+        weights: Optional list of weights based on SNR or distance
         """
         if len(sensor_positions) < 2 or len(bearings) < 2:
             return None
             
-        # Linear triangulation (simplified for small areas like 1x1km)
-        # Using simple line intersection in local cartesian coordinates
-        # Conversion: 1 degree lat ~ 111km, 1 degree lon ~ 111km * cos(lat)
-        
+        if weights is None:
+            weights = np.ones(len(sensor_positions))
+            
+        # Linear triangulation in local cartesian coordinates
         y_coords = []
         x_coords = []
-        for pos, angle in zip(sensor_positions, bearings):
-            # Local coordinate transform (relative to ref)
+        for pos in sensor_positions:
             y = (pos[0] - self.ref_lat) * 111139
             x = (pos[1] - self.ref_lon) * 111139 * np.cos(np.radians(self.ref_lat))
-            
-            # Line equation: y - y_i = tan(90 - angle) * (x - x_i)
-            # angle 0 (N) -> slope infinite, angle 90 (E) -> slope 0
-            rad = np.radians(90 - angle)
-            slope = np.tan(rad)
-            
             y_coords.append(y)
             x_coords.append(x)
             
-        # Solve for intersection (min least squares for N sensors)
-        # A * X = B
+        # Solve for intersection: A * X = B
         A = []
         B = []
         for i in range(len(sensor_positions)):
-            angle = bearings[i]
-            rad = np.radians(90 - angle)
-            # y = m*x + c  => m*x - y = -c
-            # c = y_i - m*x_i
-            m = np.tan(rad)
-            if np.abs(m) > 1e6: # Handle vertical lines (N/S)
-                A.append([1, 0])
-                B.append(x_coords[i])
-            else:
-                A.append([m, -1])
-                B.append(m * x_coords[i] - y_coords[i])
+            rad = np.radians(90 - bearings[i])
+            sin_a = np.sin(rad)
+            cos_a = np.cos(rad)
+            
+            # Line equation in form: sin(a)*x - cos(a)*y = sin(a)*x_i - cos(a)*y_i
+            # This handles vertical/horizontal lines naturally
+            A.append([sin_a * weights[i], -cos_a * weights[i]])
+            B.append((sin_a * x_coords[i] - cos_a * y_coords[i]) * weights[i])
                 
-        # Least squares solution
+        # Weighted Least squares solution
         res, _, _, _ = np.linalg.lstsq(A, B, rcond=None)
         
         # Convert back to Lat/Lon

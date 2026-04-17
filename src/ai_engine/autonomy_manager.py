@@ -1,5 +1,6 @@
 import time
 from .threat_library import ThreatLibrary
+from .swarm_engine import SwarmCorrelationEngine
 
 # Risk score mapping for threat types
 RISK_SCORES = {
@@ -70,6 +71,7 @@ class AutonomyManager:
         self.active_strategy = None
         self.threat_log = []       # Running log of detections
         self.tcop = TacticalCOP()
+        self.swarm_engine = SwarmCorrelationEngine()
         self.risk_score = 0
 
     def process_detection(self, freqs, magnitudes, raw_signal=None, params=None):
@@ -126,12 +128,15 @@ class AutonomyManager:
         
         # 7. Execute Strategy (Autonomous Mode)
         if self.jammer_coord:
-            # Swarm Suppression Check
-            clusters = self.tcop.correlate_emitters()
-            if any(c['type'] == 'Swarm' for c in clusters):
+            # Swarm Suppression Check (Using Advanced Swarm Engine)
+            clusters = self.swarm_engine.analyze_emitters(self.tcop.active_emitters)
+            if clusters:
                 self.jammer_coord.enable_swarm_suppression(True)
+                # Escalate risk if swarm detected
+                self.risk_score = min(10, self.risk_score + 2)
+                strategy = "SwarmSuppression_Active"
+                threat_name = f"Swarm: {clusters[0]['dominant_threat']}"
                 label = "Swarm_Node"
-                self.risk_score = 8
             
             # Simple threshold: only jam risks >= 5 or if specifically prioritized
             if self.risk_score >= 5 or label in ["Radar_FC", "LPI_Radar", "FHSS", "Analog_Telsiz", "Swarm_Node"]:

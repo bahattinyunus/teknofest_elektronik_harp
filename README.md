@@ -2,8 +2,8 @@
 
 ![Aegis-AI OMEGA v3.0 Banner](assets/aegis_ai_omega.png)
 
-# 🛰️ Aegis-AI OMEGA
-### Otonom Spektrum Egemenliği ve Elektronik Taarruz Doktrini
+# 🛰️ Aegis-AI OMEGA v3.0
+### Otonom Spektrum Egemenliği ve Bilişsel Elektronik Harp Doktrini
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -14,7 +14,7 @@
 
 *“Görünmeyeni gör, bilinmeyeni etkisiz hale getir. Spektrumda egemenlik, sahada mutlak zaferdir.”*
 
-[MANIFESTO](MANIFESTO.md) | [Geliştirici Rehberi](DEVELOPER.md) | [Şartname Özeti](YARISMA_SARTNAMESI_DETAYLARI.md) | [Yol Haritası](#-yol-haritası-2026-takvimi)
+[MANIFESTO](MANIFESTO.md) | [Geliştirici Rehberi](DEVELOPER.md) | [Teknik Yeterlilik](TEKNIK_YETERLILIK_FORMU_CEVAPLAR.md) | [Yol Haritası](#-yol-haritası-2026-takvimi)
 
 </div>
 
@@ -26,7 +26,7 @@
 
 ## 🏗️ Sistem Mimarisi
 
-![Sistem Mimarisi Blok Diyagramı](assets/arch_omega.png)
+Sistem, **Kapalı Çevrim (Closed-Loop)** bir otonomi döngüsü üzerine inşa edilmiştir.
 
 ```mermaid
 graph TD
@@ -47,9 +47,11 @@ graph TD
         G --> I[RGPO/VGPO Spoofing]
         H --> J[Multi-target Suppression]
     end
+    
+    J -.->|Feedback Loop| A
 ```
 
-## 🧠 Elit "OMEGA-Tier" Yetenekler
+## 🧠 "OMEGA-Tier" Yetenekler
 
 ### 🛡️ 1. DRFM (Digital Radio Frequency Memory) Deception
 Sistem, düşman radar emisyonlarını sızdırarak kopyalar ve otonom olarak manipüle eder.
@@ -79,10 +81,11 @@ $$s_{jam}(t) = \text{env}(t) \cdot A \cdot s(t - \tau(t)) \cdot e^{j 2\pi f_d(t)
 
 ```text
 ├── src/
-│   ├── signal_processing/  # FFT, WVD, DRFM Kernel
+│   ├── signal_processing/  # FFT, WVD, DRFM Kernel, Tracking
 │   ├── ai_engine/          # Bayesian Risk, Swarm Correlation
 │   ├── jamming_logic/      # ET (Noise, DRFM, Swarm, GNSS)
 │   ├── simulation/         # Swarm & Cognitive Scenarios
+│   ├── dashboard/          # High-Density CLI UI (Rich)
 │   └── verify_eh.py        # System Integrity Check
 ├── MANIFESTO.md            # Elektronik Harp Doktrini
 ├── DEVELOPER.md            # Teknik Derin Bakış
@@ -98,8 +101,8 @@ pip install -r requirements.txt
 # OMEGA Sistem Doğrulama (Renkli CLI)
 python src/verify_eh.py
 
-# Görev Senaryosu Başlat (Simülatör)
-python src/simulation/mission_runner.py
+# Görev Senaryosu Başlat (Simülatör Dashboard)
+python launcher.py --mode simulation
 ```
 
 ## 📅 Yol Haritası (2026 Takvimi)

@@ -87,48 +87,38 @@ class ScenarioManager:
             hop_freqs = [100e3, 160e3, 220e3, 310e3, 380e3]
             n_hops    = max(1, int(duration / 0.002))
             return self.generate_fhss_signal(hop_freqs, dwell_time=0.002, n_hops=n_hops)
+        elif scenario_name == "Swarm Incursion":
+            # Coordinated swarm with 12 nodes, freq hopping and spatial spread
+            t = np.linspace(0, duration, int(self.sample_rate * duration))
+            swarm_signal = np.zeros_like(t)
+            for i in range(12):
+                f_offset = np.random.uniform(-10e3, 10e3)
+                phase = np.random.uniform(0, 2*np.pi)
+                # Rapid fading to simulate multi-path/movement
+                fading = 0.5 + 0.5 * np.sin(2 * np.pi * 15 * t + i)
+                swarm_signal += fading * np.cos(2 * np.pi * (250e3 + f_offset) * t + phase)
+            return t, swarm_signal / 12.0
         elif scenario_name == "LPI Stealth Radar":
-            # FMCW Chirp — Low Probability of Intercept
+            # Advanced FMCW Chirp — Low Probability of Intercept
             n = int(self.sample_rate * duration)
             t = np.linspace(0, duration, n)
             f_start, f_end = 50e3, 400e3
-            # Linear chirp: instantaneous freq increases from f_start to f_end
-            chirp = np.cos(2 * np.pi * (f_start * t + ((f_end - f_start) / (2 * duration)) * t**2))
-            # Add Gaussian noise to make interception harder
-            chirp += np.random.normal(0, 0.15, n)
+            # Non-linear chirp for better stealth
+            chirp = np.cos(2 * np.pi * (f_start * t + 0.5 * ((f_end - f_start) / duration) * t**2 + 0.2 * np.sin(2*np.pi*100*t)))
+            # Add Gaussian noise to make interception harder (Low SNR)
+            chirp += np.random.normal(0, 0.4, n)
             return t, chirp
-        elif scenario_name == "Fire Control Radar":
-            # X-band equivalent: 480kHz (scaled), very short PRI (0.15ms), narrow PW (2us)
-            return self.generate_pulse_stream(480e3, 0.15e-3, 2e-6, duration, amplitude=0.95)
-        elif scenario_name == "GNSS Satellite":
-            # GPS L1-like signal (Wide bandwidth, high carrier)
-            t = np.linspace(0, duration, int(self.sample_rate * duration))
-            carrier = np.cos(2 * np.pi * 150e3 * t)
-            # PRN code modulation (simulated by random bits)
-            prn_code = np.repeat(np.random.choice([-1, 1], int(duration * 1.023e6)), 
-                                 max(1, int(self.sample_rate / 1.023e6)))
-            prn_code = prn_code[:len(t)]
-            return t, carrier * prn_code + np.random.normal(0, 0.05, len(t))
-        elif scenario_name == "Analog Telsiz":
-            # FM Voice signal
-            t = np.linspace(0, duration, int(self.sample_rate * duration))
-            voice = np.sin(2 * np.pi * 1e3 * t) # 1kHz tone simulation
-            fm_signal = np.cos(2 * np.pi * 120e3 * t + 5.0 * np.cumsum(voice) / self.sample_rate)
-            return t, fm_signal + np.random.normal(0, 0.05, len(t))
-        elif scenario_name == "Drone Swarm":
-            # 8 Nodes communicating at ~350kHz
-            return self.generate_swarm_signal(8, duration, base_freq=350e3)
-        elif scenario_name == "Cognitive Radar":
-            # Radar that shifts freq in response to detection (simulated as rapid random agility)
+        elif scenario_name == "Cognitive Interference":
+            # Jammer-resistant signal with random freq/phase/amplitude jumps
             n = int(self.sample_rate * duration)
             t = np.linspace(0, duration, n)
-            # Freq agility: 50 frequency steps per frame
-            freqs = np.random.uniform(100e3, 400e3, 50)
-            samples_per_step = n // 50
             signal = np.zeros(n)
-            for i in range(50):
-                s, e = i * samples_per_step, (i+1) * samples_per_step
-                signal[s:e] = np.cos(2 * np.pi * freqs[i] * t[s:e])
+            num_segments = 20
+            seg_len = n // num_segments
+            for i in range(num_segments):
+                f = np.random.uniform(100e3, 450e3)
+                amp = np.random.uniform(0.5, 1.0)
+                signal[i*seg_len:(i+1)*seg_len] = amp * np.cos(2 * np.pi * f * t[i*seg_len:(i+1)*seg_len])
             return t, signal
         else:
             # Random noise (Clear Sky)

@@ -38,7 +38,7 @@ class LPIDetector:
     # ---------------------------------------------------------------
     # Method 2: Singular Value Decomposition (SVD)
     # ---------------------------------------------------------------
-    def svd_detection(self, signal, singular_ratio_thresh=3.0):
+    def svd_detection(self, signal, singular_ratio_thresh=2.2):
         """
         Constructs a Hankel matrix from the signal and decompose it with SVD.
         A large ratio between the first and second singular values indicates
@@ -94,7 +94,7 @@ class LPIDetector:
     # ---------------------------------------------------------------
     # Method 4: Wigner-Ville Distribution (WVD)
     # ---------------------------------------------------------------
-    def wvd_detection(self, signal, wvd_threshold=50.0):
+    def wvd_detection(self, signal, wvd_threshold=35.0):
         """
         Pseudo Wigner-Ville Distribution (PWVD) based LPI detection.
         Provides ultra-high time-frequency resolution for detecting FMCW
