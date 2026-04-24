@@ -136,10 +136,18 @@ class ParameterExtractor:
     def detect_dsss(self, signal):
         """
         Detects Direct Sequence Spread Spectrum (DSSS) by looking for 
-        phase transitions or suppressed carrier characteristics.
+        low Peak-to-Average Power Ratio (PAPR) characteristics typical of 
+        spread spectrum signals.
         """
-        # DSSS has a (sin(x)/x)^2 spectral shape.
-        return "DSSS" if np.std(np.abs(signal)) < 0.2 else "None"
+        envelope = np.abs(signal)
+        if len(envelope) == 0: return "None"
+        
+        # Calculate Peak-to-Average Power Ratio (PAPR)
+        papr = np.max(envelope**2) / (np.mean(envelope**2) + 1e-12)
+        
+        # DSSS and other spread spectrum signals typically have lower PAPR 
+        # compared to pulsed or intermittent signals.
+        return "DSSS" if papr < 15.0 else "None"
 
 class AnalogDemodulator:
     """
