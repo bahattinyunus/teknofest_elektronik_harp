@@ -157,6 +157,29 @@ def get_spectrum_history():
     """Returns last 20 spectrum snapshots for trend analysis."""
     return jsonify({"history": _spectrum_history, "count": len(_spectrum_history)})
 
+@app.route('/api/advanced_telemetry')
+def get_advanced_telemetry():
+    """Provides high-resolution tracking and situational awareness details."""
+    active_threats = tracker_mgr.trackers
+    telemetry = []
+    for t_id, tracker in active_threats.items():
+        state = tracker.get_state()
+        history = list(tracker.history)
+        telemetry.append({
+            "id": t_id,
+            "current_bearing": round(state["bearing"], 2),
+            "velocity": round(state.get("velocity", 0.0), 2),
+            "bearing_history": [round(h, 2) for h in history[-10:]]  # Last 10 points
+        })
+    
+    return jsonify({
+        "timestamp": _tick[0],
+        "active_tracks_count": len(telemetry),
+        "telemetry": telemetry,
+        "ea_assignments": jammer_coord.active_assignments,
+        "swarm_mode_active": jammer_coord.swarm_mode
+    })
+
 @app.route('/api/action/<action_type>', methods=['POST'])
 def trigger_ea_action(action_type):
     """
@@ -178,7 +201,7 @@ def trigger_ea_action(action_type):
     
     elif action_type == 'spoof':
         # Map UI method to spoofing type
-        st_map = {"analog": "analog", "gnss": "gnss", "rgpo": "spoofing"}
+        st_map = {"analog": "analog", "gnss": "gnss", "rgpo": "spoofing", "crosseye": "crosseye", "multi_target": "drfm"}
         s_key = st_map.get(method.lower(), "noise")
         
         jammer_coord.assign_jammer(threat_id, s_key, risk_score=10)
@@ -186,13 +209,15 @@ def trigger_ea_action(action_type):
         return jsonify({"status": "success", "action": "spoof", "method": method})
     
     elif action_type == 'record':
+        duration = float(data.get("duration_sec", 0.05))
         _hardware["is_recording"] = True
-        # Simulate capturing and exporting current signal to SigMF
-        _, signal = scen_mgr.get_scenario_signal(SCENARIOS[_tick[0] % len(SCENARIOS)], duration=0.05)
-        meta_path, data_path = sigmf_exporter.export(signal, filename_prefix="UI_Manual_Capture")
-        print(f"[UI COMMAND] Recording saved to: {meta_path}")
-        # Automatically set recording flag back after a while (simulated)
-        return jsonify({"status": "success", "meta": meta_path, "data": data_path})
+        try:
+            _, signal = scen_mgr.get_scenario_signal(SCENARIOS[_tick[0] % len(SCENARIOS)], duration=duration)
+            meta_path, data_path = sigmf_exporter.export(signal, filename_prefix=f"UI_Capture_{int(_tuning['center_freq'])}MHz")
+            print(f"[UI COMMAND] Recording saved to: {meta_path}")
+            return jsonify({"status": "success", "meta": meta_path, "data": data_path})
+        finally:
+            _hardware["is_recording"] = False
     
     elif action_type == 'tune':
         _tuning["center_freq"] = data.get("freq", _tuning["center_freq"])

@@ -151,6 +151,9 @@ class DRFMJammer(JammerBase):
         elif technique == "vgpo":
             shift = kwargs.get("freq_shift_hz", 1000.0)
             signal = self.kernel.generate_vgpo(shift, duration_ms)
+        elif technique == "multi_target":
+            targets = kwargs.get("targets", [])
+            signal = self.kernel.generate_multi_target_deception(targets, duration_ms)
         else: # combined
             delay = kwargs.get("delay_ms", 5.0)
             shift = kwargs.get("freq_shift_hz", 1000.0)
@@ -158,6 +161,30 @@ class DRFMJammer(JammerBase):
 
         amplitude = self._get_amplitude()
         return t, amplitude * signal
+
+class CrossEyeJammer(JammerBase):
+    """
+    Simulates Angular Deception (Cross-Eye) by returning signals from two 
+    spatially separated antennas with an approximate 180-degree phase shift,
+    distorting the threat radar's phase front.
+    """
+    def generate_jamming_signal(self, duration, target_signal=None, phase_error_deg=178.0):
+        t = np.linspace(0, duration, int(self.sample_rate * duration), endpoint=False)
+        amplitude = self._get_amplitude()
+        
+        if target_signal is None:
+            # Generate a generic carrier if no target signal provided
+            base_echo = np.sin(2 * np.pi * 150e3 * t)
+        else:
+            base_echo = target_signal[:len(t)]
+            
+        # Left antenna transmits practically inverted signal relative to right
+        phase_rad = np.radians(phase_error_deg)
+        left_signal = amplitude * base_echo * np.cos(phase_rad)
+        right_signal = amplitude * base_echo
+        
+        # In a real environment, they combine in space. For simulation, we return the fused distorted signal.
+        return t, (left_signal + right_signal)
 
 class FrequencyHoppingJammer(JammerBase):
     """
@@ -250,7 +277,8 @@ class JammerCoordinator:
             "analog": AnalogVoiceJammer(sample_rate),
             "barrage": BarrageJammer(sample_rate),
             "multitone": MultiToneJammer(sample_rate),
-            "drfm": DRFMJammer(sample_rate)
+            "drfm": DRFMJammer(sample_rate),
+            "crosseye": CrossEyeJammer(sample_rate)
         }
         self.active_assignments = {}
         self.swarm_mode = False

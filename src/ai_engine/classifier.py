@@ -58,17 +58,26 @@ class SignalClassifier:
         If use_dl=True and magnitudes provided, delegates to PyTorch CNN.
         Returns (label, confidence).
         """
+        # AI Cognitive Fusion Engine
         if self.use_dl and magnitudes is not None and self.dl_model is not None:
             dl_label, dl_conf = self.dl_model.predict_from_magnitudes(magnitudes)
             if dl_label:
-                # Still fallback to heuristics if DL prediction confidence is garbage or noise 
-                # (since it's a dummy un-trained model right now)
+                # Advanced Fusion Logic
+                # If DL confidence is very high, trust DL
+                if dl_conf >= 0.85:
+                    return f"{dl_label} (DL_High)", dl_conf
                 
-                # We can fuse: If DL says BPSK (conf 0.9), take it. For now, since weights 
-                # are random, we will prioritize heuristics if DL confidence is low, 
-                # but we prove the inference pipeline works.
-                if dl_conf > 0.4:  
-                    return dl_label, dl_conf
+                # If DL confidence is moderate, cross-verify with basic heuristics
+                pm = features["peak_mag"]
+                bw = features["bandwidth"]
+                if dl_label == "CW" and bw < 5000:
+                    return "CW (Fused)", min(0.99, dl_conf + 0.15)
+                elif dl_label in ["QPSK", "BPSK"] and bw < 100e3:
+                    return f"{dl_label} (Fused)", min(0.99, dl_conf + 0.15)
+                
+                # Fallback to heuristics if DL lacks confidence
+                if dl_conf > 0.6:
+                    return f"{dl_label} (DL_Med)", dl_conf
 
         pm = features["peak_mag"]
         bw = features["bandwidth"]

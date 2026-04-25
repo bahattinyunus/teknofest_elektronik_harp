@@ -76,3 +76,28 @@ class DRFMKernel:
         shift_vec = np.exp(1j * 2 * np.pi * freq_shift_hz * t)
         
         return np.real(base * shift_vec)
+
+    def generate_multi_target_deception(self, targets_params, duration_ms):
+        """
+        Simulates generating multiple false targets simultaneously.
+        targets_params: List of dicts, e.g. [{"delay_ms": 5.0, "freq_shift_hz": 1000, "amplitude": 0.8}, ...]
+        """
+        if not self.is_captured or not targets_params:
+            return np.zeros(int(duration_ms * self.sample_rate / 1000))
+
+        output_len = int(duration_ms * self.sample_rate / 1000)
+        t = np.arange(output_len) / self.sample_rate
+        combined_output = np.zeros(output_len, dtype=complex)
+
+        for params in targets_params:
+            delay = params.get("delay_ms", 0.0)
+            shift = params.get("freq_shift_hz", 0.0)
+            amp = params.get("amplitude", 1.0)
+
+            delayed = np.roll(self.memory, int(delay * self.sample_rate / 1000))
+            base = np.tile(delayed, (output_len // self.buffer_size) + 1)[:output_len]
+            shift_vec = np.exp(1j * 2 * np.pi * shift * t)
+            
+            combined_output += amp * (base * shift_vec)
+
+        return np.real(combined_output)
