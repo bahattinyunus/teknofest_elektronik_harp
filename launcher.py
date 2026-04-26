@@ -6,7 +6,7 @@ import threading
 def start_gui():
     import webview
     from src.dashboard.app import app
-    print("[Aegis-AI] Başlatılıyor: Masaüstü Arayüzü...")
+    print("[Mergen-AI] Başlatılıyor: Masaüstü Arayüzü...")
     
     def start_server():
         app.run(host='127.0.0.1', port=5000, debug=False, use_reloader=False)
@@ -15,7 +15,7 @@ def start_gui():
     server_thread.start()
     
     window = webview.create_window(
-        title='Aegis-AI | Taktik Elektronik Harp Kontrol Paneli',
+        title='Mergen-AI | Taktik Elektronik Harp Kontrol Paneli',
         url='http://127.0.0.1:5000',
         width=1280,
         height=800,
@@ -25,19 +25,19 @@ def start_gui():
     webview.start()
 
 def start_cli_dashboard():
-    from src.dashboard.cli_dashboard import AegisDashboard
-    dash = AegisDashboard()
+    from src.dashboard.cli_dashboard import MergenDashboard
+    dash = MergenDashboard()
     try:
         dash.run()
     except KeyboardInterrupt:
-        print("\n[Aegis-AI] Dashboard sonlandırıldı.")
+        print("\n[Mergen-AI] Dashboard sonlandırıldı.")
 
 def start_simulation():
     from main import run_autonomous_loop
     run_autonomous_loop()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Aegis-AI OMEGA Launcher")
+    parser = argparse.ArgumentParser(description="Mergen-AI OMEGA Launcher")
     parser.add_argument("--mode", type=str, choices=["gui", "dashboard", "simulation"], default="dashboard",
                         help="Başlatma modu: gui, dashboard veya simulation")
     

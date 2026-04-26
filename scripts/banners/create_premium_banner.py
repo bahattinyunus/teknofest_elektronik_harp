@@ -44,7 +44,7 @@ def create_premium_banner():
     ax.plot([cx, cx+1.4], [cy, cy+0.5], color='#00f2ff', alpha=0.6, linewidth=2)
 
     # 4. Main Title
-    title = ax.text(12, 3.2, 'AEGIS - AI', 
+    title = ax.text(12, 3.2, 'MERGEN - AI', 
                     fontsize=80, fontweight='bold', color='white',
                     ha='center', va='center', fontfamily='monospace',
                     zorder=10)

@@ -192,7 +192,7 @@ class SigMFExporter:
                 "core:datatype": "cf32_le",
                 "core:sample_rate": self.sample_rate,
                 "core:version": "0.1.0",
-                "core:description": "Aegis-AI Tactical Capture"
+                "core:description": "Mergen-AI Tactical Capture"
             },
             "captures": [
                 {

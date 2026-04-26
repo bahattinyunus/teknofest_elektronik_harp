@@ -10,7 +10,7 @@ from src.signal_processing.analyzer import SpectrumAnalyzer, ParameterExtractor
 from src.ai_engine.swarm_engine import SwarmCorrelationEngine
 from src.signal_processing.tracking import Geolocator
 
-class TestAegisOmega(unittest.TestCase):
+class TestMergenOmega(unittest.TestCase):
     def setUp(self):
         self.sample_rate = 1e6
         self.sa = SpectrumAnalyzer(self.sample_rate)

@@ -1,8 +1,8 @@
 <div align="center">
 
-![Aegis-AI OMEGA v3.0 Banner](assets/aegis_ai_omega.png)
+![Mergen-AI OMEGA v3.0 Banner](assets/mergen_ai_omega.png)
 
-# 🛰️ Aegis-AI OMEGA v3.0
+# 🛰️ Mergen-AI OMEGA v3.0
 ### Otonom Spektrum Egemenliği ve Bilişsel Elektronik Harp Doktrini
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -21,7 +21,7 @@
 
 ## 🏗️ Sistem Mimarisi ve Teknofest Uyumluluğu
 
-**Aegis-AI v3.0.0 OMEGA**, TEKNOFEST 2026 Elektronik Harp Yarışması şartnamesine tam uyumlu olarak geliştirilmiş, **Bilişsel Elektronik Harp (Cognitive EW)** platformudur. Sistem, ED (Destek) ve ET (Taarruz) görevlerini otonom bir döngüde birleştirir.
+**Mergen-AI v3.0.0 OMEGA**, TEKNOFEST 2026 Elektronik Harp Yarışması şartnamesine tam uyumlu olarak geliştirilmiş, **Bilişsel Elektronik Harp (Cognitive EW)** platformudur. Sistem, ED (Destek) ve ET (Taarruz) görevlerini otonom bir döngüde birleştirir.
 
 ### 🔬 Elektronik Destek (ED) Yetenekleri
 - **Otonom Sinyal Tespiti:** Gürültü tabanını aşan yayınların gerçek zamanlı tespiti.
@@ -42,7 +42,7 @@
 
 Sistem, yarışmanın fiziksel ve teknik kısıtlarına göre optimize edilmiştir:
 
-| Parametre | Şartname Sınırı | Aegis-AI Değeri | Durum |
+| Parametre | Şartname Sınırı | Mergen-AI Değeri | Durum |
 | :--- | :--- | :--- | :--- |
 | **Ağırlık** | < 20 kg | ~16.5 kg | ✅ UYUMLU |
 | **Güç Tüketimi** | < 150 W | 140 W (Pik) | ✅ UYUMLU |
@@ -56,7 +56,7 @@ Sistem, yarışmanın fiziksel ve teknik kısıtlarına göre optimize edilmişt
 
 ## 🧠 Yapay Zeka Planı (AI Strategy)
 
-Aegis-AI, şartnamedeki "En İyi Yapay Zekâ Uygulaması" ödülü için tasarlanmış derin öğrenme katmanlarına sahiptir.
+Mergen-AI, şartnamedeki "En İyi Yapay Zekâ Uygulaması" ödülü için tasarlanmış derin öğrenme katmanlarına sahiptir.
 1. **Model:** Multimodal IQ-Spectrum Fusion (CNN + ResNet).
 2. **Kapsam:** LPI (Low Probability of Intercept) radarların tespiti ve modülasyon deşifresi.
 3. **Edge AI:** NVIDIA Jetson/TensorRT ile sahada sıfır gecikmeli çıkarım.
@@ -81,7 +81,7 @@ python launcher.py --mode simulation
 ---
 
 <div align="center">
-    <i>Aegis-AI projesi, TEKNOFEST 2026 kriterlerine göre OMEGA-Tier standartlarında milli imkanlarla geliştirilmiştir.</i>
+    <i>Mergen-AI projesi, TEKNOFEST 2026 kriterlerine göre OMEGA-Tier standartlarında milli imkanlarla geliştirilmiştir.</i>
     <br><br>
     <b>Made by Dev-in-Scrubs</b>
 </div>

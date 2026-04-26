@@ -23,7 +23,7 @@ from src.simulation.scenario_manager import ScenarioManager
 
 console = Console()
 
-class AegisDashboard:
+class MergenDashboard:
     def __init__(self):
         self.sample_rate = 1e6
         self.duration = 0.01
@@ -52,7 +52,7 @@ class AegisDashboard:
         grid.add_column(justify="center", ratio=1)
         grid.add_column(justify="right")
         grid.add_row(
-            Text("🛰️ AEGIS-AI OMEGA v3.0 | COGNITIVE ELECTRONIC WARFARE SYSTEM", style="bold cyan"),
+            Text("🛰️ MERGEN-AI OMEGA v3.0 | COGNITIVE ELECTRONIC WARFARE SYSTEM", style="bold cyan"),
             Text(time.ctime(), style="dim white"),
         )
         return Panel(grid, style="white on blue", box=box.DOUBLE)
@@ -156,7 +156,7 @@ class AegisDashboard:
                 self.current_idx += 1
 
 if __name__ == "__main__":
-    dash = AegisDashboard()
+    dash = MergenDashboard()
     try:
         dash.run()
     except KeyboardInterrupt:

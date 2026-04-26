@@ -3,7 +3,7 @@
         "core:datatype": "cf32_le",
         "core:sample_rate": 1000000.0,
         "core:version": "0.1.0",
-        "core:description": "Aegis-AI Tactical Capture"
+        "core:description": "Mergen-AI Tactical Capture"
     },
     "captures": [
         {

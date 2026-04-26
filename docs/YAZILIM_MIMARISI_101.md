@@ -1,6 +1,6 @@
-# Aegis-AI: Kapsamlı Yazılım Mimarisi ve Şartname Uyum Rehberi
+# Mergen-AI: Kapsamlı Yazılım Mimarisi ve Şartname Uyum Rehberi
 
-Bu doküman, Aegis-AI projesinin yazılım mimarisini, TEKNOFEST 2026 Elektronik Harp Şartnamesi'nde belirtilen kurallar, fiziksel kısıtlar (SWaP) ve teknik isterler çerçevesinde detaylı bir biçimde incelemek üzere hazırlanmıştır. Amacı, geliştirici ekibe ve teknik değerlendiricilere sistemin nasıl çalıştığını profesyonel ve yapılandırılmış bir eğitim dokümanı formatında aktarmaktır.
+Bu doküman, Mergen-AI projesinin yazılım mimarisini, TEKNOFEST 2026 Elektronik Harp Şartnamesi'nde belirtilen kurallar, fiziksel kısıtlar (SWaP) ve teknik isterler çerçevesinde detaylı bir biçimde incelemek üzere hazırlanmıştır. Amacı, geliştirici ekibe ve teknik değerlendiricilere sistemin nasıl çalıştığını profesyonel ve yapılandırılmış bir eğitim dokümanı formatında aktarmaktır.
 
 Hiyerarşik ve modüler bir yapıda tasarlanan yazılımımız, yalnızca bir kod bütünü değil; donanım limitlerine saygı duyan, deterministik kararlar alabilen ve kapalı çevrim çalışan bir karar destek (otonomi) sistemidir.
 
@@ -68,7 +68,7 @@ Kritik bir frekans bloğunun tamamen devredışı bırakılması hedefleniyorsa,
 
 ## 5. Bilişsel (Cognitive) EH ve Teknoloji Yığını
 
-Aegis-AI projesi, endüstri standardı bir araştırma ve geliştirme felsefesini kullanır:
+Mergen-AI projesi, endüstri standardı bir araştırma ve geliştirme felsefesini kullanır:
 
 *   **Pekiştirmeli Öğrenme (RL - Reinforcement Learning):** Düşmanın frekans atlama desenini öğrenerek "bir sonraki hedef noktasını" önceden tahmin eden PPO ve DQN tabanlı akıllı ajanların eğitim süreci entegre edilmiştir.
 *   **Uç Yonga Çıkarımı (Edge AI Inferencing):** Eğitimli derin öğrenme ağları, donanım kaynaklarını optimize etmek amacıyla NVIDIA TensorRT altyapısında Float16 (FP16) veya INT8 hassasiyetine quantize edilmiştir.

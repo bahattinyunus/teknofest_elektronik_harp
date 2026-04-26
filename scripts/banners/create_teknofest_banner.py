@@ -53,7 +53,7 @@ def create_teknofest_banner():
                     ha='center', va='center', fontfamily='monospace',
                     zorder=10)
 
-    title2 = ax.text(12, 1.8, 'AEGIS - AI', 
+    title2 = ax.text(12, 1.8, 'MERGEN - AI', 
                     fontsize=60, fontweight='bold', color='white',
                     ha='center', va='center', fontfamily='Orbitron',
                     zorder=10, style='italic')

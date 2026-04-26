@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Aegis-AI (TEKNOFEST 2026 Electronic Warfare) project will be documented here.
+All notable changes to the Mergen-AI (TEKNOFEST 2026 Electronic Warfare) project will be documented here.
 
 ## [3.0.0-OMEGA] - 2026-04-14
 ### Added
@@ -10,7 +10,7 @@ All notable changes to the Aegis-AI (TEKNOFEST 2026 Electronic Warfare) project 
 - **LPI De-masking Upgrade**: Added Spectral Entropy detection to `LPIDetector` to complement existing WVD/SVD/STFT methods (now 5-method voting).
 - **Mission Engine OMEGA**: Added dynamic `Drone Swarm` and `Cognitive Radar` scenarios to the simulation suite.
 - **Bayesian Risk Assessment**: Upgraded `AutonomyManager` with weighted risk indexing based on detection confidence.
-- **Project MANIFESTO**: Established the core Electronic Warfare doctrine for the Aegis-AI platform.
+- **Project MANIFESTO**: Established the core Electronic Warfare doctrine for the Mergen-AI platform.
 - **Premium Documentation Overhaul**: Massive README update with high-density technical depth and OMEGA-tier aesthetics.
 - **OMEGA Visuals**: Generated and integrated high-fidelity mission banners.
 

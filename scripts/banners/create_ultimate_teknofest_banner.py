@@ -94,7 +94,7 @@ def create_ultimate_teknofest_banner():
                         zorder=10)
 
     # Project Name
-    title_aegis = ax.text(12, 2.8, 'AEGIS - AI', 
+    title_aegis = ax.text(12, 2.8, 'MERGEN - AI', 
                          fontsize=80, fontweight='bold', color='white',
                          ha='center', va='center', fontfamily='monospace',
                          style='italic', zorder=10)

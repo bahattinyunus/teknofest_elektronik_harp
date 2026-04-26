@@ -1,5 +1,5 @@
 """
-Visionary Banner Generator for Aegis-AI.
+Visionary Banner Generator for Mergen-AI.
 Creates a high-end, premium aesthetic banner using advanced matplotlib techniques.
 """
 import numpy as np
@@ -70,7 +70,7 @@ def create_visionary_banner():
     ax.plot(hx_in, hy_in, color='#B026FF', linewidth=0.8, alpha=0.2, zorder=3)
 
     # 5. Main Title with Advanced Path Effects (Glow)
-    title_text = ax.text(cx, cy + 0.1, 'AEGIS - AI', 
+    title_text = ax.text(cx, cy + 0.1, 'MERGEN - AI', 
                          fontsize=68, fontweight='bold', color='white',
                          ha='center', va='center', fontfamily='sans-serif',
                          zorder=10)

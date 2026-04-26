@@ -1,4 +1,4 @@
-# 🛠️ Aegis-AI Donanım Stratejisi ve Sistem Mimarisi
+# 🛠️ Mergen-AI Donanım Stratejisi ve Sistem Mimarisi
 
 TEKNOFEST 2026 Elektronik Harp yarışması için belirlenen "Otonomi", "Hızlı Tarama" ve "Etkili Karıştırma" hedefleri doğrultusunda optimize edilmiş donanım mimarisidir.
 
@@ -47,7 +47,7 @@ graph TD
     end
     
     RPi -->|WiFi/Ethernet| Laptop[Operatör Laptop]
-    Laptop -->|Görselleştirme| UI[Aegis-UI Dashboard]
+    Laptop -->|Görselleştirme| UI[Mergen-UI Dashboard]
 ```
 
 ## 6. Donanım Uyumlu Kod Yapısı
