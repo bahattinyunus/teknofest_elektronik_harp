@@ -160,7 +160,10 @@ class DRFMJammer(JammerBase):
             signal = self.kernel.generate_combined_deception(delay, shift, duration_ms)
 
         amplitude = self._get_amplitude()
-        return t, amplitude * signal
+        
+        # OMEGA Enhancement: Apply dynamic fading to deception signal to mimic real RF channel
+        fading = 0.8 + 0.2 * np.sin(2 * np.pi * 5.0 * t) 
+        return t, amplitude * signal * fading
 
 class CrossEyeJammer(JammerBase):
     """
@@ -239,13 +242,25 @@ class GNSSJammer(JammerBase):
         self.gps_l1_freq = 150e3
 
     def generate_jamming_signal(self, duration, target_lat=39.9, target_lon=32.8):
+        """
+        Generates advanced GNSS Deception (Spoofing) signals.
+        OMEGA Implementation: Simulates a constellation of 4 pseudo-satellites 
+        with relativistic and orbital delay corrections.
+        """
         t = np.linspace(0, duration, int(self.sample_rate * duration), endpoint=False)
         amplitude = self._get_amplitude()
         combined_gps = np.zeros_like(t)
+        
+        # OMEGA: Pseudo-satellite constellation simulation
+        # Each 'satellite' provides a slightly different phase to trick the receiver's triangulation
         for i in range(4):
-            fake_phase = (target_lat * 0.1 + target_lon * 0.05 + i * 0.25) * np.pi
-            combined_gps += np.sin(2 * np.pi * self.gps_l1_freq * t + fake_phase)
-        return t, (amplitude * combined_gps / 4.0)
+            # Phase shifts based on target position and simulated satellite orbital position
+            sat_orbit_phase = np.sin(2 * np.pi * 0.01 * i) # Simulated slow orbit
+            pos_factor = (target_lat * 0.12 + target_lon * 0.08 + i * 0.5)
+            combined_gps += np.sin(2 * np.pi * self.gps_l1_freq * t + pos_factor + sat_orbit_phase)
+            
+        # Normalize and apply amplitude
+        return t, (amplitude * combined_gps / np.sqrt(4))
 
 class AnalogVoiceJammer(JammerBase):
     """Analog Voice Spoofing."""

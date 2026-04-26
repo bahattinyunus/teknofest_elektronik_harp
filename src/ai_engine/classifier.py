@@ -3,11 +3,15 @@ import logging
 
 try:
     from ai_engine.dl_classifier import DummyDLClassifier, TORCH_AVAILABLE
+    from ai_engine.adss import BayesianDecisionSupport, DynamicResourceManager
 except ImportError:
     try:
         from src.ai_engine.dl_classifier import DummyDLClassifier, TORCH_AVAILABLE
+        from src.ai_engine.adss import BayesianDecisionSupport, DynamicResourceManager
     except ImportError:
         TORCH_AVAILABLE = False
+        BayesianDecisionSupport = None
+        DynamicResourceManager = None
 
 class SignalClassifier:
     """
@@ -26,6 +30,10 @@ class SignalClassifier:
                 logging.warning("DL model requested but failed to initialize. Falling back to heuristics.")
             else:
                 logging.info("DL model successfully initialized in SignalClassifier.")
+        
+        # Initialize Cognitive Decision Support
+        self.adss = BayesianDecisionSupport() if BayesianDecisionSupport else None
+        self.resource_manager = DynamicResourceManager() if DynamicResourceManager else None
 
     def extract_features(self, freqs, magnitudes):
         """
@@ -64,8 +72,18 @@ class SignalClassifier:
             if dl_label:
                 # Advanced Fusion Logic
                 # If DL confidence is very high, trust DL
+                # Advanced Fusion Logic
+                # If DL confidence is very high, trust DL
                 if dl_conf >= 0.85:
-                    return f"{dl_label} (DL_High)", dl_conf
+                    label = f"{dl_label} (DL_High)"
+                    # Integrate Bayesian Risk Check
+                    if self.adss:
+                        decision = self.adss.evaluate_risk(dl_conf, dl_label)
+                        if decision["should_jam"]:
+                            label += " [ENGAGE]"
+                        else:
+                            label += " [SENSE_ONLY]"
+                    return label, dl_conf
                 
                 # If DL confidence is moderate, cross-verify with basic heuristics
                 pm = features["peak_mag"]
