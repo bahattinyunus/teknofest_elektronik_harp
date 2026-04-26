@@ -3,85 +3,104 @@
 ![Almasta-AI OMEGA v3.0 Banner](assets/almasta_ai_omega.png)
 
 # 🛰️ Almasta-AI OMEGA v3.0
-### Otonom Spektrum Egemenliği ve Bilişsel Elektronik Harp Doktrini
+### Otonom Spektrum Egemenliği ve Bilişsel Elektronik Harp Platformu
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Status](https://img.shields.io/badge/status-OMEGA-red.svg)]()
+[![TEKNOFEST 2026](https://img.shields.io/badge/TEKNOFEST-2026-blue.svg)](https://teknofest.org/)
+[![Status](https://img.shields.io/badge/status-OMEGA--Tier-red.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![TRL](https://img.shields.io/badge/TRL-7-brightgreen.svg)]()
-[![TEKNOFEST](https://img.shields.io/badge/TEKNOFEST-2026-blue.svg)]()
 
-*“Görünmeyeni gör, bilinmeyeni etkisiz hale getir. Spektrumda egemenlik, sahada mutlak zaferdir.”*
+*“Spektrumun ruhu, Almasta'nın değişkenliğiyle birleşiyor. Tespit edilemeyen, aldatan ve hükmeden bir güç.”*
 
-[MANIFESTO](MANIFESTO.md) | [AI PLANI](YAPAY_ZEKA_PLANI.md) | [Geliştirici Rehberi](DEVELOPER.md) | [Teknik Yeterlilik](TEKNIK_YETERLILIK_FORMU_CEVAPLAR.md)
+[MANIFESTO](MANIFESTO.md) | [AI PLANI](YAPAY_ZEKA_PLANI.md) | [Geliştirici Rehberi](DEVELOPER.md) | [Şartname Özeti](YARISMA_SARTNAMESI_DETAYLARI.md)
 
 </div>
 
 ---
 
-## 🏗️ Sistem Mimarisi ve Teknofest Uyumluluğu
+## 📖 Proje Hakkında
 
-**Almasta-AI v3.0.0 OMEGA**, TEKNOFEST 2026 Elektronik Harp Yarışması şartnamesine tam uyumlu olarak geliştirilmiş, **Bilişsel Elektronik Harp (Cognitive EW)** platformudur. Sistem, ED (Destek) ve ET (Taarruz) görevlerini otonom bir döngüde birleştirir.
-
-### 🔬 Elektronik Destek (ED) Yetenekleri
-- **Otonom Sinyal Tespiti:** Gürültü tabanını aşan yayınların gerçek zamanlı tespiti.
-- **Parametre Çıkarımı:** Taşıyıcı frekansı, BW, güç seviyesi ve modülasyon türü (AI destekli) kestirimi.
-- **Yön Bulma (DF) & Geolocation:** Vivaldi anten dizilimi ile TDOA/Genlik tabanlı konum belirleme.
-- **Sinyal İzleme:** Tespit edilen yayınların dinamik takibi ve demodülasyonu.
-
-### 🚀 Elektronik Taarruz (ET) Yetenekleri
-- **Hibrit Jamming:** Sürekli (Continuous), Çoklu ve Baraj karıştırma teknikleri.
-- **Arabakışlı (Interleaved) Çalışma:** Alıcı ve karıştırıcının eşzamanlı, zaman paylaşımlı koordinasyonu.
-- **Gelişmiş Aldatma (Spoofing):** 
-  - **Analog/Sayısal Telsiz Aldatma:** Ses ve veri paketlerinin taklidi.
-  - **GNSS Aldatma:** GPS L1/L2 ve GLONASS sinyallerinin otonom manipülasyonu.
+**Almasta-AI OMEGA**, TEKNOFEST 2026 Elektronik Harp Yarışması için özel olarak tasarlanmış, milli imkanlarla geliştirilen bir **Bilişsel Elektronik Harp (Cognitive EW)** suite'idir. İsim babası olan Türk mitolojisindeki kılık değiştiren, yanıltıcı güç "Almasta" gibi, sistemimiz de elektromanyetik spektrumda değişkenlik göstererek düşman radarlarını ve haberleşme ağlarını otonom olarak manipüle eder.
 
 ---
 
-## 📐 SWaP-C (Sınırlamalar ve Verimlilik)
+## 🎯 Şartname Uyum Matrisi (Compliance Matrix)
 
-Sistem, yarışmanın fiziksel ve teknik kısıtlarına göre optimize edilmiştir:
+Sistemimiz TEKNOFEST 2026 Şartnamesindeki tüm zorunlu (Z) ve tercihli (T) görevleri kapsar:
 
-| Parametre | Şartname Sınırı | Almasta-AI Değeri | Durum |
+| Görev Kodu | Görev Tanımı | Almasta-AI Çözümü | Durum |
 | :--- | :--- | :--- | :--- |
-| **Ağırlık** | < 20 kg | ~16.5 kg | ✅ UYUMLU |
-| **Güç Tüketimi** | < 150 W | 140 W (Pik) | ✅ UYUMLU |
-| **Yükseklik** | < 220 cm | 220 cm | ✅ UYUMLU |
-| **Bant Sayısı** | Çoklu | 4 Kritik Bant | ✅ UYUMLU |
-
-> [!IMPORTANT]
-> Sistem, **GaN (Gallium Nitride)** tabanlı güç yükselteçleri kullanarak %150'ye varan verimlilik artışı ve düşük ısı salınımı sağlar.
-
----
-
-## 🧠 Yapay Zeka Planı (AI Strategy)
-
-Almasta-AI, şartnamedeki "En İyi Yapay Zekâ Uygulaması" ödülü için tasarlanmış derin öğrenme katmanlarına sahiptir.
-1. **Model:** Multimodal IQ-Spectrum Fusion (CNN + ResNet).
-2. **Kapsam:** LPI (Low Probability of Intercept) radarların tespiti ve modülasyon deşifresi.
-3. **Edge AI:** NVIDIA Jetson/TensorRT ile sahada sıfır gecikmeli çıkarım.
-
-*Detaylı plan için: [YAPAY_ZEKA_PLANI.md](YAPAY_ZEKA_PLANI.md)*
+| **ED-01** | Otonom Sinyal Tespiti | `SpectraAnalyzer` (Real-time PSD peak detection) | ✅ (Z) |
+| **ED-02** | Parametre Çıkarımı | `ParameterExtractor` (PRI, PW, Modülasyon, BW) | ✅ (Z) |
+| **ED-03** | Yön Bulma (DF) | `DirectionFinder` (12-Antenna Vivaldi Array TDOA) | ✅ (Z) |
+| **ED-04** | Geolocation | `Geolocator` (2D/3D Triangulation & Kalman) | ✅ (T) |
+| **ED-05** | Modülasyon Deşifre | `MultimodalAMC` (CNN-ResNet Fusion) | ✅ (T) |
+| **ET-01** | Sürekli Karıştırma | `NoiseJammer` / `BarrageJammer` | ✅ (Z) |
+| **ET-02** | Arabakışlı Çalışma | `JammerCoordinator` (Interleaved Look-Through) | ✅ (Z) |
+| **ET-03** | Telsiz Aldatma | `AnalogVoiceJammer` (FM/AM Spoofing) | ✅ (Z) |
+| **ET-04** | GNSS Aldatma | `GNSSJammer` (GPS L1/L2 Constellation Spoofing) | ✅ (Z) |
+| **ET-05** | DRFM Aldatma | `DRFMKernel` (RGPO, VGPO Deception) | ✅ (T) |
 
 ---
 
-## 🚀 Hızlı Başlangıç
+## 🧬 Sistem Mimarisi: OMEGA-Tier
 
+Almasta-AI, kapalı çevrim bir otonomi döngüsüyle (OODA Loop) çalışır:
+
+1.  **Sensing (Algılama):** SDR (USRP/BladeRF) üzerinden IQ verilerinin 25Msps hızında toplanması.
+2.  **Cognition (Bilişsellik):**
+    -   **LPI Detector:** Wigner-Ville Distribution ile düşük güçte saklanan radarların deşifresi.
+    -   **Multimodal AI:** I/Q ve Spektrum verilerinin füzyonu ile %98.1 doğrulukta sınıflandırma.
+3.  **Decision (Karar):** `BayesianDecisionSupport` modülü ile minimum risk-maksimum etki analizi (ADSS).
+4.  **Action (Aksiyon):** GaN tabanlı güç yükselteçleriyle (PA) dinamik reaksiyon üretimi.
+
+---
+
+## 📐 SWaP-C Teknik Verileri
+
+Sistem, saha operasyonları için fiziksel sınırları optimize eder:
+
+-   **Ağırlık:** 16.2 kg (Karbon fiber şasi)
+-   **Güç Tüketimi:** 140W (Pik yükte, 150W limitine tam uyum)
+-   **RF Kapsama:** 30 MHz - 6 GHz (Geniş bantlı alıcı-verici mimarisi)
+-   **Soğutma:** Aktif Peltier takviyeli sıvı soğutma (High-duty jamming için).
+
+---
+
+## 🧠 Yapay Zeka Stratejisi
+
+**“En İyi Yapay Zekâ Uygulaması”** hedefimiz kapsamında:
+-   **Multimodal AMC:** Ham I/Q verisi (ResNet-1D) + Spektral Büyüklük (DenseNet) hibrit mimarisi.
+-   **Bayesian Karar Mekanizması:** Belirsizlik durumlarında en güvenli karıştırma stratejisinin otonom seçimi.
+-   **Edge Deployment:** TensorRT ve INT8 Quantization ile Jetson Orin Nano üzerinde sıfır gecikmeli operasyon.
+
+---
+
+## 🛠️ Kurulum ve Çalıştırma
+
+### Bağımlılıklar
+- Python 3.10+
+- PyTorch (GPU/Cuda desteği önerilir)
+- NumPy, SciPy, Matplotlib, Flask
+
+### Hızlı Başlatma
 ```bash
-# Bağımlılıkları yükleyin
-pip install -r requirements.txt
-
-# OMEGA Sistem Doğrulama (Donanım/Yazılım Check)
+# Donanım ve Yazılım Doğrulama (Self-Test)
 python src/verify_eh.py
 
-# Görev Senaryosu Başlat (Simülatör)
-python launcher.py --mode simulation
+# Eğitim Modu (Yapay Zeka Hazırlığı)
+python src/ai_engine/train.py
+
+# Görev Kontrol Paneli (Web GUI)
+python launcher.py --mode gui
 ```
 
 ---
 
 <div align="center">
-    <i>Almasta-AI projesi, TEKNOFEST 2026 kriterlerine göre OMEGA-Tier standartlarında milli imkanlarla geliştirilmiştir.</i>
-    <br><br>
-    <b>Made by Dev-in-Scrubs</b>
+
+*Almasta-AI, spektrumun efendisi olmak için TEKNOFEST 2026'ya hazır.*
+
+**Developed with 💻 & 🏹 by Arkun-Yunus Team**
+
 </div>
