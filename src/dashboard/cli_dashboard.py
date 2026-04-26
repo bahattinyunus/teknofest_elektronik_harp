@@ -23,7 +23,7 @@ from src.simulation.scenario_manager import ScenarioManager
 
 console = Console()
 
-class MergenDashboard:
+class AlmastaDashboard:
     def __init__(self):
         self.sample_rate = 1e6
         self.duration = 0.01
@@ -52,7 +52,7 @@ class MergenDashboard:
         grid.add_column(justify="center", ratio=1)
         grid.add_column(justify="right")
         grid.add_row(
-            Text("🛰️ MERGEN-AI OMEGA v3.0 | COGNITIVE ELECTRONIC WARFARE SYSTEM", style="bold cyan"),
+            Text("🛰️ ALMASTA-AI OMEGA v3.0 | COGNITIVE ELECTRONIC WARFARE SYSTEM", style="bold cyan"),
             Text(time.ctime(), style="dim white"),
         )
         return Panel(grid, style="white on blue", box=box.DOUBLE)
@@ -156,7 +156,7 @@ class MergenDashboard:
                 self.current_idx += 1
 
 if __name__ == "__main__":
-    dash = MergenDashboard()
+    dash = AlmastaDashboard()
     try:
         dash.run()
     except KeyboardInterrupt:

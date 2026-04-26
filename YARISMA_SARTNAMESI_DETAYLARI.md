@@ -82,4 +82,4 @@ Bir takımın ödül alabilmesi için en az şunları yapması şarttır:
 - Teknik kontrolde RF çıkış güçleri ve spektrum tarama kabiliyetleri test edilecektir.
 
 ---
-*Mergen-AI projesi, yukarıdaki tüm zorunlu ve tercihli kriterleri (AI otonomi dahil) karşılayacak bir mimariyle geliştirilmektedir.*
+*Almasta-AI projesi, yukarıdaki tüm zorunlu ve tercihli kriterleri (AI otonomi dahil) karşılayacak bir mimariyle geliştirilmektedir.*

@@ -1,10 +1,10 @@
-# 🧠 Mergen-AI: Yapay Zeka Destekli Modülasyon Sınıflandırma (AMC) Raporu
+# 🧠 Almasta-AI: Yapay Zeka Destekli Modülasyon Sınıflandırma (AMC) Raporu
 
-Bu rapor, Mergen-AI projesinde yer alan Elektronik Destek (ED) alt sisteminin en kritik bileşenlerinden biri olan **Otomatik Modülasyon Sınıflandırma (AMC)** mekanizmasını, kullanılan derin öğrenme mimarilerini ve gelecekteki geliştirme planlarını detaylandırmaktadır.
+Bu rapor, Almasta-AI projesinde yer alan Elektronik Destek (ED) alt sisteminin en kritik bileşenlerinden biri olan **Otomatik Modülasyon Sınıflandırma (AMC)** mekanizmasını, kullanılan derin öğrenme mimarilerini ve gelecekteki geliştirme planlarını detaylandırmaktadır.
 
 ## 1. Mevcut Mimari: Hibrit Yaklaşım
 
-Mergen-AI, yalnızca derin öğrenmeye güvenmek yerine, **Kural Tabanlı Sezgisel (Heuristic)** ve **Derin Öğrenme (CNN)** modellerini birleştiren hibrit bir yapı kullanır.
+Almasta-AI, yalnızca derin öğrenmeye güvenmek yerine, **Kural Tabanlı Sezgisel (Heuristic)** ve **Derin Öğrenme (CNN)** modellerini birleştiren hibrit bir yapı kullanır.
 
 ### A. Kural Tabanlı Motor (`classifier.py`)
 Sinyal parametreleri (PRI, PW, Bant Genişliği, Spectral Flatness) üzerinden çalışan hızlı bir karar verme mekanizmasıdır. 
@@ -60,4 +60,4 @@ AMC geliştirme sürecinde aşağıdaki temel kaynaklar baz alınmıştır:
 3.  **ResNet-Based AMC:** Daha derin ağların faz karmaşıklığını çözmedeki başarısı.
 
 ---
-*Hazırlayan: Mergen-AI Savunma Teknolojileri Ekibi*
+*Hazırlayan: Almasta-AI Savunma Teknolojileri Ekibi*

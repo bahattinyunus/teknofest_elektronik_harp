@@ -1,6 +1,6 @@
-# Mergen-AI OMEGA Developer Guide: Technical Deep Dive
+# Almasta-AI OMEGA Developer Guide: Technical Deep Dive
 
-This document provides a comprehensive technical breakdown of the **Mergen-AI OMEGA v3.0** system architecture, focusing on the mathematical models and signals engineering principles used in the TEKNOFEST 2026 competition.
+This document provides a comprehensive technical breakdown of the **Almasta-AI OMEGA v3.0** system architecture, focusing on the mathematical models and signals engineering principles used in the TEKNOFEST 2026 competition.
 
 ---
 

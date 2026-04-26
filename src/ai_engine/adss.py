@@ -50,7 +50,7 @@ class BayesianDecisionSupport:
 class DynamicResourceManager:
     """
     Allocates transmission power and bandwidth across multiple targets.
-    Optimizes the 140W (Mergen-AI v3.0) power limit.
+    Optimizes the 140W (Almasta-AI v3.0) power limit.
     """
     def __init__(self, max_power_w=140):
         self.max_power_w = max_power_w

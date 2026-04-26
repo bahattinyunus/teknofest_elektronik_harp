@@ -121,7 +121,7 @@ class DRFMJammer(JammerBase):
     Advanced Deception Jammer using Digital Radio Frequency Memory (DRFM).
     Leverages captured target waveforms to generate coherent false targets.
     
-    Mergen-AI OMEGA: v3.0.0
+    Almasta-AI OMEGA: v3.0.0
     """
     def __init__(self, sample_rate=1e6):
         super().__init__(sample_rate)

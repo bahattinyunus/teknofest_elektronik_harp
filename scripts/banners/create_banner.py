@@ -1,5 +1,5 @@
 """
-Banner generator for Mergen-AI project.
+Banner generator for Almasta-AI project.
 Generates a futuristic banner and saves it to assets/banner.png
 """
 import numpy as np
@@ -63,7 +63,7 @@ for x_line in np.linspace(5.2, 16, 18):
     ax.axvline(x_line, color='#0D3B5E', linewidth=0.3, alpha=0.4, zorder=0)
 
 # --- Main Title ---
-ax.text(9.5, 2.9, 'MERGEN-AI',
+ax.text(9.5, 2.9, 'ALMASTA-AI',
         fontsize=64, fontweight='bold',
         color='white', ha='center', va='center',
         fontfamily='DejaVu Sans',
@@ -72,7 +72,7 @@ ax.text(9.5, 2.9, 'MERGEN-AI',
 
 # Title glow effect (shadow layers)
 for offset, alpha in [(0.06, 0.3), (0.03, 0.15)]:
-    ax.text(9.5 + offset, 2.9 - offset, 'MERGEN-AI',
+    ax.text(9.5 + offset, 2.9 - offset, 'ALMASTA-AI',
             fontsize=64, fontweight='bold',
             color='#00F5FF', ha='center', va='center',
             fontfamily='DejaVu Sans',

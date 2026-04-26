@@ -1,11 +1,11 @@
-# 🧠 Mergen-AI: Stratejik Yapay Zeka Geliştirme Planı
+# 🧠 Almasta-AI: Stratejik Yapay Zeka Geliştirme Planı
 
-Bu doküman, TEKNOFEST 2026 Elektronik Harp Yarışması'nda **"En İyi Yapay Zekâ Uygulaması"** ödülünü hedefleyen, Mergen-AI sisteminin bilişsel yeteneklerini ve otonom karar destek mekanizmalarını detaylandırır.
+Bu doküman, TEKNOFEST 2026 Elektronik Harp Yarışması'nda **"En İyi Yapay Zekâ Uygulaması"** ödülünü hedefleyen, Almasta-AI sisteminin bilişsel yeteneklerini ve otonom karar destek mekanizmalarını detaylandırır.
 
 ---
 
 ## 1. Vizyon: Bilişsel Elektronik Harp (Cognitive EW)
-Geleneksel EH sistemleri önceden tanımlanmış kütüphanelere (Threat Library) bağlıdır. Mergen-AI, yapay zeka ile **tanımlanmamış veya yeni (zero-day)** sinyal karakteristiklerini öğrenen ve otonom olarak karşı tedbir (Countermeasure) üreten bir mimariye evrilmektedir.
+Geleneksel EH sistemleri önceden tanımlanmış kütüphanelere (Threat Library) bağlıdır. Almasta-AI, yapay zeka ile **tanımlanmamış veya yeni (zero-day)** sinyal karakteristiklerini öğrenen ve otonom olarak karşı tedbir (Countermeasure) üreten bir mimariye evrilmektedir.
 
 ---
 
@@ -57,4 +57,4 @@ Yapay zeka modellerinin sahada (Edge) gecikmesiz çalışması için şu teknikl
 - **Final:** Sahada tam otonom ED/ET döngüsünün sergilenmesi.
 
 ---
-*Bu plan, Mergen-AI projesinin teknik üstünlüğünü ve yarışma hedeflerine olan bağlılığını temsil eder.*
+*Bu plan, Almasta-AI projesinin teknik üstünlüğünü ve yarışma hedeflerine olan bağlılığını temsil eder.*

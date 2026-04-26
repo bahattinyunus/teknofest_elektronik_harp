@@ -1,4 +1,4 @@
-# 🏗️ Mergen-AI Sistem Yapısı: DKB & YKB Tanımları
+# 🏗️ Almasta-AI Sistem Yapısı: DKB & YKB Tanımları
 
 TEKNOFEST 2026 Elektronik Harp Şartnamesi (Bölüm 6.1.2) gereğince, sistemin Donanım Konfigürasyon Birimleri (DKB) ve Yazılım Konfigürasyon Birimleri (YKB) aşağıda tanımlanmıştır.
 

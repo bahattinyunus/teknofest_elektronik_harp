@@ -20,7 +20,7 @@ def check(label, passed):
 
 def test_eh_system():
     print("\n" + "="*55)
-    print("   TEKNOFEST 2026 — Mergen-AI System Verification")
+    print("   TEKNOFEST 2026 — Almasta-AI System Verification")
     print("="*55)
 
     sm = ScenarioManager(sample_rate=1e6)

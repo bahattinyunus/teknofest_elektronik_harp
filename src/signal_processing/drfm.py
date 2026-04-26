@@ -6,7 +6,7 @@ class DRFMKernel:
     Digital Radio Frequency Memory (DRFM) Kernel.
     Allows capturing, storing, and manipulating RF waveforms for deception jamming.
     
-    Mergen-AI OMEGA Core: v3.0.0
+    Almasta-AI OMEGA Core: v3.0.0
     """
 
     def __init__(self, buffer_size=4096, sample_rate=1e6):

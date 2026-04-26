@@ -1,5 +1,5 @@
 """
-Unit test suite for Mergen-AI Electronic Warfare System.
+Unit test suite for Almasta-AI Electronic Warfare System.
 Run with: pytest tests/ -v
 """
 import sys

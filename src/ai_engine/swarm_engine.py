@@ -7,7 +7,7 @@ class SwarmCorrelationEngine:
     Advanced engine for correlating multiple emitters into swarm patterns.
     Uses spatial (AOA), temporal (Arrival Time), and spectral (Frequency Hop) correlation.
     
-    Mergen-AI OMEGA: v3.0.0
+    Almasta-AI OMEGA: v3.0.0
     """
     def __init__(self, angle_threshold=12.0, time_window=3.0, min_members=3):
         self.angle_threshold = angle_threshold
